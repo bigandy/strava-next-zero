@@ -2,7 +2,7 @@
 
 import { useQuery } from "@rocicorp/zero/react";
 import { useZero } from "@/components/zero";
-import type { Task } from "@/schema";
+import type { Task, User } from "@/schema";
 import Link from "next/link";
 
 
@@ -18,28 +18,43 @@ export function TaskList() {
 
 function TaskColumn({name, value}: {name: string; value: string}) {
   const z = useZero();
-  const [tasks] = useQuery(z.query.task.where('status', '=', value));
+  const [tasks] = useQuery(
+    z.query
+      .task
+      .related("assignedTo")
+      .related("createdBy")
+      .where('status', '=', value)
+  );
   return (
     <div className="border rounded-lg px-2 space-y-2">
       <h2>{name}</h2>
       <div className="grid grid-cols-1 gap-2">
         {tasks.map(t => (
-          <TaskCard key={t.id} task={t} />
+          <TaskCard
+            key={t.id}
+            task={t}
+            createdBy={t.createdBy}
+            assignedTo={t.assignedTo}
+          />
         ))}
       </div>
     </div>
   );
 }
 
-function TaskCard({ task }: {
-  task: Task
+function TaskCard({ task, createdBy, assignedTo }: {
+  task: Task;
+  createdBy?: User;
+  assignedTo?: User;
 }) {
   const z = useZero();
-  const [createdBy] = useQuery(z.query.user.where('id', '=', task.createdById).one());
-  const [assignedTo] = useQuery(z.query.user.where('id', '=', task.assignedToId).one());
   return (
     <div className="border rounded">
-      <div>{task.name}</div>
+      <div>
+        <Link href={`/tasks/${task.id}`} className="underline">
+          {task.name}
+        </Link>
+      </div>
       <div>
         <span>Created By: </span>
         <Link href={`/users/${task.createdById}`} className="underline">
