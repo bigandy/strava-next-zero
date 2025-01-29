@@ -1,3 +1,11 @@
+# Intro to Zero Sync
+
+[![](https://img.youtube.com/vi/IOw-LzKk-s8/hqdefault.jpg)](https://www.youtube.com/watch?v=IOw-LzKk-s8)
+
+The code created in my video [Intro to Zero Sync](https://www.youtube.com/watch?v=IOw-LzKk-s8), that walks through setting up Zero in a NextJS project.
+
+---
+
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
 ## Getting Started
