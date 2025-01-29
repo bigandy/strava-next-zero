@@ -8,11 +8,18 @@ import Link from "next/link";
 
 export function TaskList() {
   return (
-    <div className="grid grid-cols-3 gap-4 m-2">
-      <TaskColumn name="Not Started" value="not-started" />
-      <TaskColumn name="In Progress" value="in-progress" />
-      <TaskColumn name="Done" value="done" />
-    </div>
+    <>
+      <div className="text-right">
+        <Link href="/tasks/new" className="underline">
+          New Task &rarr;
+        </Link>
+      </div>
+      <div className="grid grid-cols-3 gap-4 m-2">
+        <TaskColumn name="Not Started" value="not-started" />
+        <TaskColumn name="In Progress" value="in-progress" />
+        <TaskColumn name="Done" value="done" />
+      </div>
+    </>
   );
 }
 
