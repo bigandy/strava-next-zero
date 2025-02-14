@@ -7,13 +7,13 @@ export function EditTask({taskId}: {taskId: string}) {
   const z = useZero();
   const [task] = useQuery(
     z.query
-      .task
+      .tasks
       .related('assignedTo')
       .related('createdBy')
       .where('id', '=', taskId)
       .one()
     );
-  const [users] = useQuery(z.query.user);
+  const [users] = useQuery(z.query.users);
   return (
     <div className="grid grid-cols-1 gap-4 max-w-sm">
       <div className="flex gap-2">
@@ -23,7 +23,7 @@ export function EditTask({taskId}: {taskId: string}) {
         <input
           className="border"
           value={task?.name || ""}
-          onChange={e => z.mutate.task.update({
+          onChange={e => z.mutate.tasks.update({
             id: taskId,
             name: e.target.value,
           })}
@@ -35,7 +35,7 @@ export function EditTask({taskId}: {taskId: string}) {
         </label>
         <select
           value={task?.status || "not-started"}
-          onChange={e => z.mutate.task.update({
+          onChange={e => z.mutate.tasks.update({
             id: taskId,
             status: e.target.value,
           })}
@@ -54,7 +54,7 @@ export function EditTask({taskId}: {taskId: string}) {
         </label>
         <select
           value={task?.createdById || z.userID}
-          onChange={e => z.mutate.task.update({
+          onChange={e => z.mutate.tasks.update({
             id: taskId,
             createdById: e.target.value,
           })}
@@ -73,7 +73,7 @@ export function EditTask({taskId}: {taskId: string}) {
         </label>
         <select
           value={task?.assignedToId || z.userID}
-          onChange={e => z.mutate.task.update({
+          onChange={e => z.mutate.tasks.update({
             id: taskId,
             assignedToId: e.target.value,
           })}

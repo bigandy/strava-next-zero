@@ -1,26 +1,30 @@
-'use client';
-
+import { cookies } from "next/headers";
 import Link from "next/link";
+import * as jose from 'jose';
 import { ZeroProvider } from "@/components/zero";
-import { useEffect, useState } from "react";
+import { ClientOnly } from "@/components/client-only";
 
-export default function Layout({
+const secret = new TextEncoder().encode(process.env.ZERO_AUTH_SECRET!);
+
+export default async function Layout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const [isClient, setIsClient] = useState(false);
-  useEffect(() => {
-    setIsClient(true);
-  }, [setIsClient]);
-
-  if (!isClient) {
+  const cookieStore = await cookies();
+  const token = cookieStore.get("token")?.value;
+  if (!token) {
     return (
       <div>
-        Loading...
+        <h1>Not authenticated</h1>
+        <Link href="/sign-in">
+          Sign in
+        </Link>
       </div>
     );
   }
+  
+  const { payload } = await jose.jwtVerify(token, secret);
   return (
     <>
       <div className="flex gap-2 mb-4">
@@ -31,9 +35,11 @@ export default function Layout({
           Users
         </Link>
       </div>
-      <ZeroProvider>
-        {children}
-      </ZeroProvider>
+      <ClientOnly fallback={<div>Loading...</div>}>
+        <ZeroProvider authToken={token} userID={payload.sub || "anon"}>
+          {children}
+        </ZeroProvider>
+      </ClientOnly>
     </>
   );
 }

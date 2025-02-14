@@ -1,15 +1,28 @@
+import { relations } from "drizzle-orm";
 import { pgTable, text } from "drizzle-orm/pg-core";
-import { nanoid } from "nanoid";
 
-export const usersTable = pgTable("users", {
-  id: text().primaryKey().$default(() => nanoid()),
-  name: text().notNull(),
+export const users = pgTable("users", {
+  id: text("id").primaryKey(),
+  name: text("name").notNull(),
+  email: text("email").notNull(),
+  passHash: text("pass_hash").notNull(),
 });
 
-export const tasksTable = pgTable("tasks", {
-  id: text().primaryKey().$default(() => nanoid()),
-  name: text().notNull(),
-  status: text().notNull(),
-  createdById: text().notNull().references(() => usersTable.id),
-  assignedToId: text().notNull().references(() => usersTable.id),
+export const tasks = pgTable("tasks", {
+  id: text("id").primaryKey(),
+  name: text("name").notNull(),
+  status: text("status").notNull(),
+  createdById: text().notNull().references(() => users.id),
+  assignedToId: text().notNull().references(() => users.id),
 });
+
+export const tasksRelations = relations(tasks, ({ one }) => ({
+  createdBy: one(users, {
+    fields: [tasks.createdById],
+    references: [users.id],
+  }),
+  assignedTo: one(users, {
+    fields: [tasks.assignedToId],
+    references: [users.id],
+  }),
+}));

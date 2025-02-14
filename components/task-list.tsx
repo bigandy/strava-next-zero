@@ -27,7 +27,7 @@ function TaskColumn({name, value}: {name: string; value: string}) {
   const z = useZero();
   const [tasks] = useQuery(
     z.query
-      .task
+      .tasks
       .related("assignedTo")
       .related("createdBy")
       .where('status', '=', value)
@@ -78,7 +78,7 @@ function TaskCard({ task, createdBy, assignedTo }: {
         <button
           className="disabled:text-gray-500"
           disabled={task.status === "not-started"}
-          onClick={() => z.mutate.task.update({
+          onClick={() => z.mutate.tasks.update({
             id: task.id,
             status: task.status === "in-progress" ? "not-started" : "in-progress",
           })}
@@ -88,7 +88,7 @@ function TaskCard({ task, createdBy, assignedTo }: {
         <button
           className="disabled:text-gray-500"
           disabled={task.status === "done"}
-          onClick={() => z.mutate.task.update({
+          onClick={() => z.mutate.tasks.update({
             id: task.id,
             status: task.status === "not-started" ? "in-progress" : "done",
           })}
@@ -96,7 +96,7 @@ function TaskCard({ task, createdBy, assignedTo }: {
           &rarr;
         </button>
         <button
-          onClick={() => z.mutate.task.delete({
+          onClick={() => z.mutate.tasks.delete({
             id: task.id,
           })}
         >
