@@ -19,6 +19,7 @@ export const schema = createZeroSchema(drizzleSchema, {
       done: true,
       createdById: true,
       assignedToId: true,
+      timestamp: true
     },
     tasks: {
       id: true,

@@ -23,7 +23,7 @@ export function TaskList() {
   );
 }
 
-function TaskColumn({name, value}: {name: string; value: string}) {
+function TaskColumn({ name, value }: { name: string; value: string }) {
   const z = useZero();
   const [tasks] = useQuery(
     z.query
@@ -55,6 +55,7 @@ function TaskCard({ task, createdBy, assignedTo }: {
   assignedTo?: User;
 }) {
   const z = useZero();
+
   return (
     <div className="border rounded">
       <div>

@@ -6,14 +6,14 @@ import { useState } from "react";
 
 export function TodosList() {
     const z = useZero();
-    const [order, setOrder] = useState('asc');
+    const [order, setOrder] = useState<'asc' | "desc">('asc');
 
     const [todos] = useQuery(z.query.todos.orderBy('timestamp', order));
 
     return (
         <div className="border">
-            <button onClick={() => setOrder('desc')} className="border rounded p-4 ">Desc</button>
-            <button onClick={() => setOrder('asc')} className="border rounded p-4 mx-4">Asc</button>
+            <button onClick={() => setOrder('desc')} className={`border rounded p-4 ${order === 'desc' ? 'bg-red-600 text-white' : ''}`} disabled={order === 'desc'}>Desc</button>
+            <button onClick={() => setOrder('asc')} className={`border rounded p-4 mx-4 ${order === 'asc' ? 'bg-red-600 text-white' : ''}`} disabled={order === 'asc'}>Asc</button>
 
             <ul className="list-disc list-inside">
                 {todos.map(todo => (
@@ -54,12 +54,12 @@ const SingleTodo = ({ todo }) => {
 
 
     return (
-        <li className="p-4">
-            <input value={todo.name} onInput={updateInput} className="border w-full my-4 p-2" />
+        <li className="p-4 grid grid-cols-3 gap-4 justify-stretch">
+            <input value={todo.name} onInput={updateInput} className="border w-full p-2" />
 
-            <div className="border p-3" onClick={toggleDone}>{todo.done ? "done" : "not done"}</div>
+            <div className="border border-black p-2" onClick={toggleDone}>{todo.done ? "done" : "not done"}</div>
 
-            <button onClick={handleDeletion}>Delete</button>
+            <button className="border border-black rounded" onClick={handleDeletion}>Delete</button>
         </li>
     )
 }

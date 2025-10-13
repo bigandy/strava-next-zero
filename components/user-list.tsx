@@ -7,6 +7,9 @@ import Link from "next/link";
 export function UserList() {
   const z = useZero();
   const [users] = useQuery(z.query.users);
+
+  console.log({ users })
+
   return (
     <div className="">
       <ul className="list-disc list-inside">

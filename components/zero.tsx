@@ -16,7 +16,7 @@ export function ZeroProvider({ children, userID, authToken }: {
   const z = useMemo(() => new Zero({
     userID,
     auth: () => authToken,
-    server: process.env.NEXT_PUBLIC_SERVER,
+    server: process.env.NEXT_PUBLIC_ZERO_SERVER,
     schema,
     kvStore: "mem",
   }), [authToken, userID]);
