@@ -2,49 +2,55 @@ import { relations, sql } from "drizzle-orm";
 import { boolean, pgTable, text } from "drizzle-orm/pg-core";
 
 export const users = pgTable("users", {
-  id: text("id").primaryKey(),
-  name: text("name").notNull(),
-  email: text("email").notNull(),
-  passHash: text("pass_hash").notNull(),
+	id: text("id").primaryKey(),
+	name: text("name").notNull(),
+	email: text("email").notNull(),
+	passHash: text("pass_hash").notNull(),
 });
 
 export const tasks = pgTable("tasks", {
-  id: text("id").primaryKey(),
-  name: text("name").notNull(),
-  status: text("status").notNull(),
-  createdById: text().notNull().references(() => users.id),
-  assignedToId: text().notNull().references(() => users.id),
+	id: text("id").primaryKey(),
+	name: text("name").notNull(),
+	status: text("status").notNull(),
+	createdById: text()
+		.notNull()
+		.references(() => users.id),
+	assignedToId: text()
+		.notNull()
+		.references(() => users.id),
 });
 
 export const todos = pgTable("todos", {
-  id: text("id").primaryKey(),
-  name: text("name").notNull(),
-  done: boolean().notNull(),
-  createdById: text().notNull().references(() => users.id),
-  assignedToId: text().notNull().references(() => users.id),
-  timestamp: text('timestamp')
-    .notNull()
-    .default(sql`(current_timestamp)`),
+	id: text("id").primaryKey(),
+	name: text("name").notNull(),
+	done: boolean().notNull(),
+	createdById: text()
+		.notNull()
+		.references(() => users.id),
+	assignedToId: text()
+		.notNull()
+		.references(() => users.id),
+	timestamp: text("timestamp").notNull().default(sql`(current_timestamp)`),
 });
 
 export const todosRelations = relations(todos, ({ one }) => ({
-  createdBy: one(users, {
-    fields: [todos.createdById],
-    references: [users.id],
-  }),
-  assignedTo: one(users, {
-    fields: [todos.assignedToId],
-    references: [users.id],
-  }),
-}))
+	createdBy: one(users, {
+		fields: [todos.createdById],
+		references: [users.id],
+	}),
+	assignedTo: one(users, {
+		fields: [todos.assignedToId],
+		references: [users.id],
+	}),
+}));
 
 export const tasksRelations = relations(tasks, ({ one }) => ({
-  createdBy: one(users, {
-    fields: [tasks.createdById],
-    references: [users.id],
-  }),
-  assignedTo: one(users, {
-    fields: [tasks.assignedToId],
-    references: [users.id],
-  }),
+	createdBy: one(users, {
+		fields: [tasks.createdById],
+		references: [users.id],
+	}),
+	assignedTo: one(users, {
+		fields: [tasks.assignedToId],
+		references: [users.id],
+	}),
 }));

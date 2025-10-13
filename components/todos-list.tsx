@@ -1,65 +1,84 @@
-'use client';
+"use client";
 
-import { useZero } from "@/components/zero";
 import { useQuery } from "@rocicorp/zero/react";
 import { useState } from "react";
+import { useZero } from "@/components/zero";
 
 export function TodosList() {
-    const z = useZero();
-    const [order, setOrder] = useState<'asc' | "desc">('asc');
+	const z = useZero();
+	const [order, setOrder] = useState<"asc" | "desc">("asc");
 
-    const [todos] = useQuery(z.query.todos.orderBy('timestamp', order));
+	const [todos] = useQuery(z.query.todos.orderBy("timestamp", order));
 
-    return (
-        <div className="border">
-            <button onClick={() => setOrder('desc')} className={`border rounded p-4 ${order === 'desc' ? 'bg-red-600 text-white' : ''}`} disabled={order === 'desc'}>Desc</button>
-            <button onClick={() => setOrder('asc')} className={`border rounded p-4 mx-4 ${order === 'asc' ? 'bg-red-600 text-white' : ''}`} disabled={order === 'asc'}>Asc</button>
+	return (
+		<div className="border">
+			<button
+				onClick={() => setOrder("desc")}
+				className={`border rounded p-4 ${order === "desc" ? "bg-red-600 text-white" : ""}`}
+				disabled={order === "desc"}
+			>
+				Desc
+			</button>
+			<button
+				onClick={() => setOrder("asc")}
+				className={`border rounded p-4 mx-4 ${order === "asc" ? "bg-red-600 text-white" : ""}`}
+				disabled={order === "asc"}
+			>
+				Asc
+			</button>
 
-            <ul className="list-disc list-inside">
-                {todos.map(todo => (
-                    <SingleTodo todo={todo} key={todo.id} />
-                ))}
-            </ul>
-        </div>
-    );
+			<ul className="list-disc list-inside">
+				{todos.map((todo) => (
+					<SingleTodo todo={todo} key={todo.id} />
+				))}
+			</ul>
+		</div>
+	);
 }
 
 const SingleTodo = ({ todo }) => {
-    // const [name, setName] = useState(todo.name);
+	// const [name, setName] = useState(todo.name);
 
-    const z = useZero();
+	const z = useZero();
 
-    const toggleDone = () => {
-        z.mutate.todos.update({
-            id: todo.id,
-            done: !todo.done,
-        })
-    }
+	const toggleDone = () => {
+		z.mutate.todos.update({
+			id: todo.id,
+			done: !todo.done,
+		});
+	};
 
-    const updateInput = (e) => {
-        // setName(e.target.value);
+	const updateInput = (e) => {
+		// setName(e.target.value);
 
-        // console.log(e.target.value, todo)
-        z.mutate.todos.update({
-            id: todo.id,
-            name: e.target.value
-        })
-    }
+		// console.log(e.target.value, todo)
+		z.mutate.todos.update({
+			id: todo.id,
+			name: e.target.value,
+		});
+	};
 
-    const handleDeletion = () => {
-        z.mutate.todos.delete({
-            id: todo.id
-        })
-    }
+	const handleDeletion = () => {
+		z.mutate.todos.delete({
+			id: todo.id,
+		});
+	};
 
+	return (
+		<li className="p-4 grid grid-cols-3 gap-4 justify-stretch">
+			<input
+				value={todo.name}
+				onInput={updateInput}
+				className="border w-full p-2"
+			/>
 
-    return (
-        <li className="p-4 grid grid-cols-3 gap-4 justify-stretch">
-            <input value={todo.name} onInput={updateInput} className="border w-full p-2" />
+			<div className="border border-black p-2" onClick={toggleDone}>
+				{todo.done ? "done" : "not done"}
+			</div>
 
-            <div className="border border-black p-2" onClick={toggleDone}>{todo.done ? "done" : "not done"}</div>
-
-            <button className="border border-black rounded" onClick={handleDeletion}>Delete</button>
-        </li>
-    )
-}
+			<button className="border border-black rounded" onClick={handleDeletion}>
+				Delete
+			</button>
+		</li>
+	);
+};

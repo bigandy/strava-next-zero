@@ -1,66 +1,62 @@
-import NextAuth from "next-auth"
-import "next-auth/jwt"
+import NextAuth from "next-auth";
+import "next-auth/jwt";
 
 // import Atlassian from "next-auth/providers/atlassian"
-import { UnstorageAdapter } from "@auth/unstorage-adapter"
-import GitHub from "next-auth/providers/github"
-import Strava from "next-auth/providers/strava"
+import { UnstorageAdapter } from "@auth/unstorage-adapter";
+import GitHub from "next-auth/providers/github";
+import Strava from "next-auth/providers/strava";
 
-import { createStorage } from "unstorage"
-import memoryDriver from "unstorage/drivers/memory"
+import { createStorage } from "unstorage";
+import memoryDriver from "unstorage/drivers/memory";
 
 const storage = createStorage({
-    driver: memoryDriver(),
-})
+	driver: memoryDriver(),
+});
 
 declare module "next-auth" {
-    interface Session {
-        accessToken?: string
-    }
+	interface Session {
+		accessToken?: string;
+	}
 }
 
 declare module "next-auth/jwt" {
-    interface JWT {
-        accessToken?: string
-    }
+	interface JWT {
+		accessToken?: string;
+	}
 }
 
 export const { handlers, auth, signIn, signOut } = NextAuth({
-    debug: !!process.env.AUTH_DEBUG,
-    theme: { logo: "https://authjs.dev/img/logo-sm.png" },
-    adapter: UnstorageAdapter(storage),
-    providers: [
-        GitHub,
-        Strava
-    ],
-    basePath: "/auth",
-    session: { strategy: "jwt" },
-    callbacks: {
-        authorized({ request, auth, ...rest }) {
-            console.log("authorized", { request, auth, rest });
+	debug: !!process.env.AUTH_DEBUG,
+	theme: { logo: "https://authjs.dev/img/logo-sm.png" },
+	adapter: UnstorageAdapter(storage),
+	providers: [GitHub, Strava],
+	basePath: "/auth",
+	session: { strategy: "jwt" },
+	callbacks: {
+		authorized({ request, auth, ...rest }) {
+			console.log("authorized", { request, auth, rest });
 
-            const { pathname } = request.nextUrl
-            if (pathname === "/middleware-example") return !!auth
-            return true
-        },
-        jwt({ token, trigger, session, account, ...rest }) {
+			const { pathname } = request.nextUrl;
+			if (pathname === "/middleware-example") return !!auth;
+			return true;
+		},
+		jwt({ token, trigger, session, account, ...rest }) {
+			console.log("JWT", { token, trigger, session, account, rest });
+			if (trigger === "update") token.name = session.user.name;
+			if (account?.provider === "keycloak") {
+				return { ...token, accessToken: account.access_token };
+			}
+			return token;
+		},
+		async session({ session, token, ...rest }) {
+			console.log("session", { session, token, rest });
 
-            console.log("JWT", { token, trigger, session, account, rest });
-            if (trigger === "update") token.name = session.user.name
-            if (account?.provider === "keycloak") {
-                return { ...token, accessToken: account.access_token }
-            }
-            return token
-        },
-        async session({ session, token, ...rest }) {
-            console.log("session", { session, token, rest });
+			if (token?.accessToken) {
+				session.accessToken = token.accessToken;
+			}
 
-            if (token?.accessToken) {
-                session.accessToken = token.accessToken
-            }
-
-            return session
-        },
-    },
-    experimental: { enableWebAuthn: true },
+			return session;
+		},
+	},
+	experimental: { enableWebAuthn: true },
 });
