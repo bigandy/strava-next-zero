@@ -1,5 +1,5 @@
 import { relations } from "drizzle-orm";
-import { pgTable, text } from "drizzle-orm/pg-core";
+import { pgTable, text, boolean } from "drizzle-orm/pg-core";
 
 export const users = pgTable("users", {
   id: text("id").primaryKey(),
@@ -15,6 +15,25 @@ export const tasks = pgTable("tasks", {
   createdById: text().notNull().references(() => users.id),
   assignedToId: text().notNull().references(() => users.id),
 });
+
+export const todos = pgTable("todos", {
+  id: text("id").primaryKey(),
+  name: text("name").notNull(),
+  done: boolean(),
+  createdById: text().notNull().references(() => users.id),
+  assignedToId: text().notNull().references(() => users.id),
+});
+
+export const todosRelations = relations(todos, ({ one }) => ({
+  createdBy: one(users, {
+    fields: [todos.createdById],
+    references: [users.id],
+  }),
+  assignedTo: one(users, {
+    fields: [todos.assignedToId],
+    references: [users.id],
+  }),
+}))
 
 export const tasksRelations = relations(tasks, ({ one }) => ({
   createdBy: one(users, {

@@ -6,9 +6,12 @@
   "scripts": {
     "dev:ui": "next dev",
     "dev:cache": "zero-cache-dev -p ./schema.ts",
-    "dev:db": "docker compose up",
+    "dev:db-up": "docker compose up",
+    "dev:db-down": "docker compose down",
     "dev:clean": "source .env; docker compose down -v; rm -f ${ZERO_REPLICA_FILE}; rm -f ./zero-schema.json",
-    "dev:studio": "drizzle-kit studio",
+    "db:generate": "drizzle-kit generate",
+    "db:migrate": "drizzle-kit migrate",
+    "db:studio": "drizzle-kit studio",
     "build": "next build",
     "start": "next start",
     "lint": "next lint"
