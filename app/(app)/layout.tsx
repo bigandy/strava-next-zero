@@ -23,16 +23,19 @@ export default async function Layout({
       </div>
     );
   }
-  
+
   const { payload } = await jose.jwtVerify(token, secret);
   return (
-    <>
-      <div className="flex gap-2 mb-4">
+    <div className="p-10">
+      <div className="flex gap-2 mb-10">
         <Link href="/tasks">
           Tasks
         </Link>
         <Link href="/users">
           Users
+        </Link>
+        <Link href="/todos">
+          Todos
         </Link>
       </div>
       <ClientOnly fallback={<div>Loading...</div>}>
@@ -40,6 +43,6 @@ export default async function Layout({
           {children}
         </ZeroProvider>
       </ClientOnly>
-    </>
+    </div>
   );
 }

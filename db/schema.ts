@@ -1,5 +1,5 @@
 import { relations } from "drizzle-orm";
-import { pgTable, text, boolean } from "drizzle-orm/pg-core";
+import { boolean, pgTable, text } from "drizzle-orm/pg-core";
 
 export const users = pgTable("users", {
   id: text("id").primaryKey(),
@@ -19,7 +19,7 @@ export const tasks = pgTable("tasks", {
 export const todos = pgTable("todos", {
   id: text("id").primaryKey(),
   name: text("name").notNull(),
-  done: boolean(),
+  done: boolean().notNull(),
   createdById: text().notNull().references(() => users.id),
   assignedToId: text().notNull().references(() => users.id),
 });
