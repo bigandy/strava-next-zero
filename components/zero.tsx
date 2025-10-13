@@ -12,6 +12,7 @@ export function ZeroProvider({ children, userID, authToken }: {
   authToken: string,
   userID: string,
 }) {
+
   const z = useMemo(() => new Zero({
     userID,
     auth: () => authToken,
@@ -19,6 +20,7 @@ export function ZeroProvider({ children, userID, authToken }: {
     schema,
     kvStore: "mem",
   }), [authToken, userID]);
+
   return (
     <ZeroProviderBase zero={z}>
       {children}
