@@ -1,15 +1,20 @@
 'use client';
 
-import { useQuery } from "@rocicorp/zero/react";
 import { useZero } from "@/components/zero";
-import { useState } from 'react'
+import { useQuery } from "@rocicorp/zero/react";
+import { useState } from "react";
 
 export function TodosList() {
     const z = useZero();
-    const [todos] = useQuery(z.query.todos);
+    const [order, setOrder] = useState('asc');
+
+    const [todos] = useQuery(z.query.todos.orderBy('timestamp', order));
 
     return (
         <div className="border">
+            <button onClick={() => setOrder('desc')} className="border rounded p-4 ">Desc</button>
+            <button onClick={() => setOrder('asc')} className="border rounded p-4 mx-4">Asc</button>
+
             <ul className="list-disc list-inside">
                 {todos.map(todo => (
                     <SingleTodo todo={todo} key={todo.id} />
@@ -49,8 +54,8 @@ const SingleTodo = ({ todo }) => {
 
 
     return (
-        <li>
-            <input value={todo.name} onInput={updateInput} className="border" />
+        <li className="p-4">
+            <input value={todo.name} onInput={updateInput} className="border w-full my-4 p-2" />
 
             <div className="border p-3" onClick={toggleDone}>{todo.done ? "done" : "not done"}</div>
 

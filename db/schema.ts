@@ -1,4 +1,4 @@
-import { relations } from "drizzle-orm";
+import { relations, sql } from "drizzle-orm";
 import { boolean, pgTable, text } from "drizzle-orm/pg-core";
 
 export const users = pgTable("users", {
@@ -22,6 +22,9 @@ export const todos = pgTable("todos", {
   done: boolean().notNull(),
   createdById: text().notNull().references(() => users.id),
   assignedToId: text().notNull().references(() => users.id),
+  timestamp: text('timestamp')
+    .notNull()
+    .default(sql`(current_timestamp)`),
 });
 
 export const todosRelations = relations(todos, ({ one }) => ({
