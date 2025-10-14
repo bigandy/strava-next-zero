@@ -4,8 +4,6 @@
 // import { eq } from "drizzle-orm";
 import * as jose from "jose";
 
-import { cookies } from "next/headers";
-
 // import { redirect } from "next/navigation";
 // import { db } from "@/db";
 // import { users as usersTable } from "@/db/schema";

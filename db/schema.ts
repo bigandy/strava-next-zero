@@ -46,7 +46,7 @@ export const accounts = pgTable(
 );
 
 export const sessions = pgTable("session", {
-	sessionToken: text("sessionToken").primaryKey(),
+	sessionToken: text("sessionToken"),
 	userId: text("userId")
 		.notNull()
 		.references(() => users.id, { onDelete: "cascade" }),
@@ -72,7 +72,7 @@ export const verificationTokens = pgTable(
 export const authenticators = pgTable(
 	"authenticator",
 	{
-		credentialID: text("credentialID").notNull().unique(),
+		credentialID: text("credentialID").notNull().unique().primaryKey(),
 		userId: text("userId")
 			.notNull()
 			.references(() => users.id, { onDelete: "cascade" }),

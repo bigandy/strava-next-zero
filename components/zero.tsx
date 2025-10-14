@@ -7,31 +7,28 @@ import {
 } from "@rocicorp/zero/react";
 import type { ReactNode } from "react";
 import { useMemo } from "react";
-import { type Schema, schema } from "@/schema";
+import { type Schema, schema } from "../schema";
 
 
 
 export function ZeroProvider({
-	children,
+	children, 
 	userID,
-	token
+	token,
 }: {
 	children: ReactNode;
-	userID: string
-	token: string
+	userID: string;
+	token: string;
 }) {
-	const z = useMemo(
-		() => {
-			return new Zero({
-				userID,
-				auth: token,
-				server: process.env.NEXT_PUBLIC_ZERO_SERVER,
-				schema,
-				kvStore: "mem",
-			});
-		},
-		[userID, token]
-	);
+	const z = useMemo(() => {
+		return new Zero({
+			userID,
+			auth: token,
+			server: process.env.NEXT_PUBLIC_ZERO_SERVER,
+			schema,
+			kvStore: "mem",
+		});
+	}, [userID, token]);
 
 	return <ZeroProviderBase zero={z}>{children}</ZeroProviderBase>;
 }

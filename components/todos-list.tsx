@@ -1,8 +1,7 @@
 "use client";
 
-import { useQuery } from "@rocicorp/zero/react";
+import { useQuery, useZero } from "@rocicorp/zero/react";
 import { useState } from "react";
-import { useZero } from "@/components/zero";
 
 export function TodosList() {
 	const z = useZero();

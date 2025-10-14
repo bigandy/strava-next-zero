@@ -1,6 +1,6 @@
 {
-  "id": "29f34d2e-c24e-4b2d-8b3f-21c61299aa12",
-  "prevId": "00000000-0000-0000-0000-000000000000",
+  "id": "5445a239-1ec0-4a8b-80ec-b24927621f09",
+  "prevId": "29f34d2e-c24e-4b2d-8b3f-21c61299aa12",
   "version": "7",
   "dialect": "postgresql",
   "tables": {
@@ -11,7 +11,7 @@
         "userId": {
           "name": "userId",
           "type": "text",
-          "primaryKey": true,
+          "primaryKey": false,
           "notNull": true
         },
         "type": {
@@ -187,8 +187,8 @@
         "sessionToken": {
           "name": "sessionToken",
           "type": "text",
-          "primaryKey": true,
-          "notNull": true
+          "primaryKey": false,
+          "notNull": false
         },
         "userId": {
           "name": "userId",
@@ -430,7 +430,7 @@
         "identifier": {
           "name": "identifier",
           "type": "text",
-          "primaryKey": true,
+          "primaryKey": false,
           "notNull": true
         },
         "token": {

@@ -33,6 +33,8 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
 		async session({ session, token }) {
 			const userId = token.sub;
 			const outToken = await getNewToken(userId);
+			// const outToken =
+			// 	"eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJjOGEwYmY5Ny04Yjc2LTQxMmUtYmY4YS0xNTBmMmZiZjg0MWIiLCJpYXQiOjE3NjA0NTc3MDMsImV4cCI6MTc2MDQ2MTMwM30.FIbupqFh41GMCMdn_b0fWsHMvi9BB5YullyQ3lsfYNc";
 
 			if (userId) {
 				session.userId = userId;

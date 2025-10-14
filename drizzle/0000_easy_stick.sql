@@ -1,5 +1,5 @@
 CREATE TABLE "account" (
-	"userId" text NOT NULL,
+	"userId" text PRIMARY KEY NOT NULL,
 	"type" text NOT NULL,
 	"provider" text NOT NULL,
 	"providerAccountId" text NOT NULL,
@@ -13,7 +13,7 @@ CREATE TABLE "account" (
 );
 --> statement-breakpoint
 CREATE TABLE "authenticator" (
-	"credentialID" text NOT NULL,
+	"credentialID" text PRIMARY KEY NOT NULL,
 	"userId" text NOT NULL,
 	"providerAccountId" text NOT NULL,
 	"credentialPublicKey" text NOT NULL,
@@ -57,7 +57,7 @@ CREATE TABLE "user" (
 );
 --> statement-breakpoint
 CREATE TABLE "verificationToken" (
-	"identifier" text NOT NULL,
+	"identifier" text PRIMARY KEY NOT NULL,
 	"token" text NOT NULL,
 	"expires" timestamp NOT NULL
 );
