@@ -11,7 +11,6 @@ export const schema = createZeroSchema(drizzleSchema, {
 			id: true,
 			name: true,
 			email: false,
-			passHash: false,
 		},
 		todos: {
 			id: true,

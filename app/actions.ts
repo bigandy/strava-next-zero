@@ -4,7 +4,8 @@
 // import { eq } from "drizzle-orm";
 import * as jose from "jose";
 
-// import { cookies } from "next/headers";
+import { cookies } from "next/headers";
+
 // import { redirect } from "next/navigation";
 // import { db } from "@/db";
 // import { users as usersTable } from "@/db/schema";
@@ -47,8 +48,6 @@ const alg = "HS256" as const;
 // 		.sign(secret);
 
 // 	// Set the cookie
-// 	const cookieStore = await cookies();
-// 	cookieStore.set("token", jwt);
 
 // 	// Done!
 // 	redirect("/users");
@@ -61,6 +60,9 @@ export const getNewToken = async (userId: string) => {
 		.setIssuedAt()
 		.setExpirationTime("1h")
 		.sign(secret);
+
+	// CAN ONLY SET COOKIE IN Server Action or Route Handler
+	// cookieStore.set("token", jwt);
 
 	return jwt;
 };
