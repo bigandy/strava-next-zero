@@ -1,1 +1,0 @@
-ALTER TABLE "todos" ADD COLUMN "timestamp" text DEFAULT (current_timestamp) NOT NULL;

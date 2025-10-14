@@ -1,4 +1,5 @@
 import { auth } from "auth";
+import Link from "next/link";
 import { SignIn } from "@/components/sign-in";
 import { SignOut } from "@/components/sign-out";
 
@@ -16,6 +17,7 @@ export const Header = async () => {
 							height="50"
 							width="50"
 							className="rounded"
+							alt="user avatar"
 						/>
 					)}
 
@@ -33,6 +35,12 @@ export const Header = async () => {
 					<SignIn provider="strava" />
 				</>
 			)}
+
+			<div className="flex gap-2 mb-10">
+				<Link href="/tasks">Tasks</Link>
+				<Link href="/users">Users</Link>
+				<Link href="/todos">Todos</Link>
+			</div>
 		</div>
 	);
 };

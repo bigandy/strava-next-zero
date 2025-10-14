@@ -5,36 +5,8 @@
     {
       "idx": 0,
       "version": "7",
-      "when": 1739497462560,
-      "tag": "0000_talented_jimmy_woo",
-      "breakpoints": true
-    },
-    {
-      "idx": 1,
-      "version": "7",
-      "when": 1739599119098,
-      "tag": "0001_tense_gabe_jones",
-      "breakpoints": true
-    },
-    {
-      "idx": 2,
-      "version": "7",
-      "when": 1760347606760,
-      "tag": "0002_past_expediter",
-      "breakpoints": true
-    },
-    {
-      "idx": 3,
-      "version": "7",
-      "when": 1760348912177,
-      "tag": "0003_boring_senator_kelly",
-      "breakpoints": true
-    },
-    {
-      "idx": 4,
-      "version": "7",
-      "when": 1760351049423,
-      "tag": "0004_worthless_thunderball",
+      "when": 1760383332435,
+      "tag": "0000_freezing_doctor_strange",
       "breakpoints": true
     }
   ]

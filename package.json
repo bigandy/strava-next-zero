@@ -17,6 +17,7 @@
 		"lint-format": "biome check --write"
 	},
 	"dependencies": {
+		"@auth/drizzle-adapter": "1.11.0",
 		"@auth/unstorage-adapter": "2.11.0",
 		"@rocicorp/zero": "0.15.2025021401",
 		"bcryptjs": "3.0.0",

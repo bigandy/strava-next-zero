@@ -1,16 +1,39 @@
 import NextAuth from "next-auth";
 import "next-auth/jwt";
 
-// import Atlassian from "next-auth/providers/atlassian"
-import { UnstorageAdapter } from "@auth/unstorage-adapter";
+import { DrizzleAdapter } from "@auth/drizzle-adapter";
 import GitHub from "next-auth/providers/github";
 import Strava from "next-auth/providers/strava";
 
-import { createStorage } from "unstorage";
-import memoryDriver from "unstorage/drivers/memory";
+import { db } from "./db";
+import { accounts, sessions, users } from "./db/schema"
 
-const storage = createStorage({
-	driver: memoryDriver(),
+export const { handlers, auth, signIn, signOut } = NextAuth({
+	debug: !!process.env.AUTH_DEBUG,
+	theme: { logo: "https://authjs.dev/img/logo-sm.png" },
+	adapter: DrizzleAdapter(db,{
+        usersTable: users,
+        accountsTable: accounts,
+        sessionsTable: sessions,
+    }),
+	providers: [GitHub, Strava],
+	basePath: "/auth",
+	session: { strategy: "jwt" },
+	callbacks: {
+		authorized({ request, auth }) {
+			const { pathname } = request.nextUrl;
+			if (pathname === "/middleware-example") return !!auth;
+			return true;
+		},
+		jwt({ token, trigger, session }) {
+			if (trigger === "update") token.name = session.user.name;
+			return token;
+		},
+		async session({ session, token }) {
+			return {...session, token };
+		},
+	},
+	experimental: { enableWebAuthn: true },
 });
 
 declare module "next-auth" {
@@ -24,39 +47,3 @@ declare module "next-auth/jwt" {
 		accessToken?: string;
 	}
 }
-
-export const { handlers, auth, signIn, signOut } = NextAuth({
-	debug: !!process.env.AUTH_DEBUG,
-	theme: { logo: "https://authjs.dev/img/logo-sm.png" },
-	adapter: UnstorageAdapter(storage),
-	providers: [GitHub, Strava],
-	basePath: "/auth",
-	session: { strategy: "jwt" },
-	callbacks: {
-		authorized({ request, auth, ...rest }) {
-			console.log("authorized", { request, auth, rest });
-
-			const { pathname } = request.nextUrl;
-			if (pathname === "/middleware-example") return !!auth;
-			return true;
-		},
-		jwt({ token, trigger, session, account, ...rest }) {
-			console.log("JWT", { token, trigger, session, account, rest });
-			if (trigger === "update") token.name = session.user.name;
-			if (account?.provider === "keycloak") {
-				return { ...token, accessToken: account.access_token };
-			}
-			return token;
-		},
-		async session({ session, token, ...rest }) {
-			console.log("session", { session, token, rest });
-
-			if (token?.accessToken) {
-				session.accessToken = token.accessToken;
-			}
-
-			return session;
-		},
-	},
-	experimental: { enableWebAuthn: true },
-});

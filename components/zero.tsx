@@ -9,25 +9,30 @@ import type { ReactNode } from "react";
 import { useMemo } from "react";
 import { type Schema, schema } from "@/schema";
 
+import { getNewToken } from '../app/actions'
+
 export function ZeroProvider({
 	children,
 	userID,
-	authToken,
 }: {
 	children: ReactNode;
-	authToken: string;
-	userID: string;
+	userID: string
 }) {
+
 	const z = useMemo(
-		() =>
-			new Zero({
+		() => {
+			return new Zero({
 				userID,
-				auth: () => authToken,
+				auth: async () => {
+					// AHTODO: Is there a way of doing so don't need to do this???
+					return await getNewToken(userID)
+				},
 				server: process.env.NEXT_PUBLIC_ZERO_SERVER,
 				schema,
 				kvStore: "mem",
-			}),
-		[authToken, userID],
+			});
+		},
+		[userID]
 	);
 
 	return <ZeroProviderBase zero={z}>{children}</ZeroProviderBase>;
