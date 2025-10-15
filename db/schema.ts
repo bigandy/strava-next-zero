@@ -24,7 +24,8 @@ export const accounts = pgTable(
 	{
 		userId: text("userId")
 			.notNull()
-			.references(() => users.id, { onDelete: "cascade" }),
+			.references(() => users.id, { onDelete: "cascade" })
+			.primaryKey(),
 		type: text("type").$type<AdapterAccountType>().notNull(),
 		provider: text("provider").notNull(),
 		providerAccountId: text("providerAccountId").notNull(),
@@ -116,6 +117,13 @@ export const todos = pgTable("todos", {
 		.references(() => users.id),
 	timestamp: text("timestamp").notNull().default(sql`(current_timestamp)`),
 });
+
+export const userRelations = relations(users, ({ one }) => ({
+	provider: one(accounts, {
+		fields: [users.id],
+		references: [accounts.userId],
+	}),
+}));
 
 export const todosRelations = relations(todos, ({ one }) => ({
 	createdBy: one(users, {

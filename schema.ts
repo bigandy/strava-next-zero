@@ -1,9 +1,6 @@
 import type { Row } from "@rocicorp/zero";
 import { ANYONE_CAN_DO_ANYTHING, definePermissions } from "@rocicorp/zero";
 
-// import { drizzleZeroConfig } from "drizzle-zero";
-// import * as drizzleSchema from "@/db/schema";
-
 import { type Schema, schema } from "./zero-schema.gen";
 
 export { schema, type Schema };
@@ -18,4 +15,5 @@ export const permissions = definePermissions(schema, () => ({
 	tasks: ANYONE_CAN_DO_ANYTHING,
 	users: ANYONE_CAN_DO_ANYTHING,
 	todos: ANYONE_CAN_DO_ANYTHING,
+	accounts: ANYONE_CAN_DO_ANYTHING,
 }));

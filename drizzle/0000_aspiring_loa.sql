@@ -1,5 +1,5 @@
 CREATE TABLE "account" (
-	"userId" text PRIMARY KEY NOT NULL,
+	"userId" text NOT NULL,
 	"type" text NOT NULL,
 	"provider" text NOT NULL,
 	"providerAccountId" text NOT NULL,
@@ -25,7 +25,7 @@ CREATE TABLE "authenticator" (
 );
 --> statement-breakpoint
 CREATE TABLE "session" (
-	"sessionToken" text PRIMARY KEY NOT NULL,
+	"sessionToken" text,
 	"userId" text NOT NULL,
 	"expires" timestamp NOT NULL
 );
@@ -57,7 +57,7 @@ CREATE TABLE "user" (
 );
 --> statement-breakpoint
 CREATE TABLE "verificationToken" (
-	"identifier" text PRIMARY KEY NOT NULL,
+	"identifier" text NOT NULL,
 	"token" text NOT NULL,
 	"expires" timestamp NOT NULL
 );

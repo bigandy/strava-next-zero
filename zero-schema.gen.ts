@@ -18,211 +18,327 @@ import type { default as zeroSchema } from "./drizzle-zero.config";
  * This type is auto-generated from your Drizzle schema definition.
  */
 export const schema = {
-	tables: {
-		tasks: {
-			name: "tasks",
-			columns: {
-				id: {
-					type: "string",
-					optional: false,
-					customType: null as unknown as ZeroCustomType<
-						typeof zeroSchema,
-						"tasks",
-						"id"
-					>,
-				},
-				name: {
-					type: "string",
-					optional: false,
-					customType: null as unknown as ZeroCustomType<
-						typeof zeroSchema,
-						"tasks",
-						"name"
-					>,
-				},
-				status: {
-					type: "string",
-					optional: false,
-					customType: null as unknown as ZeroCustomType<
-						typeof zeroSchema,
-						"tasks",
-						"status"
-					>,
-				},
-				createdById: {
-					type: "string",
-					optional: false,
-					customType: null as unknown as ZeroCustomType<
-						typeof zeroSchema,
-						"tasks",
-						"createdById"
-					>,
-				},
-				assignedToId: {
-					type: "string",
-					optional: false,
-					customType: null as unknown as ZeroCustomType<
-						typeof zeroSchema,
-						"tasks",
-						"assignedToId"
-					>,
-				},
-			},
-			primaryKey: ["id"],
-		},
-		todos: {
-			name: "todos",
-			columns: {
-				id: {
-					type: "string",
-					optional: false,
-					customType: null as unknown as ZeroCustomType<
-						typeof zeroSchema,
-						"todos",
-						"id"
-					>,
-				},
-				name: {
-					type: "string",
-					optional: false,
-					customType: null as unknown as ZeroCustomType<
-						typeof zeroSchema,
-						"todos",
-						"name"
-					>,
-				},
-				done: {
-					type: "boolean",
-					optional: false,
-					customType: null as unknown as ZeroCustomType<
-						typeof zeroSchema,
-						"todos",
-						"done"
-					>,
-				},
-				createdById: {
-					type: "string",
-					optional: false,
-					customType: null as unknown as ZeroCustomType<
-						typeof zeroSchema,
-						"todos",
-						"createdById"
-					>,
-				},
-				assignedToId: {
-					type: "string",
-					optional: false,
-					customType: null as unknown as ZeroCustomType<
-						typeof zeroSchema,
-						"todos",
-						"assignedToId"
-					>,
-				},
-				timestamp: {
-					type: "string",
-					optional: true,
-					customType: null as unknown as ZeroCustomType<
-						typeof zeroSchema,
-						"todos",
-						"timestamp"
-					>,
-				},
-			},
-			primaryKey: ["id"],
-		},
-		users: {
-			name: "users",
-			columns: {
-				id: {
-					type: "string",
-					optional: false,
-					customType: null as unknown as ZeroCustomType<
-						typeof zeroSchema,
-						"users",
-						"id"
-					>,
-				},
-				name: {
-					type: "string",
-					optional: true,
-					customType: null as unknown as ZeroCustomType<
-						typeof zeroSchema,
-						"users",
-						"name"
-					>,
-				},
-				email: {
-					type: "string",
-					optional: true,
-					customType: null as unknown as ZeroCustomType<
-						typeof zeroSchema,
-						"users",
-						"email"
-					>,
-				},
-				emailVerified: {
-					type: "number",
-					optional: true,
-					customType: null as unknown as ZeroCustomType<
-						typeof zeroSchema,
-						"users",
-						"emailVerified"
-					>,
-				},
-				image: {
-					type: "string",
-					optional: true,
-					customType: null as unknown as ZeroCustomType<
-						typeof zeroSchema,
-						"users",
-						"image"
-					>,
-				},
-			},
-			primaryKey: ["id"],
-			serverName: "user",
-		},
-	},
-	relationships: {
-		tasks: {
-			createdBy: [
-				{
-					sourceField: ["createdById"],
-					destField: ["id"],
-					destSchema: "users",
-					cardinality: "one",
-				},
-			],
-			assignedTo: [
-				{
-					sourceField: ["assignedToId"],
-					destField: ["id"],
-					destSchema: "users",
-					cardinality: "one",
-				},
-			],
-		},
-		todos: {
-			createdBy: [
-				{
-					sourceField: ["createdById"],
-					destField: ["id"],
-					destSchema: "users",
-					cardinality: "one",
-				},
-			],
-			assignedTo: [
-				{
-					sourceField: ["assignedToId"],
-					destField: ["id"],
-					destSchema: "users",
-					cardinality: "one",
-				},
-			],
-		},
-	},
-	enableLegacyQueries: true,
-	enableLegacyMutators: true,
+  tables: {
+    accounts: {
+      name: "accounts",
+      columns: {
+        userId: {
+          type: "string",
+          optional: false,
+          customType: null as unknown as ZeroCustomType<
+            typeof zeroSchema,
+            "accounts",
+            "userId"
+          >,
+        },
+        type: {
+          type: "string",
+          optional: false,
+          customType: null as unknown as ZeroCustomType<
+            typeof zeroSchema,
+            "accounts",
+            "type"
+          >,
+        },
+        provider: {
+          type: "string",
+          optional: false,
+          customType: null as unknown as ZeroCustomType<
+            typeof zeroSchema,
+            "accounts",
+            "provider"
+          >,
+        },
+        providerAccountId: {
+          type: "string",
+          optional: false,
+          customType: null as unknown as ZeroCustomType<
+            typeof zeroSchema,
+            "accounts",
+            "providerAccountId"
+          >,
+        },
+        refresh_token: {
+          type: "string",
+          optional: true,
+          customType: null as unknown as ZeroCustomType<
+            typeof zeroSchema,
+            "accounts",
+            "refresh_token"
+          >,
+        },
+        access_token: {
+          type: "string",
+          optional: true,
+          customType: null as unknown as ZeroCustomType<
+            typeof zeroSchema,
+            "accounts",
+            "access_token"
+          >,
+        },
+        expires_at: {
+          type: "number",
+          optional: true,
+          customType: null as unknown as ZeroCustomType<
+            typeof zeroSchema,
+            "accounts",
+            "expires_at"
+          >,
+        },
+        token_type: {
+          type: "string",
+          optional: true,
+          customType: null as unknown as ZeroCustomType<
+            typeof zeroSchema,
+            "accounts",
+            "token_type"
+          >,
+        },
+        scope: {
+          type: "string",
+          optional: true,
+          customType: null as unknown as ZeroCustomType<
+            typeof zeroSchema,
+            "accounts",
+            "scope"
+          >,
+        },
+        id_token: {
+          type: "string",
+          optional: true,
+          customType: null as unknown as ZeroCustomType<
+            typeof zeroSchema,
+            "accounts",
+            "id_token"
+          >,
+        },
+        session_state: {
+          type: "string",
+          optional: true,
+          customType: null as unknown as ZeroCustomType<
+            typeof zeroSchema,
+            "accounts",
+            "session_state"
+          >,
+        },
+      },
+      primaryKey: ["userId"],
+      serverName: "account",
+    },
+    tasks: {
+      name: "tasks",
+      columns: {
+        id: {
+          type: "string",
+          optional: false,
+          customType: null as unknown as ZeroCustomType<
+            typeof zeroSchema,
+            "tasks",
+            "id"
+          >,
+        },
+        name: {
+          type: "string",
+          optional: false,
+          customType: null as unknown as ZeroCustomType<
+            typeof zeroSchema,
+            "tasks",
+            "name"
+          >,
+        },
+        status: {
+          type: "string",
+          optional: false,
+          customType: null as unknown as ZeroCustomType<
+            typeof zeroSchema,
+            "tasks",
+            "status"
+          >,
+        },
+        createdById: {
+          type: "string",
+          optional: false,
+          customType: null as unknown as ZeroCustomType<
+            typeof zeroSchema,
+            "tasks",
+            "createdById"
+          >,
+        },
+        assignedToId: {
+          type: "string",
+          optional: false,
+          customType: null as unknown as ZeroCustomType<
+            typeof zeroSchema,
+            "tasks",
+            "assignedToId"
+          >,
+        },
+      },
+      primaryKey: ["id"],
+    },
+    todos: {
+      name: "todos",
+      columns: {
+        id: {
+          type: "string",
+          optional: false,
+          customType: null as unknown as ZeroCustomType<
+            typeof zeroSchema,
+            "todos",
+            "id"
+          >,
+        },
+        name: {
+          type: "string",
+          optional: false,
+          customType: null as unknown as ZeroCustomType<
+            typeof zeroSchema,
+            "todos",
+            "name"
+          >,
+        },
+        done: {
+          type: "boolean",
+          optional: false,
+          customType: null as unknown as ZeroCustomType<
+            typeof zeroSchema,
+            "todos",
+            "done"
+          >,
+        },
+        createdById: {
+          type: "string",
+          optional: false,
+          customType: null as unknown as ZeroCustomType<
+            typeof zeroSchema,
+            "todos",
+            "createdById"
+          >,
+        },
+        assignedToId: {
+          type: "string",
+          optional: false,
+          customType: null as unknown as ZeroCustomType<
+            typeof zeroSchema,
+            "todos",
+            "assignedToId"
+          >,
+        },
+        timestamp: {
+          type: "string",
+          optional: true,
+          customType: null as unknown as ZeroCustomType<
+            typeof zeroSchema,
+            "todos",
+            "timestamp"
+          >,
+        },
+      },
+      primaryKey: ["id"],
+    },
+    users: {
+      name: "users",
+      columns: {
+        id: {
+          type: "string",
+          optional: false,
+          customType: null as unknown as ZeroCustomType<
+            typeof zeroSchema,
+            "users",
+            "id"
+          >,
+        },
+        name: {
+          type: "string",
+          optional: true,
+          customType: null as unknown as ZeroCustomType<
+            typeof zeroSchema,
+            "users",
+            "name"
+          >,
+        },
+        email: {
+          type: "string",
+          optional: true,
+          customType: null as unknown as ZeroCustomType<
+            typeof zeroSchema,
+            "users",
+            "email"
+          >,
+        },
+        emailVerified: {
+          type: "number",
+          optional: true,
+          customType: null as unknown as ZeroCustomType<
+            typeof zeroSchema,
+            "users",
+            "emailVerified"
+          >,
+        },
+        image: {
+          type: "string",
+          optional: true,
+          customType: null as unknown as ZeroCustomType<
+            typeof zeroSchema,
+            "users",
+            "image"
+          >,
+        },
+      },
+      primaryKey: ["id"],
+      serverName: "user",
+    },
+  },
+  relationships: {
+    tasks: {
+      createdBy: [
+        {
+          sourceField: ["createdById"],
+          destField: ["id"],
+          destSchema: "users",
+          cardinality: "one",
+        },
+      ],
+      assignedTo: [
+        {
+          sourceField: ["assignedToId"],
+          destField: ["id"],
+          destSchema: "users",
+          cardinality: "one",
+        },
+      ],
+    },
+    todos: {
+      createdBy: [
+        {
+          sourceField: ["createdById"],
+          destField: ["id"],
+          destSchema: "users",
+          cardinality: "one",
+        },
+      ],
+      assignedTo: [
+        {
+          sourceField: ["assignedToId"],
+          destField: ["id"],
+          destSchema: "users",
+          cardinality: "one",
+        },
+      ],
+    },
+    users: {
+      provider: [
+        {
+          sourceField: ["id"],
+          destField: ["userId"],
+          destSchema: "accounts",
+          cardinality: "one",
+        },
+      ],
+    },
+  },
+  enableLegacyQueries: true,
+  enableLegacyMutators: true,
 } as const;
 
 /**
@@ -230,6 +346,11 @@ export const schema = {
  * This type is auto-generated from your Drizzle schema definition.
  */
 export type Schema = typeof schema;
+/**
+ * Represents a row from the "accounts" table.
+ * This type is auto-generated from your Drizzle schema definition.
+ */
+export type Account = Row<Schema["tables"]["accounts"]>;
 /**
  * Represents a row from the "tasks" table.
  * This type is auto-generated from your Drizzle schema definition.
