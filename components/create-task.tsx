@@ -10,8 +10,8 @@ export function CreateTask() {
 
 	const [name, setName] = useState("");
 
-	const addTask = (e) => {
-		e.preventDefault();
+	const addTask = (event: React.FormEvent<HTMLFormElement>) => {
+		event.preventDefault();
 
 		if (name !== "") {
 			z.mutate.tasks.insert({
@@ -27,18 +27,19 @@ export function CreateTask() {
 	};
 
 	return (
-		<div className="grid grid-cols-1 gap-2">
+		<div className="grid gap-2">
 			<form onSubmit={addTask}>
-				<label htmlFor={id}>Task:</label>
+				<label htmlFor={id} className="block cursor-pointer">Task:</label>
 
 				<input
 					id={id}
 					value={name}
 					onChange={(e) => setName(e.target.value)}
-					className="border"
+					className="w-full border p-4 my-2"
 				/>
 
-				<button onClick={addTask}>Create</button>
+				<button className="border bg-red-400 text-white p-4 w-full"
+				type="button">Create</button>
 			</form>
 		</div>
 	);

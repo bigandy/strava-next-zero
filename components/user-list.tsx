@@ -6,19 +6,22 @@ import { useZero } from "@/components/zero";
 
 export function UserList() {
 	const z = useZero();
-	const [users] = useQuery(z.query.users);
+	const [users] = useQuery(z.query.users.related('provider'));
 
 	return (
 		<div className="">
 			{users.length > 0 ? (
 				<ul className="list-disc list-inside">
-					{users.map((u) => (
+					{users.map((u) => {
+						const name = `${u.name} - ${u?.provider?.provider ?? "no provider provided"}`;
+
+						return (
 						<li key={u.id}>
 							<Link href={`/users/${u.id}`} className="underline">
-								{u.name}
+								{name}
 							</Link>
 						</li>
-					))}
+					)})}
 				</ul>
 			) : (
 				<div>No Users Found</div>

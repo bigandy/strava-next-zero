@@ -7,18 +7,11 @@ import type { Task, User } from "@/schema";
 
 export function TaskList() {
 	return (
-		<>
-			<div className="text-right">
-				<Link href="/tasks/new" className="underline">
-					New Task &rarr;
-				</Link>
-			</div>
-			<div className="grid grid-cols-3 gap-4 m-2">
-				<TaskColumn name="Not Started" value="not-started" />
-				<TaskColumn name="In Progress" value="in-progress" />
-				<TaskColumn name="Done" value="done" />
-			</div>
-		</>
+		<div className="grid grid-cols-3 gap-4 m-2">
+			<TaskColumn name="Not Started" value="not-started" />
+			<TaskColumn name="In Progress" value="in-progress" />
+			<TaskColumn name="Done" value="done" />
+		</div>
 	);
 }
 
@@ -79,6 +72,7 @@ function TaskCard({
 			</div>
 			<div className="flex gap-2">
 				<button
+					type="button"
 					className="disabled:text-gray-500"
 					disabled={task.status === "not-started"}
 					onClick={() =>
@@ -92,6 +86,7 @@ function TaskCard({
 					&larr;
 				</button>
 				<button
+					type="button"
 					className="disabled:text-gray-500"
 					disabled={task.status === "done"}
 					onClick={() =>
@@ -104,6 +99,7 @@ function TaskCard({
 					&rarr;
 				</button>
 				<button
+					type="button"
 					onClick={() =>
 						z.mutate.tasks.delete({
 							id: task.id,

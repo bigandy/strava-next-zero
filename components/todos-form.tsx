@@ -10,8 +10,8 @@ export function TodoCreationForm() {
 
 	const id = useId();
 
-	const createNewTodo = (e) => {
-		e.preventDefault();
+	const createNewTodo = (event: React.FormEvent<HTMLFormElement>) => {
+		event.preventDefault();
 
 		if (name !== "") {
 			z.mutate.todos.insert({
@@ -32,14 +32,14 @@ export function TodoCreationForm() {
 			<input
 				value={name}
 				onChange={(e) => setName(e.target.value)}
-				className="border"
+				className="border p-4"
 				id={id}
 			/>
 			<button
-				onClick={createNewTodo}
 				className="border bg-red-400 text-white p-4"
+				type="button"
 			>
-				Create New Task
+				Create New Todo
 			</button>
 		</form>
 	);

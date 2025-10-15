@@ -1,36 +1,63 @@
 "use client";
-
 import { useQuery } from "@rocicorp/zero/react";
+import { useState } from "react";
 import { useZero } from "@/components/zero";
 
-export const User = ({ id }: {id: string}) => {
-    const z = useZero();
+export const User = ({ id }: { id: string }) => {
+	const [editing, setEditing] = useState(false);
+	const z = useZero();
 
 	const [user] = useQuery(
-        z.query.users
-        .related("provider")
-        .where("id", "=", id)
-        .one()
-    );
+		z.query.users.related("provider").where("id", "=", id).one(),
+	);
 
-    return (
-        <div>
-            <div>
-                <div>ID: {user?.id}</div>
-                <div>User Name:{user?.name}</div>
-                <div>User Email:{user?.email}</div>
-                <div>User Image: {user?.image && <img
-							src={user.image}
-							height="50"
-							width="50"
-							className="rounded inline"
-							alt="user avatar"
-						/>}</div>
+	const handleInput = (e) => {
+		const { value } = e.target;
 
-                <h2>TODO</h2>
-                <div>Provider: {user?.provider?.provider}</div>
-            </div>
-        </div>
-    )
+		z.mutate.users.update({
+			id: user.id,
+			name: value,
+		});
+	};
 
-}
+	return (
+		<div>
+			<button
+				type="button"
+				className="bg-red-500 p-4 rounded text-white"
+				onClick={() => setEditing((e) => !e)}
+			>
+				Toggle Editing
+			</button>
+			{editing ? (
+				<>
+					<h2>Editing</h2>
+					<input
+						value={user?.name ?? ""}
+						onInput={handleInput}
+						className="w-full border p-4 my-4"
+					/>
+				</>
+			) : (
+				<div>
+					<div>User: {user?.name}</div>
+					<div>User Email: {user?.email}</div>
+					<div>ID: {user?.id}</div>
+					<div>
+						User Image:
+						{user?.image && (
+							<img
+								src={user?.image}
+								height="50"
+								width="50"
+								className="rounded inline"
+								alt="user avatar"
+							/>
+						)}
+					</div>
+					<div>Provider: {user?.provider?.provider}</div>
+				</div>
+			)}
+		</div>
+	);
+};
