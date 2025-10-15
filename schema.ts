@@ -10,10 +10,12 @@ export { schema, type Schema };
 export type User = Row<typeof schema.tables.users>;
 export type Task = Row<typeof schema.tables.tasks>;
 export type Todo = Row<typeof schema.tables.todos>;
+export type Activity = Row<typeof schema.tables.activities>;
 
 export const permissions = definePermissions(schema, () => ({
 	tasks: ANYONE_CAN_DO_ANYTHING,
 	users: ANYONE_CAN_DO_ANYTHING,
 	todos: ANYONE_CAN_DO_ANYTHING,
 	accounts: ANYONE_CAN_DO_ANYTHING,
+	activities: ANYONE_CAN_DO_ANYTHING,
 }));

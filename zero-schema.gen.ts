@@ -125,6 +125,112 @@ export const schema = {
       primaryKey: ["provider", "providerAccountId"],
       serverName: "account",
     },
+    activities: {
+      name: "activities",
+      columns: {
+        id: {
+          type: "string",
+          optional: false,
+          customType: null as unknown as ZeroCustomType<
+            typeof zeroSchema,
+            "activities",
+            "id"
+          >,
+        },
+        name: {
+          type: "string",
+          optional: true,
+          customType: null as unknown as ZeroCustomType<
+            typeof zeroSchema,
+            "activities",
+            "name"
+          >,
+        },
+        description: {
+          type: "string",
+          optional: true,
+          customType: null as unknown as ZeroCustomType<
+            typeof zeroSchema,
+            "activities",
+            "description"
+          >,
+        },
+        duration: {
+          type: "string",
+          optional: true,
+          customType: null as unknown as ZeroCustomType<
+            typeof zeroSchema,
+            "activities",
+            "duration"
+          >,
+        },
+        kudos: {
+          type: "number",
+          optional: true,
+          customType: null as unknown as ZeroCustomType<
+            typeof zeroSchema,
+            "activities",
+            "kudos"
+          >,
+        },
+        start: {
+          type: "string",
+          optional: true,
+          customType: null as unknown as ZeroCustomType<
+            typeof zeroSchema,
+            "activities",
+            "start"
+          >,
+        },
+        elapsedTime: {
+          type: "number",
+          optional: true,
+          customType: null as unknown as ZeroCustomType<
+            typeof zeroSchema,
+            "activities",
+            "elapsedTime"
+          >,
+        },
+        movingTime: {
+          type: "number",
+          optional: true,
+          customType: null as unknown as ZeroCustomType<
+            typeof zeroSchema,
+            "activities",
+            "movingTime"
+          >,
+        },
+        type: {
+          type: "string",
+          optional: true,
+          customType: null as unknown as ZeroCustomType<
+            typeof zeroSchema,
+            "activities",
+            "type"
+          >,
+        },
+        elevation: {
+          type: "number",
+          optional: true,
+          customType: null as unknown as ZeroCustomType<
+            typeof zeroSchema,
+            "activities",
+            "elevation"
+          >,
+        },
+        distance: {
+          type: "number",
+          optional: true,
+          customType: null as unknown as ZeroCustomType<
+            typeof zeroSchema,
+            "activities",
+            "distance"
+          >,
+        },
+      },
+      primaryKey: ["id"],
+      serverName: "activity",
+    },
     tasks: {
       name: "tasks",
       columns: {
@@ -351,6 +457,11 @@ export type Schema = typeof schema;
  * This type is auto-generated from your Drizzle schema definition.
  */
 export type Account = Row<Schema["tables"]["accounts"]>;
+/**
+ * Represents a row from the "activities" table.
+ * This type is auto-generated from your Drizzle schema definition.
+ */
+export type Activity = Row<Schema["tables"]["activities"]>;
 /**
  * Represents a row from the "tasks" table.
  * This type is auto-generated from your Drizzle schema definition.

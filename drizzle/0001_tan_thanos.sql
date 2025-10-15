@@ -1,0 +1,1 @@
+ALTER TABLE "activity" ALTER COLUMN "distance" SET DATA TYPE numeric;

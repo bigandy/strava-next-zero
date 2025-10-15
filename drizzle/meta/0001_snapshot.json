@@ -1,6 +1,6 @@
 {
-  "id": "3db58ebd-f0d6-4997-84b8-4db22f4c9480",
-  "prevId": "00000000-0000-0000-0000-000000000000",
+  "id": "144d2c25-f445-4eaf-9845-4b4054e5dfce",
+  "prevId": "3db58ebd-f0d6-4997-84b8-4db22f4c9480",
   "version": "7",
   "dialect": "postgresql",
   "tables": {
@@ -171,7 +171,7 @@
         },
         "distance": {
           "name": "distance",
-          "type": "integer",
+          "type": "numeric",
           "primaryKey": false,
           "notNull": false
         }

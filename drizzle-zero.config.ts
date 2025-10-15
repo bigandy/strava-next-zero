@@ -14,6 +14,7 @@ export default drizzleZeroConfig(drizzleSchema, {
 		accounts: true,
 		// this can be set to false
 		// e.g. users: false,
+		activities: true,
 		users: true,
 		todos: {
 			id: true,

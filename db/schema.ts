@@ -3,6 +3,7 @@ import { relations, sql } from "drizzle-orm";
 import {
 	boolean,
 	integer,
+	numeric,
 	pgTable,
 	primaryKey,
 	text,
@@ -20,13 +21,22 @@ export const users = pgTable("user", {
 });
 
 export const activities = pgTable("activity", {
-	id: text("id"),
+	id: text("id").primaryKey(),
+	name: text("name"),
+	description: text("description"),
+	duration: text("duration"),
+	kudos: integer("kudos"),
+	start: text("start"),
+	elapsedTime: numeric("elapsedTime"),
+	movingTime: numeric("movingTime"),
+	type: text("type"),
+	elevation: numeric("elevation"),
+	distance: numeric("distance"),
 	//   athlete: {
 	// 	resource_state: number;
 	// 	firstname: string;
 	// 	lastname: string;
 	//   },
-	name: text("name"),
 	//   distance?: number;
 	//   moving_time?: number;
 	//   elapsed_time?: number;
@@ -60,7 +70,6 @@ export const activities = pgTable("activity", {
 	//   gear_id?: string;
 	//   description?: string;
 	//   calories?: number;
-	//   private_notes?: string;
 	//   start_latlng?: Array<number>;
 	//   end_latlng?: Array<number>;
 });

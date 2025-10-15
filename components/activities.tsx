@@ -1,13 +1,14 @@
-import type { DetailedActivityResponse } from "strava-v3";
+"use client";
 
-// import { useQuery } from "@rocicorp/zero/react";
-// import { useZero } from "@/components/zero";
+import { useQuery } from "@rocicorp/zero/react";
+import { useZero } from "@/components/zero";
 
-export const Activities = ({
-	activities,
-}: {
-	activities: Array<DetailedActivityResponse>;
-}) => {
+export const Activities = () => {
+	const z = useZero();
+	const [activities] = useQuery(z.query.activities.orderBy("id", "desc"));
+
+	console.log({ activities });
+
 	return (
 		<div className="grid gap-4">
 			{activities.map((activity) => {
@@ -25,7 +26,8 @@ export const Activities = ({
 						<div>start: {activity.start}</div>
 						<div>elevation: {activity.elevation}m</div>
 						<div>Duration: {(activity.duration / 3600) * 60}</div>
-						<div>id: {activity.id}</div>
+						{/* <div>id: {activity.id}</div> */}
+						<div>Type: {activity.type}</div>
 					</div>
 				);
 			})}

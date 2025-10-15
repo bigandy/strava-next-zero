@@ -13,6 +13,20 @@ CREATE TABLE "account" (
 	CONSTRAINT "account_provider_providerAccountId_pk" PRIMARY KEY("provider","providerAccountId")
 );
 --> statement-breakpoint
+CREATE TABLE "activity" (
+	"id" text PRIMARY KEY NOT NULL,
+	"name" text,
+	"description" text,
+	"duration" text,
+	"kudos" integer,
+	"start" text,
+	"elapsedTime" integer,
+	"movingTime" integer,
+	"type" text,
+	"elevation" integer,
+	"distance" integer
+);
+--> statement-breakpoint
 CREATE TABLE "authenticator" (
 	"credentialID" text PRIMARY KEY NOT NULL,
 	"userId" text NOT NULL,

@@ -1,6 +1,6 @@
 {
-  "id": "3db58ebd-f0d6-4997-84b8-4db22f4c9480",
-  "prevId": "00000000-0000-0000-0000-000000000000",
+  "id": "d2871a1f-7a56-4ee8-be3c-928a83eef500",
+  "prevId": "144d2c25-f445-4eaf-9845-4b4054e5dfce",
   "version": "7",
   "dialect": "postgresql",
   "tables": {
@@ -147,13 +147,13 @@
         },
         "elapsedTime": {
           "name": "elapsedTime",
-          "type": "integer",
+          "type": "numeric",
           "primaryKey": false,
           "notNull": false
         },
         "movingTime": {
           "name": "movingTime",
-          "type": "integer",
+          "type": "numeric",
           "primaryKey": false,
           "notNull": false
         },
@@ -165,13 +165,13 @@
         },
         "elevation": {
           "name": "elevation",
-          "type": "integer",
+          "type": "numeric",
           "primaryKey": false,
           "notNull": false
         },
         "distance": {
           "name": "distance",
-          "type": "integer",
+          "type": "numeric",
           "primaryKey": false,
           "notNull": false
         }
