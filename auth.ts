@@ -16,7 +16,12 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
 		accountsTable: accounts,
 		sessionsTable: sessions,
 	}),
-	providers: [GitHub, Strava],
+	providers: [
+		GitHub,
+		Strava({
+			authorization: { params: { scope: "activity:read_all,activity:write" } },
+		}),
+	],
 	basePath: "/auth",
 	session: { strategy: "jwt" },
 	callbacks: {

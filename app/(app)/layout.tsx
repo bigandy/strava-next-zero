@@ -1,4 +1,5 @@
 import { auth } from "auth";
+import { redirect } from "next/navigation";
 import { ClientOnly } from "@/components/client-only";
 import { Header } from "@/components/Header";
 import { ZeroProvider } from "@/components/zero";
@@ -9,6 +10,10 @@ export default async function Layout({
 	children: React.ReactNode;
 }>) {
 	const session = await auth();
+
+	if (!session) {
+		redirect("/");
+	}
 
 	return (
 		<>
