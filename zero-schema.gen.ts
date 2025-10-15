@@ -122,7 +122,7 @@ export const schema = {
           >,
         },
       },
-      primaryKey: ["userId"],
+      primaryKey: ["provider", "providerAccountId"],
       serverName: "account",
     },
     tasks: {

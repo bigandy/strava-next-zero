@@ -19,13 +19,58 @@ export const users = pgTable("user", {
 	image: text("image"),
 });
 
+export const activities = pgTable("activity", {
+	id: text("id"),
+	//   athlete: {
+	// 	resource_state: number;
+	// 	firstname: string;
+	// 	lastname: string;
+	//   },
+	name: text("name"),
+	//   distance?: number;
+	//   moving_time?: number;
+	//   elapsed_time?: number;
+	//   total_elevation_gain?: number;
+	//   elev_high?: number;
+	//   elev_low?: number;
+	//   sport_type: SportType;
+	//   start_date: Date;
+	//   start_date_local: Date;
+	//   timezone?: string;
+	//   utc_offset?: number;
+	//   location_city?: string;
+	//   location_state?: string;
+	//   location_country?: string;
+	//   achievement_count?: number;
+	//   kudos_count?: number;
+	//   comment_count?: number;
+	//   athlete_count?: number;
+	//   photo_count?: number;
+	//   total_photo_count?: number;
+	//   map?: PolylineMapResponse;
+	//   trainer?: boolean;
+	//   commute?: boolean;
+	//   manual?: boolean;
+	//   private?: boolean;
+	//   flagged?: boolean;
+	//   average_speed?: number;
+	//   max_speed?: number;
+	//   has_kudoed?: boolean;
+	//   hide_from_home?: boolean;
+	//   gear_id?: string;
+	//   description?: string;
+	//   calories?: number;
+	//   private_notes?: string;
+	//   start_latlng?: Array<number>;
+	//   end_latlng?: Array<number>;
+});
+
 export const accounts = pgTable(
 	"account",
 	{
 		userId: text("userId")
 			.notNull()
-			.references(() => users.id, { onDelete: "cascade" })
-			.primaryKey(),
+			.references(() => users.id, { onDelete: "cascade" }),
 		type: text("type").$type<AdapterAccountType>().notNull(),
 		provider: text("provider").notNull(),
 		providerAccountId: text("providerAccountId").notNull(),
@@ -37,17 +82,15 @@ export const accounts = pgTable(
 		id_token: text("id_token"),
 		session_state: text("session_state"),
 	},
-	(account) => [
-		{
-			compoundKey: primaryKey({
-				columns: [account.provider, account.providerAccountId],
-			}),
-		},
-	],
+	(account) => ({
+		compositePk: primaryKey({
+			columns: [account.provider, account.providerAccountId],
+		}),
+	}),
 );
 
 export const sessions = pgTable("session", {
-	sessionToken: text("sessionToken"),
+	sessionToken: text("sessionToken").primaryKey(),
 	userId: text("userId")
 		.notNull()
 		.references(() => users.id, { onDelete: "cascade" }),

@@ -31,7 +31,7 @@ export const Header = async () => {
 				</>
 			) : (
 				<>
-					<SignIn provider="github" />
+					{/* <SignIn provider="github" /> */}
 					<SignIn provider="strava" />
 				</>
 			)}

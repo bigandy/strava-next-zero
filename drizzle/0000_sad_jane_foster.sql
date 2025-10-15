@@ -9,7 +9,8 @@ CREATE TABLE "account" (
 	"token_type" text,
 	"scope" text,
 	"id_token" text,
-	"session_state" text
+	"session_state" text,
+	CONSTRAINT "account_provider_providerAccountId_pk" PRIMARY KEY("provider","providerAccountId")
 );
 --> statement-breakpoint
 CREATE TABLE "authenticator" (
@@ -25,7 +26,7 @@ CREATE TABLE "authenticator" (
 );
 --> statement-breakpoint
 CREATE TABLE "session" (
-	"sessionToken" text,
+	"sessionToken" text PRIMARY KEY NOT NULL,
 	"userId" text NOT NULL,
 	"expires" timestamp NOT NULL
 );
