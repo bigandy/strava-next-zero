@@ -1,0 +1,47 @@
+.wrapper {
+	display: inline-block;
+	place-self: start;
+}
+
+.dot {
+	--_dot-bg: var(--dot-background, red);
+	border-radius: 50%;
+	aspect-ratio: 1;
+	height: 10px;
+	width: 10px;
+	background: var(--_dot-bg);
+	anchor-name: var(--anchor-name, --dot);
+	cursor: pointer;
+	padding: 0.25em;
+	border: 10px solid var(--dot-border, #282c34);
+
+	&:hover {
+		background-color: var(
+			--dot-background-hover,
+			oklch(from var(--_dot-bg) l calc(c / 2) h)
+		);
+	}
+}
+
+.singleDot {
+	cursor: inherit;
+
+	&:hover {
+		background-color: var(--_dot-bg);
+	}
+}
+
+.popover {
+	text-align: left;
+	position: absolute;
+	position-anchor: var(--anchor-name, --dot);
+	position-area: end;
+	position-try-fallbacks: flip-block;
+	margin: 0;
+	width: 300px;
+	padding: 1rem;
+
+	h2 {
+		margin: 0;
+	}
+}

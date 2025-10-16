@@ -1,4 +1,4 @@
-import { Activities } from "@/components/activities";
+import { ActivitiesCalendar } from "@/components/activities-calendar";
 
 export default async function Page() {
 	return (
@@ -7,7 +7,7 @@ export default async function Page() {
 
 			{/* <Link href="/activities/getAll">Get All Activities API</Link> */}
 
-			<Activities />
+			<ActivitiesCalendar />
 		</>
 	);
 }

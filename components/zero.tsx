@@ -1,6 +1,6 @@
 "use client";
 
-import { Zero } from "@rocicorp/zero";
+import { Zero, syncedQuery } from "@rocicorp/zero";
 import {
 	useZero as _useZero,
 	ZeroProvider as ZeroProviderBase,

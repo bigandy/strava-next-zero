@@ -1,0 +1,276 @@
+.wrapper {
+	--orange: var(--brand, #ff3c00);
+	--ah-button-background: var(--orange);
+	--ah-button-background-hover: red;
+
+	container-name: calendar;
+	container-type: inline-size;
+	resize: horizontal;
+	overflow: auto;
+	outline: solid 1px grey;
+	outline-offset: 4px;
+
+	scrollbar-color: var(--orange) black;
+	scrollbar-width: thin;
+
+	td:not([class]) span {
+		display: none;
+	}
+
+	h1 {
+		margin-block-start: 0;
+	}
+
+	th,
+	td {
+		padding-left: 0;
+	}
+
+	td {
+		border: 1px solid white;
+		text-align: center;
+		position: relative;
+	}
+
+	td:empty {
+		border: none;
+	}
+
+	td span:not(.vh) {
+		padding: 1em;
+		display: inline-block;
+	}
+
+	th {
+		padding-inline: 1rem;
+	}
+
+	table {
+		width: 100%;
+		border-spacing: 0;
+		border-collapse: separate;
+	}
+
+	button:not(*:global(.dot)) {
+		margin-block-end: 2rem;
+		margin-inline: 0.25rem;
+	}
+
+
+    th {
+        padding-block-end: 1rem;
+    }
+}
+
+.day {
+	display: none;
+}
+
+.calendar {
+	font-family: "Roboto", sans-serif;
+	font-weight: bold;
+}
+
+.currentCalendar .calendarMonth,
+.currentCalendar .calendarYear {
+	color: var(--orange);
+}
+
+.calendarMonth {
+	letter-spacing: -5px;
+	font-size: 500%;
+	margin-bottom: 0;
+}
+
+.calendarMonth span:nth-child(3) ~ span {
+	display: none;
+}
+
+.calendarYear {
+	letter-spacing: -2px;
+	margin-top: 0;
+	padding-bottom: 0.5em;
+	border-bottom: 1px solid grey;
+}
+
+.calendarDayActive {
+	background-color: var(--orange);
+	color: white;
+
+	--dot-background: white;
+	--dot-background-hover: grey;
+	--dot-border: var(--orange);
+}
+
+.calendarDayActive .dayCount {
+	background: var(--orange);
+	color: white;
+	border-radius: 50%;
+}
+
+.month-buttons {
+	display: none;
+}
+
+.month-buttons ah-button {
+	display: inline-block;
+	margin: 1rem;
+	color: white;
+}
+
+.medium,
+.long {
+	display: none;
+}
+
+.header {
+	position: relative;
+}
+
+.month-buttons {
+	position: absolute;
+	bottom: 0;
+	right: 0;
+}
+
+.year-buttons {
+	display: none;
+	margin-inline-start: 1rem;
+}
+
+.year-buttons button {
+	border: 0;
+	margin-inline: 0.5rem;
+	position: relative;
+	bottom: 2px;
+}
+
+.year-buttons button:hover {
+	background: darkgray;
+	cursor: pointer;
+}
+
+
+@container (inline-size > 500px) {
+	.medium {
+		display: inline-block;
+	}
+
+	.month-buttons {
+		display: block;
+	}
+
+    .wrapper {
+        th,
+        td {
+            text-align: center;
+            vertical-align: middle;
+        }
+    }
+
+	
+
+	.calendarMonth span:nth-child(3) ~ span {
+		display: inline;
+	}
+}
+
+@container (inline-size > 1000px) {
+	.year-buttons,
+	.long {
+		display: inline-block;
+	}
+}
+
+@container (inline-size > 1600px) {
+	.day:hover {
+		color: white;
+		background-image: linear-gradient(
+			45deg,
+			#000000 16.67%,
+			#ffffff 16.67%,
+			#ffffff 50%,
+			#000000 50%,
+			#000000 66.67%,
+			#ffffff 66.67%,
+			#ffffff 100%
+		);
+		background-size: 10px 10px;
+		text-shadow: 0 0 3px #000000;
+	}
+}
+
+@container (inline-size < 400px) {
+	/* the narrow view */
+    .wrapper {
+        td {
+            display: none;
+            text-align: left;
+        }
+
+        th {
+            display: none;
+        }
+
+        table {
+            height: 300px;
+            overflow-x: hidden;
+            overflow-y: auto;
+            width: 100%;
+	    }
+
+        tr,
+	table,
+	thead,
+	tbody {
+		display: block;
+		width: 100%;
+	}
+    }
+	
+
+	.calendarYear {
+		padding-bottom: 0;
+		border-bottom: none;
+	}
+
+	
+
+	.calendarDay {
+		display: grid;
+		grid-template-columns: 1fr 1fr;
+	}
+
+	tr:nth-child(1) .calendarDay:nth-child(1) {
+		border-top: 1px solid black;
+	}
+
+	.calendarDay .dayCount {
+		background: inherit;
+		color: inherit;
+	}
+
+	.dayCount {
+		text-align: right;
+	}
+
+	.wrapper td {
+		text-align: left;
+	}
+
+	.dayName {
+		all: unset;
+		padding: 1em;
+	}
+}
+
+.dots {
+	display: none;
+
+	@container (inline-size > 500px) {
+		display: block;
+		position: absolute;
+		top: 0;
+		left: 0;
+	}
+}
