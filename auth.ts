@@ -6,7 +6,7 @@ import GitHub from "next-auth/providers/github";
 import Strava from "next-auth/providers/strava";
 import { getNewToken } from "./app/actions";
 import { db } from "./db";
-import { accounts, sessions, users } from "./db/schema";
+import { accounts, users } from "./db/schema";
 
 export const { handlers, auth, signIn, signOut } = NextAuth({
 	debug: !!process.env.AUTH_DEBUG,
@@ -14,7 +14,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
 	adapter: DrizzleAdapter(db, {
 		usersTable: users,
 		accountsTable: accounts,
-		sessionsTable: sessions,
+		// sessionsTable: sessions,
 	}),
 	providers: [
 		GitHub,

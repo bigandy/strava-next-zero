@@ -7,8 +7,6 @@ export const Activities = () => {
 	const z = useZero();
 	const [activities] = useQuery(z.query.activities.orderBy("id", "desc"));
 
-	console.log({ activities });
-
 	return (
 		<div className="grid gap-4">
 			{activities.map((activity) => {

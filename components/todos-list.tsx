@@ -15,6 +15,7 @@ export function TodosList() {
 				onClick={() => setOrder("desc")}
 				className={`border rounded p-4 ${order === "desc" ? "bg-red-600 text-white" : ""}`}
 				disabled={order === "desc"}
+				type="button"
 			>
 				Desc
 			</button>
@@ -22,6 +23,7 @@ export function TodosList() {
 				onClick={() => setOrder("asc")}
 				className={`border rounded p-4 mx-4 ${order === "asc" ? "bg-red-600 text-white" : ""}`}
 				disabled={order === "asc"}
+				type="button"
 			>
 				Asc
 			</button>
@@ -71,11 +73,19 @@ const SingleTodo = ({ todo }) => {
 				className="border w-full p-2"
 			/>
 
-			<div className="border border-black p-2" onClick={toggleDone}>
+			<button
+				type="button"
+				className="border border-black p-2"
+				onClick={toggleDone}
+			>
 				{todo.done ? "done" : "not done"}
-			</div>
+			</button>
 
-			<button className="border border-black rounded" onClick={handleDeletion}>
+			<button
+				className="border border-black rounded"
+				onClick={handleDeletion}
+				type="button"
+			>
 				Delete
 			</button>
 		</li>
