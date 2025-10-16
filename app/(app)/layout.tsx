@@ -20,7 +20,7 @@ export default async function Layout({
 			<Header />
 
 			<ClientOnly fallback={<div>Loading...</div>}>
-				<ZeroProvider userID={session?.userId ?? "anon"} token={session.token}>
+				<ZeroProvider userID={session?.user.id ?? "anon"} token={session.token}>
 					{children}
 				</ZeroProvider>
 			</ClientOnly>

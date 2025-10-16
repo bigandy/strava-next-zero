@@ -9,10 +9,8 @@ import type { ReactNode } from "react";
 import { useMemo } from "react";
 import { type Schema, schema } from "../schema";
 
-
-
 export function ZeroProvider({
-	children, 
+	children,
 	userID,
 	token,
 }: {

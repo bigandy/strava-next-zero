@@ -30,10 +30,7 @@ export const Header = async () => {
 					</details>
 				</>
 			) : (
-				<>
-					{/* <SignIn provider="github" /> */}
-					<SignIn provider="strava" />
-				</>
+				<SignIn provider="strava" />
 			)}
 
 			<div className="flex gap-2 mb-10">
