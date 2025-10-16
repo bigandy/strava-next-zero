@@ -1,13 +1,14 @@
 import { CellWithDots } from "./cell";
 import { getMonthDays } from "./utils";
 
-// interface Props {
-// 	offset: Accessor<number>;
-// 	data?: Array<DotData>;
-// }
+interface Props {
+	month: number;
+	year: number;
+	data?: Array<DotData>;
+}
 
-export const Rows = ({ offset, data }) => {
-	const rows = getMonthDays(offset);
+export const Rows = ({ month, year, data }: Props) => {
+	const rows = getMonthDays(month, year);
 
 	return (
 		<>
@@ -19,13 +20,15 @@ export const Rows = ({ offset, data }) => {
 								return <td key={`cell-${cellIndex}`} />;
 							}
 
-							const todayDots = data?.filter((dot) => dot.date === cell.date);
+							const todayDots = data?.filter((dot) => {
+								return dot.date === cell.date;
+							});
 
 							return (
 								<CellWithDots
 									key={`cell-${cellIndex}`}
 									number={cell.number}
-									activeDay={cell.activeDay}
+									// activeDay={cell.activeDay}
 									dots={todayDots || []}
 									index={cellIndex + 1}
 								/>

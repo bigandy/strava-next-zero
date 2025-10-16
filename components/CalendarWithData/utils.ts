@@ -14,22 +14,10 @@ const dayToNumericDay = (firstDayofMonth: string) => {
 	return firstDayNumeric;
 };
 
-export const getMonth = (offset: number) => {
-	const today = dayjs().add(offset, "month");
-	const month = today.format("MMMM");
-	const year = today.format("YYYY");
-	const daysInMonth = today.daysInMonth();
-	const firstDayofMonth = dayToNumericDay(today.startOf("month").format("dd"));
+export const getMonth = (month: number, year: number) => {
+	const dateString = `${year}-${month}-01`;
 
-	const todayDay = offset === 0 ? parseInt(today.format("DD")) : 0;
-
-	return {
-		month,
-		year,
-		daysInMonth,
-		firstDayofMonth,
-		todayDay,
-	};
+	return dayjs(dateString).format("MMMM");
 };
 
 export const getDMY = (date: Dayjs) => {
@@ -61,10 +49,15 @@ export const indexToDay = (index: number) => {
 	}
 };
 
-export const getMonthDays = (offset: number) => {
-	const derivedMonth = getMonth(offset);
+export const getMonthDays = (month: number, year: number) => {
+	const dateString = `${year}-${month}-01`;
 
-	const { month, daysInMonth, year, firstDayofMonth, todayDay } = derivedMonth;
+	const day = dayjs(dateString);
+
+	const daysInMonth = day.daysInMonth();
+	const firstDayofMonth = dayToNumericDay(day.format("dd"));
+
+	// const { month, daysInMonth, year, firstDayofMonth, todayDay } = derivedMonth;
 
 	const items = Math.ceil((daysInMonth + firstDayofMonth) / 7);
 
@@ -79,10 +72,13 @@ export const getMonthDays = (offset: number) => {
 			} else {
 				count++;
 
+				// AHTODO: fix this awful mess!
+				const date = `${count < 10 ? `0${count}` : count}-${month < 10 ? `0${month}` : month}-${year}`;
+
 				return {
 					number: count,
-					date: getDMY(dayjs(`${count}-${month}-${year}`)),
-					activeDay: count === todayDay,
+					date,
+					// activeDay: count === todayDay,
 				};
 			}
 		});

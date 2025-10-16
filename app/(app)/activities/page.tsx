@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { Activities } from "@/components/activities";
 
 export default async function Page() {
@@ -5,7 +6,9 @@ export default async function Page() {
 		<>
 			<h1>Activities</h1>
 
-			{/* <Link href="/activities/getAll">Get All Activities API</Link> */}
+			<Link className="underline text-blue-500" href="/activities/calendar">
+				Calendar
+			</Link>
 
 			<Activities />
 		</>

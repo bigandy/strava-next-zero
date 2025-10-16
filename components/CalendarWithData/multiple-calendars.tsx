@@ -1,4 +1,8 @@
 import { useState } from "react";
+import { SingleCalendar } from "./single-calendar";
+import { TableHeader } from "./table-header";
+// import styles from "./styles.module.css";
+import { YearHeader } from "./year-header";
 
 export interface DotData {
 	date: string;
@@ -12,34 +16,27 @@ interface CalendarWithDataProps {
 	data?: Array<DotData>;
 }
 
-import styles from "./styles.module.css";
-
+const currentYear = new Date().getFullYear();
+const months = new Array(12).fill("");
 export const MultipleCalendars = ({ data }: CalendarWithDataProps) => {
-	const [year, setYear] = useState(new Date().getFullYear());
-
-	// TODO GET MONTHS FOR CURRENT YEAR
-
-	// SHOW YEAR SELECTOR
-
-	// UPDATE MONTHS WHEN YEAR CHANGES
+	const [year, setYear] = useState(currentYear);
 
 	return (
 		<div>
-			<h2>{year}</h2>
-			<div
-			// classList={{
-			// 	[styles.calendar]: true,
-			// 	[styles.currentCalendar]: offset() === 0,
-			// }}
-			>
-				{/* <Header offset={offset} setOffset={setOffset} />
+			<YearHeader year={year} setYear={setYear} currentYear={currentYear} />
+			<div className="grid grid-cols-3 gap-4">
+				{months.map((month, index) => {
+					// const dataForCalendar = data.filter((d) => console.log(d));
 
-				<table>
-					<TableHeader />
-					<tbody>
-						<Rows offset={offset} data={data} />
-					</tbody>
-				</table> */}
+					return (
+						<SingleCalendar
+							month={index + 1}
+							year={year}
+							data={data}
+							key={`month-${index}-year-${year}`}
+						/>
+					);
+				})}
 			</div>
 		</div>
 	);

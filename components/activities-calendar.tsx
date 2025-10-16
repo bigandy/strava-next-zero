@@ -17,9 +17,5 @@ export const ActivitiesCalendar = () => {
 		});
 	}, [activities]);
 
-	return (
-		<>
-			<MultipleCalendars data={data} />
-		</>
-	);
+	return <MultipleCalendars data={data} />;
 };

@@ -6,6 +6,8 @@ import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useZero } from "@/components/zero";
 
+import { Button } from "./button";
+
 export const Activities = () => {
 	const [perPage, setPerPage] = useState(10);
 
@@ -54,28 +56,30 @@ export const Activities = () => {
 					/>
 				</div>
 			</div>
-			<table className="w-full" style={{ tableLayout: "fixed" }}>
-				<thead>
-					<tr>
-						<th>Name</th>
-						<th>Distance</th>
-						<th>Kudos</th>
-						<th>Start</th>
-						<th>Elevation</th>
-						<th>Elapsed</th>
-						<th>Moving</th>
-						<th>Type</th>
-						<th>Private?</th>
-					</tr>
-				</thead>
-				<tbody>
-					{activities
-						.slice((page - 1) * perPage, page * perPage)
-						.map((activity) => {
-							return <Activity key={activity.id} activity={activity} />;
-						})}
-				</tbody>
-			</table>
+			<div className="activities-table">
+				<table className="w-full" style={{ tableLayout: "fixed" }}>
+					<thead>
+						<tr>
+							<th>Name</th>
+							<th>Distance</th>
+							<th>Kudos</th>
+							<th>Start</th>
+							<th>Elevation</th>
+							<th>Elapsed</th>
+							<th>Moving</th>
+							<th>Type</th>
+							<th>Private?</th>
+						</tr>
+					</thead>
+					<tbody>
+						{activities
+							.slice((page - 1) * perPage, page * perPage)
+							.map((activity) => {
+								return <Activity key={activity.id} activity={activity} />;
+							})}
+					</tbody>
+				</table>
+			</div>
 		</>
 	);
 };

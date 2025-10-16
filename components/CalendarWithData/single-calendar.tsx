@@ -1,5 +1,3 @@
-import { useState } from "react";
-
 import { Header } from "./calendar-header";
 import { Rows } from "./row";
 import { TableHeader } from "./table-header";
@@ -13,18 +11,18 @@ export interface DotData {
 	};
 }
 interface CalendarWithDataProps {
-	initialOffset?: number;
+	month: number;
+	year: number;
 	data?: Array<DotData>;
 }
 
 import styles from "./styles.module.css";
 
 export const SingleCalendar = ({
-	initialOffset = 0,
+	month,
+	year,
 	data,
 }: CalendarWithDataProps) => {
-	const [offset, setOffset] = useState(initialOffset);
-
 	return (
 		<div className={styles.wrapper}>
 			<div
@@ -33,12 +31,12 @@ export const SingleCalendar = ({
 			// 	[styles.currentCalendar]: offset() === 0,
 			// }}
 			>
-				<Header offset={offset} setOffset={setOffset} />
+				<Header month={month} year={year} />
 
 				<table>
 					<TableHeader />
 					<tbody>
-						<Rows offset={offset} data={data} />
+						<Rows month={month} year={year} data={data} />
 					</tbody>
 				</table>
 			</div>
