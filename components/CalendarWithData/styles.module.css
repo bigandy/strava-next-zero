@@ -5,10 +5,8 @@
 
 	container-name: calendar;
 	container-type: inline-size;
-	resize: horizontal;
-	overflow: auto;
-	outline: solid 1px grey;
-	outline-offset: 4px;
+	border: solid 1px grey;
+	padding: 1rem;
 
 	scrollbar-color: var(--orange) black;
 	scrollbar-width: thin;
@@ -220,48 +218,49 @@
 	    }
 
         tr,
-	table,
-	thead,
-	tbody {
-		display: block;
-		width: 100%;
-	}
+		table,
+		thead,
+		tbody {
+			display: block;
+			width: 100%;
+		}
+
+		.calendarYear {
+			padding-bottom: 0;
+			border-bottom: none;
+		}
+
+		.calendarDay {
+			display: grid;
+			grid-template-columns: 1fr 1fr;
+			border: 1px solid;
+		}
+
+		tr:nth-child(1) .calendarDay:nth-child(1) {
+			border-top: 1px solid black;
+		}
+
+		.calendarDay .dayCount {
+			background: inherit;
+			color: inherit;
+		}
+
+		.dayCount {
+			text-align: right;
+		}
+
+		.wrapper td {
+			text-align: left;
+		}
+
+		.dayName {
+			all: unset;
+			padding: 1em;
+		}
     }
 	
 
-	.calendarYear {
-		padding-bottom: 0;
-		border-bottom: none;
-	}
-
 	
-
-	.calendarDay {
-		display: grid;
-		grid-template-columns: 1fr 1fr;
-	}
-
-	tr:nth-child(1) .calendarDay:nth-child(1) {
-		border-top: 1px solid black;
-	}
-
-	.calendarDay .dayCount {
-		background: inherit;
-		color: inherit;
-	}
-
-	.dayCount {
-		text-align: right;
-	}
-
-	.wrapper td {
-		text-align: left;
-	}
-
-	.dayName {
-		all: unset;
-		padding: 1em;
-	}
 }
 
 .dots {

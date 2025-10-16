@@ -1,5 +1,4 @@
 // // export const { GET } = handlers;
-// // import bcrypt from "bcryptjs";
 // // import { eq } from "drizzle-orm";
 // import * as jose from "jose";
 

@@ -16,6 +16,7 @@ interface CalendarWithDataProps {
 	data?: Array<DotData>;
 }
 
+import clsx from "clsx";
 import styles from "./styles.module.css";
 
 export const SingleCalendar = ({
@@ -23,13 +24,18 @@ export const SingleCalendar = ({
 	year,
 	data,
 }: CalendarWithDataProps) => {
+	const date = new Date();
+
+	const currentCalendar =
+		date.getMonth() + 1 === month && date.getFullYear() === year;
+
 	return (
 		<div className={styles.wrapper}>
 			<div
-			// classList={{
-			// 	[styles.calendar]: true,
-			// 	[styles.currentCalendar]: offset() === 0,
-			// }}
+				className={clsx({
+					[styles.calendar]: true,
+					[styles.currentCalendar]: currentCalendar,
+				})}
 			>
 				<Header month={month} year={year} />
 

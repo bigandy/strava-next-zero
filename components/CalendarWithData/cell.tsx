@@ -1,3 +1,4 @@
+import clsx from "clsx";
 import { Dot } from "./Dot";
 import styles from "./styles.module.css";
 import { indexToDay } from "./utils";
@@ -20,10 +21,10 @@ export const CellWithDots = ({
 }: CellWithDotsProps) => {
 	return (
 		<td
-		// classList={{
-		// 	[styles.calendarDay]: true,
-		// 	[styles.calendarDayActive]: activeDay,
-		// }}
+			className={clsx({
+				[styles.calendarDay]: true,
+				[styles.calendarDayActive]: activeDay,
+			})}
 		>
 			<span className={`${styles.dayName} vh`}>{indexToDay(index)}</span>
 
@@ -47,14 +48,7 @@ export const CellWithDots = ({
 				</div>
 			)}
 
-			<span
-				className={styles.dayCount}
-				// classList={{
-				// 	[styles.dayCount]: true,
-				// }}
-			>
-				{number}
-			</span>
+			<span className={styles.dayCount}>{number}</span>
 		</td>
 	);
 };
@@ -62,17 +56,17 @@ export const CellWithDots = ({
 export const Cell = ({ number, activeDay, index }: CellProps) => {
 	return (
 		<td
-		// classList={{
-		// 	[styles.calendarDay]: true,
-		// 	[styles.calendarDayActive]: activeDay,
-		// }}
+			className={clsx({
+				[styles.calendarDay]: true,
+				[styles.calendarDayActive]: activeDay,
+			})}
 		>
 			<span className={`${styles.dayName} vh`}>{indexToDay(index)}</span>
 
 			<span
-			// classList={{
-			// 	[styles.dayCount]: true,
-			// }}
+				className={clsx({
+					[styles.dayCount]: true,
+				})}
 			>
 				{number}
 			</span>

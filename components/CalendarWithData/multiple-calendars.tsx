@@ -17,7 +17,7 @@ interface CalendarWithDataProps {
 }
 
 const currentYear = new Date().getFullYear();
-const months = new Array(12).fill("");
+const months = new Array(1).fill("");
 export const MultipleCalendars = ({ data }: CalendarWithDataProps) => {
 	const [year, setYear] = useState(currentYear);
 
@@ -25,14 +25,18 @@ export const MultipleCalendars = ({ data }: CalendarWithDataProps) => {
 		<div>
 			<YearHeader year={year} setYear={setYear} currentYear={currentYear} />
 			<div className="grid grid-cols-3 gap-4">
-				{months.map((month, index) => {
-					// const dataForCalendar = data.filter((d) => console.log(d));
+				{months.map((_, index) => {
+					const month = index + 1;
+
+					const dataForCalendar = data.filter(
+						(d) => +d.month === +month && +year === +d.year,
+					);
 
 					return (
 						<SingleCalendar
-							month={index + 1}
+							month={month}
 							year={year}
-							data={data}
+							data={dataForCalendar}
 							key={`month-${index}-year-${year}`}
 						/>
 					);

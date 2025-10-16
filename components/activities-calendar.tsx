@@ -1,6 +1,7 @@
 "use client";
 
 import { useQuery } from "@rocicorp/zero/react";
+import dayjs from "dayjs";
 import { useMemo } from "react";
 import { useZero } from "@/components/zero";
 import { MultipleCalendars } from "./CalendarWithData/multiple-calendars";
@@ -13,7 +14,12 @@ export const ActivitiesCalendar = () => {
 
 	const data = useMemo(() => {
 		return activities.map((activity) => {
-			return { date: formattedGetDMY(activity.start) };
+			const date = dayjs(activity.start);
+			return {
+				month: date.format("M"),
+				year: date.format("YYYY"),
+				date: formattedGetDMY(activity.start),
+			};
 		});
 	}, [activities]);
 

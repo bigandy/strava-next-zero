@@ -25,7 +25,7 @@ export const getDMY = (date: Dayjs) => {
 };
 
 export const formattedGetDMY = (date: string) => {
-	return dayjs(date).format("DD-MM-YYYY");
+	return dayjs(date).format("D-M-YYYY");
 };
 
 export const indexToDay = (index: number) => {
@@ -73,7 +73,7 @@ export const getMonthDays = (month: number, year: number) => {
 				count++;
 
 				// AHTODO: fix this awful mess!
-				const date = `${count < 10 ? `0${count}` : count}-${month < 10 ? `0${month}` : month}-${year}`;
+				const date = `${count}-${month}-${year}`;
 
 				return {
 					number: count,
