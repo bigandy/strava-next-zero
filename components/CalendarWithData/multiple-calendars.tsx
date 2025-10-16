@@ -17,7 +17,8 @@ interface CalendarWithDataProps {
 }
 
 const currentYear = new Date().getFullYear();
-const months = new Array(1).fill("");
+const months = new Array(12).fill("");
+
 export const MultipleCalendars = ({ data }: CalendarWithDataProps) => {
 	const [year, setYear] = useState(currentYear);
 
