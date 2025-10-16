@@ -52,7 +52,7 @@ function TaskCard({
 	const z = useZero();
 
 	return (
-		<div className="border rounded">
+		<div className="border rounded-sm">
 			<div>
 				<Link href={`/tasks/${task.id}`} className="underline">
 					{task.name}

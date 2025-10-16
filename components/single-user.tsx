@@ -24,7 +24,7 @@ export const User = ({ id }: { id: string }) => {
 		<div>
 			<button
 				type="button"
-				className="bg-red-500 p-4 rounded text-white"
+				className="bg-red-500 p-4 rounded-sm text-white"
 				onClick={() => setEditing((e) => !e)}
 			>
 				Toggle Editing
@@ -50,7 +50,7 @@ export const User = ({ id }: { id: string }) => {
 								src={user?.image}
 								height="50"
 								width="50"
-								className="rounded inline"
+								className="rounded-sm inline"
 								alt="user avatar"
 							/>
 						)}

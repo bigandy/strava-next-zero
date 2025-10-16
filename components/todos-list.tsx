@@ -13,7 +13,7 @@ export function TodosList() {
 		<div className="border">
 			<button
 				onClick={() => setOrder("desc")}
-				className={`border rounded p-4 ${order === "desc" ? "bg-red-600 text-white" : ""}`}
+				className={`border rounded-sm p-4 ${order === "desc" ? "bg-red-600 text-white" : ""}`}
 				disabled={order === "desc"}
 				type="button"
 			>
@@ -21,7 +21,7 @@ export function TodosList() {
 			</button>
 			<button
 				onClick={() => setOrder("asc")}
-				className={`border rounded p-4 mx-4 ${order === "asc" ? "bg-red-600 text-white" : ""}`}
+				className={`border rounded-sm p-4 mx-4 ${order === "asc" ? "bg-red-600 text-white" : ""}`}
 				disabled={order === "asc"}
 				type="button"
 			>
@@ -82,7 +82,7 @@ const SingleTodo = ({ todo }) => {
 			</button>
 
 			<button
-				className="border border-black rounded"
+				className="border border-black rounded-sm"
 				onClick={handleDeletion}
 				type="button"
 			>

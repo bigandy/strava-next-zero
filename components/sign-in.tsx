@@ -12,7 +12,7 @@ export function SignIn({ provider }: { provider: Provider }) {
 		>
 			<button
 				type="submit"
-				className="border rounded border-black p-4 mb-4 bg-[#F52] text-white"
+				className="border rounded-sm border-black p-4 mb-4 bg-[#F52] text-white"
 			>
 				Signin with {provider}
 			</button>
