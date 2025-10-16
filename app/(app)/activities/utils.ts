@@ -1,7 +1,7 @@
 import { eq } from "drizzle-orm";
 import type { DetailedActivityResponse } from "strava-v3";
 import { default as strava } from "strava-v3";
-
+import { seconds, throttledQueue } from "throttled-queue";
 import { db } from "@/db";
 import { accounts, activities } from "@/db/schema";
 
@@ -73,25 +73,6 @@ export const writeActivitiesToDB = async (stravaActivities) => {
 	);
 };
 
-export const getAllStravaActivities = async (userId: string) => {
-	const strava = await getStravaClient(userId);
-	// There are currently 125 pages of 30 results. This will change.
-
-	const page = 1;
-	const per_page = 30;
-
-	const activities = await strava?.athlete.listActivities({
-		page,
-		per_page,
-	});
-
-	// // write activities to the db.
-	// await writeActivitiesToDB(activities);
-	// // if there are activities, increment the page++
-	// page++;
-	return activities;
-};
-
 export const formatStravaActivities = (activities) => {
 	return activities?.map((activity: Activity) => {
 		return {
@@ -109,4 +90,50 @@ export const formatStravaActivities = (activities) => {
 			isPrivate: activity.private,
 		};
 	});
+};
+
+export const getAllStravaActivities = async (userId: string) => {
+	const strava = await getStravaClient(userId);
+	// There are currently 125 pages of 30 results. This will change.
+
+	const allStravaActivities = [];
+	let page = 1;
+	const per_page = 100;
+
+	let continueFetching = true;
+
+	// await db.delete(activities);
+
+	const throttle = throttledQueue({
+		maxPerInterval: 1,
+		interval: seconds(1),
+	}); // at most make 1 request every second.
+
+	while (continueFetching) {
+		await throttle(async () => {
+			const activities = await strava?.athlete.listActivities({
+				page,
+				per_page,
+			});
+
+			// format so can go into db
+			const formattedActivities = formatStravaActivities(activities);
+
+			// write to the db
+			await writeActivitiesToDB(formattedActivities);
+
+			continueFetching = formattedActivities.length === per_page;
+			allStravaActivities.push(formattedActivities);
+
+			console.log(formattedActivities.length, page, Date.now());
+
+			page++;
+
+			// Do I need this line??
+			return Promise.resolve("hello!");
+		});
+	}
+
+	// Probably best not returning the activities here;
+	return "done";
 };
