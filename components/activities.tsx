@@ -23,9 +23,11 @@ export const Activities = () => {
 						<div>kudos: {activity.kudos}</div>
 						<div>start: {activity.start}</div>
 						<div>elevation: {activity.elevation}m</div>
-						<div>Duration: {(activity.duration / 3600) * 60}</div>
+						<div>Elapsed Time: {(activity.elapsedTime / 3600) * 60}</div>
+						<div>Moving Time: {(activity.movingTime / 3600) * 60}</div>
 						{/* <div>id: {activity.id}</div> */}
 						<div>Type: {activity.type}</div>
+						<div>Is Private? {activity.isPrivate ? "yes" : "no"}</div>
 					</div>
 				);
 			})}
