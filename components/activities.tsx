@@ -1,11 +1,11 @@
 "use client";
 
 import { useQuery } from "@rocicorp/zero/react";
-import Link from "next/link";
+
 import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useZero } from "@/components/zero";
-
+import { ActivityRow } from "./activity-row";
 import { Button } from "./button";
 
 export const Activities = () => {
@@ -74,34 +74,11 @@ export const Activities = () => {
 						{activities
 							.slice((page - 1) * perPage, page * perPage)
 							.map((activity) => {
-								return <Activity key={activity.id} activity={activity} />;
+								return <ActivityRow key={activity.id} activity={activity} />;
 							})}
 					</tbody>
 				</table>
 			</div>
 		</>
-	);
-};
-
-const Activity = ({ activity }) => {
-	return (
-		<tr className="border border-black p-4">
-			<td>
-				<Link
-					className="underline text-blue-400"
-					href={`https://strava.com/activities/${activity.id}`}
-					target="_blank"
-				>
-					{activity.name}
-				</Link>
-			</td>
-			<td>{(activity.distance / 1000).toFixed(2)} km</td>
-			<td>{activity.kudos}</td>
-			<td>{activity.start}</td>
-			<td>{activity.elevation}m</td>
-			<td>{(activity.elapsedTime / 3600) * 60}</td>
-			<td>{(activity.movingTime / 3600) * 60}</td>
-			<td>{activity.type}</td>
-		</tr>
 	);
 };
