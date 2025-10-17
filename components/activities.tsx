@@ -68,6 +68,7 @@ export const Activities = () => {
 							<th>Elapsed</th>
 							<th>Moving</th>
 							<th>Type</th>
+							<th>Edit?</th>
 						</tr>
 					</thead>
 					<tbody>

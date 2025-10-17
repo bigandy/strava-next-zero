@@ -18,7 +18,7 @@ const formatTime = (seconds: number) => {
 	return `${outMinutes}:${outSeconds}`;
 };
 
-export const ActivityRow = ({ activity }) => {
+export const ActivityRow = ({ activity, showEdit = true }) => {
 	return (
 		<tr className="border border-black p-4">
 			<td>
@@ -37,6 +37,11 @@ export const ActivityRow = ({ activity }) => {
 			<td>{formatTime(activity.elapsedTime)}</td>
 			<td>{formatTime(activity.movingTime)}</td>
 			<td>{activity.type}</td>
+			{showEdit && (
+				<td>
+					<Link href={`/activities/${activity.id}`}>Edit Activity?</Link>
+				</td>
+			)}
 		</tr>
 	);
 };

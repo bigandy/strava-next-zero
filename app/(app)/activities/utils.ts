@@ -10,6 +10,7 @@ import { accounts, activities } from "@/db/schema";
 interface Activity extends DetailedActivityResponse {
 	type: string;
 	visibility: string;
+	private_note: string;
 }
 
 const nowEpoc = () => Math.floor(Date.now()) / 1000;
@@ -110,6 +111,7 @@ const formatStravaActivities = (activities) => {
 			elapsedTime: activity.elapsed_time,
 			movingTime: activity.moving_time,
 			visibility: activity.visibility,
+			// private: activity.private_note,
 		};
 	});
 };
@@ -190,4 +192,14 @@ export const getStravaActivities = async (userId: string, options = {}) => {
 	const strava = await getStravaClient(userId);
 	const payload = await strava?.athlete.listActivities(options);
 	return formatStravaActivities(payload);
+};
+
+export const getOneStravaActivity = async (
+	userId: string,
+	activityId: string,
+) => {
+	const strava = await getStravaClient(userId);
+	const payload = await strava?.activities.get({ id: activityId });
+
+	return formatStravaActivities([payload]);
 };
