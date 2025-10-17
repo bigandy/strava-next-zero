@@ -19,10 +19,6 @@ export const CellWithDots = ({
 	dots,
 	index,
 }: CellWithDotsProps) => {
-	if (dots.length > 0) {
-		console.log({ dots });
-	}
-
 	return (
 		<td
 			className={clsx({
@@ -36,7 +32,6 @@ export const CellWithDots = ({
 				<div className={styles.dots}>
 					{dots.map((dot, index) => {
 						if (dot.information) {
-							console.log("HAVE INFO");
 							return (
 								<DotWithPopover
 									key={`dot-${dot.date}-${index}`}
@@ -46,7 +41,6 @@ export const CellWithDots = ({
 								/>
 							);
 						} else {
-							console.log({ dot });
 							return <Dot key={`dot-${dot.date}-${index}`} />;
 						}
 					})}
