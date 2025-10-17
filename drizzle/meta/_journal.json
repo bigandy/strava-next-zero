@@ -15,6 +15,13 @@
       "when": 1760700210591,
       "tag": "0001_dusty_sasquatch",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1760703685046,
+      "tag": "0002_tiresome_the_hood",
+      "breakpoints": true
     }
   ]
 }

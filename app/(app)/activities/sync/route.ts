@@ -1,14 +1,11 @@
 import { auth } from "auth";
 import { NextResponse } from "next/server";
 
-import {
-	formatStravaActivities,
-	getStravaClient,
-	upsertActivitiesToDB,
-} from "../utils";
+import { getStravaActivities, upsertActivitiesToDB } from "../utils";
 
 /**
- * This Route will sync the latest 30 (?) or so activities.
+ * /activities/sync api route
+ * This Route syncs the latest 30 (?) or so activities.
  * Will upsert into the db the latest changes.
  */
 export const GET = auth(async (req) => {
@@ -18,11 +15,7 @@ export const GET = auth(async (req) => {
 
 	const userId = req.auth.user?.id;
 
-	const strava = await getStravaClient(userId);
-
-	const payload = await strava.athlete.listActivities({});
-
-	const stravaActivities = formatStravaActivities(payload);
+	const stravaActivities = await getStravaActivities(userId!);
 
 	// Upsert them in the database!
 	await upsertActivitiesToDB(stravaActivities);

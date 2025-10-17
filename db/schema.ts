@@ -31,6 +31,11 @@ export const activities = pgTable("activity", {
 	type: text("type"),
 	elevation: numeric("elevation"),
 	distance: numeric("distance"),
+
+	updatedAt: text()
+		.notNull()
+		.default(sql`(CURRENT_TIMESTAMP)`)
+		.$onUpdate(() => sql`(CURRENT_TIMESTAMP)`),
 	// isPrivate: boolean("isPrivate"), // API DOESN'T RETURN THIS.
 	//   athlete: {
 	// 	resource_state: number;

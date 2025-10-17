@@ -209,6 +209,15 @@ export const schema = {
             "distance"
           >,
         },
+        updatedAt: {
+          type: "string",
+          optional: true,
+          customType: null as unknown as ZeroCustomType<
+            typeof zeroSchema,
+            "activities",
+            "updatedAt"
+          >,
+        },
       },
       primaryKey: ["id"],
       serverName: "activity",

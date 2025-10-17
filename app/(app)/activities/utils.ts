@@ -50,7 +50,7 @@ const getAccessToken = async ({ userId }) => {
 	return account.access_token;
 };
 
-export const getStravaClient = async (userId: string) => {
+const getStravaClient = async (userId: string) => {
 	const accessToken = await getAccessToken({ userId });
 	if (!accessToken) {
 		return null;
@@ -59,7 +59,7 @@ export const getStravaClient = async (userId: string) => {
 	return client;
 };
 
-export const writeActivitiesToDB = async (stravaActivities) => {
+const writeActivitiesToDB = async (stravaActivities) => {
 	return await db.insert(activities).values(
 		stravaActivities.map((act) => {
 			return {
@@ -79,7 +79,7 @@ export const writeActivitiesToDB = async (stravaActivities) => {
 };
 
 // https://github.com/drizzle-team/drizzle-orm/issues/1728#issuecomment-3249156563
-export const conflictUpdateAllExcept = <
+const conflictUpdateAllExcept = <
 	T extends PgTable,
 	C extends keyof T["$inferInsert"],
 >(
@@ -94,6 +94,24 @@ export const conflictUpdateAllExcept = <
 			)
 			.map(([colName, { name }]) => [colName, sql.raw(`EXCLUDED."${name}"`)]),
 	);
+
+const formatStravaActivities = (activities) => {
+	return activities?.map((activity: Activity) => {
+		return {
+			name: activity.name,
+			distance: activity.distance,
+			id: activity.id,
+			kudos: activity.kudos_count,
+			start: dayjs(activity.start_date_local),
+			elevation: activity.total_elevation_gain,
+			description: activity.description,
+			type: activity.type,
+			athletes: activity.athlete_count,
+			elapsedTime: activity.elapsed_time,
+			movingTime: activity.moving_time,
+		};
+	});
+};
 
 export const upsertActivitiesToDB = async (stravaActivities) => {
 	return await db
@@ -118,24 +136,6 @@ export const upsertActivitiesToDB = async (stravaActivities) => {
 			target: activities.id,
 			set: conflictUpdateAllExcept(activities, ["id"]),
 		});
-};
-
-export const formatStravaActivities = (activities) => {
-	return activities?.map((activity: Activity) => {
-		return {
-			name: activity.name,
-			distance: activity.distance,
-			id: activity.id,
-			kudos: activity.kudos_count,
-			start: dayjs(activity.start_date_local),
-			elevation: activity.total_elevation_gain,
-			description: activity.description,
-			type: activity.type,
-			athletes: activity.athlete_count,
-			elapsedTime: activity.elapsed_time,
-			movingTime: activity.moving_time,
-		};
-	});
 };
 
 export const deleteActivities = async () => {
@@ -182,4 +182,10 @@ export const getAllStravaActivities = async (userId: string) => {
 
 	// Probably best not returning the activities here;
 	return "done";
+};
+
+export const getStravaActivities = async (userId: string, options = {}) => {
+	const strava = await getStravaClient(userId);
+	const payload = await strava?.athlete.listActivities(options);
+	return formatStravaActivities(payload);
 };

@@ -1,29 +1,24 @@
 import { auth } from "auth";
 import { NextResponse } from "next/server";
 
-import {
-	deleteActivities,
-	formatStravaActivities,
-	getStravaClient,
-	writeActivitiesToDB,
-} from "../utils";
+import { getStravaActivities } from "../utils";
 
+/**
+ * /activities/get route
+ */
 export const GET = auth(async (req) => {
 	if (!req.auth) {
 		return null;
 	}
 	const userId = req.auth.user?.id;
-	// const user = await db.query.users.findFirst({ userId: req.auth.userId });
-	const strava = await getStravaClient(userId);
-	const payload = await strava?.athlete.listActivities({});
 
-	const stravaActivities = formatStravaActivities(payload);
+	const stravaActivities = getStravaActivities(userId!);
 
-	// Delete while activities DB
-	await deleteActivities();
+	// Delete activities from DB
+	// await deleteActivities();
 
 	// Put them in the database!
-	await writeActivitiesToDB(stravaActivities);
+	// await writeActivitiesToDB(stravaActivities);
 
 	if (stravaActivities) {
 		return NextResponse.json({ activities: stravaActivities });

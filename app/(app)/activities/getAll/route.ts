@@ -1,16 +1,7 @@
 import { auth } from "auth";
 import { NextResponse } from "next/server";
-import type { DetailedActivityResponse } from "strava-v3";
 
-import {
-	deleteActivities,
-	getAllStravaActivities,
-	getStravaClient,
-} from "../utils";
-
-interface Activity extends DetailedActivityResponse {
-	type: string;
-}
+import { getAllStravaActivities } from "../utils";
 
 /**
  * This Route will get ALL the Strava Activities.
@@ -23,15 +14,12 @@ export const GET = auth(async (req) => {
 
 	const userId = req.auth.user.id;
 
-	const strava = await getStravaClient(userId);
+	// await deleteActivities();
 
-	await deleteActivities();
-
-	const syncAll = await getAllStravaActivities(userId);
+	const syncAll = await getAllStravaActivities(userId!);
 
 	return NextResponse.json({
-		message: "To Do",
-		// auth: req.auth,
+		message: "Get All Activities",
 		syncAll,
 	});
 });
