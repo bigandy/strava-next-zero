@@ -68,7 +68,6 @@ export const Activities = () => {
 							<th>Elapsed</th>
 							<th>Moving</th>
 							<th>Type</th>
-							<th>Private?</th>
 						</tr>
 					</thead>
 					<tbody>
@@ -103,7 +102,6 @@ const Activity = ({ activity }) => {
 			<td>{(activity.elapsedTime / 3600) * 60}</td>
 			<td>{(activity.movingTime / 3600) * 60}</td>
 			<td>{activity.type}</td>
-			<td>{activity.isPrivate ? "yes" : "no"}</td>
 		</tr>
 	);
 };

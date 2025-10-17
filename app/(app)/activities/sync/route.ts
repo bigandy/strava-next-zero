@@ -4,7 +4,7 @@ import { NextResponse } from "next/server";
 import {
 	formatStravaActivities,
 	getStravaClient,
-	// writeActivitiesToDB,
+	upsertActivitiesToDB,
 } from "../utils";
 
 /**
@@ -20,18 +20,12 @@ export const GET = auth(async (req) => {
 
 	const strava = await getStravaClient(userId);
 
-	const payload = await strava.athlete.listActivities({
-		per_page: 1,
-	});
+	const payload = await strava.athlete.listActivities({});
 
 	const stravaActivities = formatStravaActivities(payload);
 
-	// // Delete while activities DB
-	// await db.delete(activities);
-
-	// // Put them in the database!
-	// Put them in the database!
-	// await writeActivitiesToDB(stravaActivities);
+	// Upsert them in the database!
+	await upsertActivitiesToDB(stravaActivities);
 
 	return NextResponse.json({
 		stravaActivities,

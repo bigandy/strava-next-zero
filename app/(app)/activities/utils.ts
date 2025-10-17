@@ -1,5 +1,7 @@
 import dayjs from "dayjs";
-import { eq } from "drizzle-orm";
+import { eq, getTableColumns, sql } from "drizzle-orm";
+import { toSnakeCase } from "drizzle-orm/casing";
+import type { PgTable } from "drizzle-orm/pg-core";
 import type { DetailedActivityResponse } from "strava-v3";
 import { default as strava } from "strava-v3";
 import { seconds, throttledQueue } from "throttled-queue";
@@ -60,13 +62,12 @@ export const getStravaClient = async (userId: string) => {
 export const writeActivitiesToDB = async (stravaActivities) => {
 	return await db.insert(activities).values(
 		stravaActivities.map((act) => {
-			const start = dayjs(act.start);
 			return {
 				id: act.id,
 				name: act.name,
 				description: act.description,
 				kudos: act.kudos,
-				start,
+				start: act.start,
 				elapsedTime: act.elapsedTime,
 				movingTime: act.movingTime,
 				type: act.type,
@@ -77,6 +78,48 @@ export const writeActivitiesToDB = async (stravaActivities) => {
 	);
 };
 
+// https://github.com/drizzle-team/drizzle-orm/issues/1728#issuecomment-3249156563
+export const conflictUpdateAllExcept = <
+	T extends PgTable,
+	C extends keyof T["$inferInsert"],
+>(
+	table: T,
+	except: C[],
+) =>
+	Object.fromEntries(
+		Object.entries(getTableColumns(table))
+			.filter(
+				([colName]) =>
+					!except.includes(colName as keyof typeof table.$inferInsert),
+			)
+			.map(([colName, { name }]) => [colName, sql.raw(`EXCLUDED."${name}"`)]),
+	);
+
+export const upsertActivitiesToDB = async (stravaActivities) => {
+	return await db
+		.insert(activities)
+		.values(
+			stravaActivities.map((act) => {
+				return {
+					id: act.id,
+					name: act.name,
+					description: act.description,
+					kudos: act.kudos,
+					start: act.start,
+					elapsedTime: act.elapsedTime,
+					movingTime: act.movingTime,
+					type: act.type,
+					elevation: act.elevation,
+					distance: act.distance,
+				};
+			}),
+		)
+		.onConflictDoUpdate({
+			target: activities.id,
+			set: conflictUpdateAllExcept(activities, ["id"]),
+		});
+};
+
 export const formatStravaActivities = (activities) => {
 	return activities?.map((activity: Activity) => {
 		return {
@@ -84,14 +127,13 @@ export const formatStravaActivities = (activities) => {
 			distance: activity.distance,
 			id: activity.id,
 			kudos: activity.kudos_count,
-			start: activity.start_date_local,
+			start: dayjs(activity.start_date_local),
 			elevation: activity.total_elevation_gain,
 			description: activity.description,
 			type: activity.type,
 			athletes: activity.athlete_count,
 			elapsedTime: activity.elapsed_time,
 			movingTime: activity.moving_time,
-			isPrivate: activity.private,
 		};
 	});
 };
