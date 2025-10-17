@@ -4,16 +4,16 @@
 }
 
 .dot {
+	--dimension: 5px;
 	--_dot-bg: var(--dot-background, red);
 	border-radius: 50%;
 	aspect-ratio: 1;
-	height: 10px;
-	width: 10px;
+	height: var(--dimension);
 	background: var(--_dot-bg);
 	anchor-name: var(--anchor-name, --dot);
 	cursor: pointer;
 	padding: 0.25em;
-	border: 10px solid var(--dot-border, #282c34);
+	border: var(--dimension) solid var(--dot-border, #282c34);
 
 	&:hover {
 		background-color: var(

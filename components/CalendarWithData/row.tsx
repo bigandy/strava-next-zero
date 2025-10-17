@@ -1,5 +1,9 @@
+import dayjs from "dayjs";
+import isToday from "dayjs/plugin/isToday";
 import { CellWithDots } from "./cell";
 import { getMonthDays } from "./utils";
+
+dayjs.extend(isToday);
 
 interface Props {
 	month: number;
@@ -16,19 +20,27 @@ export const Rows = ({ month, year, data }: Props) => {
 				return (
 					<tr key={`row-${rowIndex}`}>
 						{row.map((cell, cellIndex) => {
+							const day = cellIndex + 1;
+							const dateString = `${year}-${month}-${day}`;
+
 							if (!cell) {
-								return <td key={`cell-${cellIndex}`} />;
+								return <td key={`cell-${dateString}`} />;
 							}
 
 							const todayDots = data?.filter((dot) => {
 								return dot.date === cell.date;
 							});
 
+							const isToday = dayjs(
+								`${year}-${month}-${cell.number}`,
+								"YYYY-M-D",
+							).isToday();
+
 							return (
 								<CellWithDots
-									key={`cell-${cellIndex}`}
+									key={`cell-${dateString}`}
 									number={cell.number}
-									// activeDay={cell.activeDay}
+									activeDay={isToday}
 									dots={todayDots || []}
 									index={cellIndex + 1}
 								/>

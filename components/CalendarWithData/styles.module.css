@@ -264,9 +264,9 @@
 }
 
 .dots {
-	display: none;
+	/* display: none; */
 
-	@container (inline-size > 500px) {
+	@container (inline-size > 300px) {
 		display: block;
 		position: absolute;
 		top: 0;

@@ -19,13 +19,14 @@ interface CalendarWithDataProps {
 import clsx from "clsx";
 import styles from "./styles.module.css";
 
+// Better in component or out?
+const date = new Date();
+
 export const SingleCalendar = ({
 	month,
 	year,
 	data,
 }: CalendarWithDataProps) => {
-	const date = new Date();
-
 	const currentCalendar =
 		date.getMonth() + 1 === month && date.getFullYear() === year;
 
