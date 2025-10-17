@@ -12,7 +12,7 @@ export const GET = auth(async (req) => {
 	}
 	const userId = req.auth.user?.id;
 
-	const stravaActivities = getStravaActivities(userId!);
+	const stravaActivities = await getStravaActivities(userId!);
 
 	// Delete activities from DB
 	// await deleteActivities();

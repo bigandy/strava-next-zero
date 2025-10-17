@@ -139,7 +139,7 @@ export const schema = {
         },
         name: {
           type: "string",
-          optional: true,
+          optional: false,
           customType: null as unknown as ZeroCustomType<
             typeof zeroSchema,
             "activities",
@@ -148,7 +148,7 @@ export const schema = {
         },
         kudos: {
           type: "number",
-          optional: true,
+          optional: false,
           customType: null as unknown as ZeroCustomType<
             typeof zeroSchema,
             "activities",
@@ -157,7 +157,7 @@ export const schema = {
         },
         start: {
           type: "number",
-          optional: true,
+          optional: false,
           customType: null as unknown as ZeroCustomType<
             typeof zeroSchema,
             "activities",
@@ -166,7 +166,7 @@ export const schema = {
         },
         elapsedTime: {
           type: "number",
-          optional: true,
+          optional: false,
           customType: null as unknown as ZeroCustomType<
             typeof zeroSchema,
             "activities",
@@ -175,7 +175,7 @@ export const schema = {
         },
         movingTime: {
           type: "number",
-          optional: true,
+          optional: false,
           customType: null as unknown as ZeroCustomType<
             typeof zeroSchema,
             "activities",
@@ -184,7 +184,7 @@ export const schema = {
         },
         type: {
           type: "string",
-          optional: true,
+          optional: false,
           customType: null as unknown as ZeroCustomType<
             typeof zeroSchema,
             "activities",
@@ -193,7 +193,7 @@ export const schema = {
         },
         elevation: {
           type: "number",
-          optional: true,
+          optional: false,
           customType: null as unknown as ZeroCustomType<
             typeof zeroSchema,
             "activities",
@@ -202,11 +202,20 @@ export const schema = {
         },
         distance: {
           type: "number",
-          optional: true,
+          optional: false,
           customType: null as unknown as ZeroCustomType<
             typeof zeroSchema,
             "activities",
             "distance"
+          >,
+        },
+        visibility: {
+          type: "string",
+          optional: false,
+          customType: null as unknown as ZeroCustomType<
+            typeof zeroSchema,
+            "activities",
+            "visibility"
           >,
         },
         updatedAt: {

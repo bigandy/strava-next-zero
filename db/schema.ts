@@ -21,16 +21,17 @@ export const users = pgTable("user", {
 });
 
 export const activities = pgTable("activity", {
-	id: text("id").primaryKey(),
-	name: text("name"),
+	id: text("id").primaryKey().notNull(),
+	name: text("name").notNull(),
 	// description: text("description"), // API DOESN'T RETURN THIS.
-	kudos: integer("kudos"),
-	start: timestamp("start", { withTimezone: true }),
-	elapsedTime: numeric("elapsedTime"),
-	movingTime: numeric("movingTime"),
-	type: text("type"),
-	elevation: numeric("elevation"),
-	distance: numeric("distance"),
+	kudos: integer("kudos").notNull(),
+	start: timestamp("start", { withTimezone: true }).notNull(),
+	elapsedTime: numeric("elapsedTime").notNull(),
+	movingTime: numeric("movingTime").notNull(),
+	type: text("type").notNull(),
+	elevation: numeric("elevation").notNull(),
+	distance: numeric("distance").notNull(),
+	visibility: text("visibility").notNull(),
 
 	updatedAt: text()
 		.notNull()

@@ -1,6 +1,5 @@
 import dayjs from "dayjs";
 import { eq, getTableColumns, sql } from "drizzle-orm";
-import { toSnakeCase } from "drizzle-orm/casing";
 import type { PgTable } from "drizzle-orm/pg-core";
 import type { DetailedActivityResponse } from "strava-v3";
 import { default as strava } from "strava-v3";
@@ -10,6 +9,7 @@ import { accounts, activities } from "@/db/schema";
 
 interface Activity extends DetailedActivityResponse {
 	type: string;
+	visibility: string;
 }
 
 const nowEpoc = () => Math.floor(Date.now()) / 1000;
@@ -109,6 +109,7 @@ const formatStravaActivities = (activities) => {
 			athletes: activity.athlete_count,
 			elapsedTime: activity.elapsed_time,
 			movingTime: activity.moving_time,
+			visibility: activity.visibility,
 		};
 	});
 };
@@ -129,6 +130,7 @@ export const upsertActivitiesToDB = async (stravaActivities) => {
 					type: act.type,
 					elevation: act.elevation,
 					distance: act.distance,
+					visibility: act.visibility,
 				};
 			}),
 		)
@@ -168,7 +170,7 @@ export const getAllStravaActivities = async (userId: string) => {
 			const formattedActivities = formatStravaActivities(activities);
 
 			// write to the db
-			await writeActivitiesToDB(formattedActivities);
+			await upsertActivitiesToDB(formattedActivities);
 
 			continueFetching = formattedActivities.length === per_page;
 			allStravaActivities.push(formattedActivities);
