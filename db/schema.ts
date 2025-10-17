@@ -23,7 +23,7 @@ export const users = pgTable("user", {
 export const activities = pgTable("activity", {
 	id: text("id").primaryKey(),
 	name: text("name"),
-	description: text("description"),
+	// description: text("description"), // API DOESN'T RETURN THIS.
 	kudos: integer("kudos"),
 	start: timestamp("start", { withTimezone: true }),
 	elapsedTime: numeric("elapsedTime"),
@@ -31,7 +31,7 @@ export const activities = pgTable("activity", {
 	type: text("type"),
 	elevation: numeric("elevation"),
 	distance: numeric("distance"),
-	isPrivate: boolean("isPrivate"),
+	// isPrivate: boolean("isPrivate"), // API DOESN'T RETURN THIS.
 	//   athlete: {
 	// 	resource_state: number;
 	// 	firstname: string;

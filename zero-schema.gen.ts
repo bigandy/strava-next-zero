@@ -146,15 +146,6 @@ export const schema = {
             "name"
           >,
         },
-        description: {
-          type: "string",
-          optional: true,
-          customType: null as unknown as ZeroCustomType<
-            typeof zeroSchema,
-            "activities",
-            "description"
-          >,
-        },
         kudos: {
           type: "number",
           optional: true,
@@ -216,15 +207,6 @@ export const schema = {
             typeof zeroSchema,
             "activities",
             "distance"
-          >,
-        },
-        isPrivate: {
-          type: "boolean",
-          optional: true,
-          customType: null as unknown as ZeroCustomType<
-            typeof zeroSchema,
-            "activities",
-            "isPrivate"
           >,
         },
       },

@@ -8,6 +8,13 @@
       "when": 1760692964753,
       "tag": "0000_wealthy_skin",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1760700210591,
+      "tag": "0001_dusty_sasquatch",
+      "breakpoints": true
     }
   ]
 }
