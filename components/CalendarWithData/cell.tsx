@@ -1,5 +1,6 @@
 import clsx from "clsx";
-import { Dot } from "./Dot";
+import { Dot } from "./dot";
+import { DotWithPopover } from "./dot-with-popover";
 import styles from "./styles.module.css";
 import { indexToDay } from "./utils";
 
@@ -19,6 +20,9 @@ export const CellWithDots = ({
 	dots,
 	index,
 }: CellWithDotsProps) => {
+	if (dots.length > 0) {
+		console.log({ dots });
+	}
 	return (
 		<td
 			className={clsx({
@@ -31,18 +35,17 @@ export const CellWithDots = ({
 			{dots && dots.length > 0 && (
 				<div className={styles.dots}>
 					{dots.map((dot, index) => {
-						if (dot.information) {
-							return (
-								<DotWithPopover
-									key={`dot-${dot.date}-${index}`}
-									title={dot.information.title}
-									content={dot.information.content}
-									link={dot.information.link}
-								/>
-							);
-						} else {
-							return <Dot key={`dot-${dot.date}-${index}`} />;
-						}
+						// if (dot.information) {
+						return (
+							<DotWithPopover
+								key={`dot-${dot.id}`}
+								name={dot.name}
+								id={dot.id}
+							/>
+						);
+						// } else {
+						// 	return <Dot key={`dot-${dot.date}-${index}`} />;
+						// }
 					})}
 				</div>
 			)}

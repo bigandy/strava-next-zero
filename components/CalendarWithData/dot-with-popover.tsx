@@ -2,35 +2,38 @@ import { useId } from "react";
 import styles from "./dot.styles.module.css";
 
 interface Props {
-	title?: string;
-	content?: string;
-	link?: string;
+	name: string;
+	id: string;
 }
 
-export const DotWithPopover = ({
-	title = "Popover Title",
-	content = `Popover content
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Quidem aspernatur labore veritatis ex doloremque, aperiam porro soluta. Optio libero aliquid repellat atque neque in, error, natus corporis vel fuga nam?`,
-	link = "https://google.com",
-}: Props) => {
-	const id = useId();
+export const DotWithPopover = ({ name = "Popover Title", id }: Props) => {
+	const popoverId = useId();
 
 	return (
 		<div
-			class={styles.wrapper}
+			className={styles.wrapper}
 			style={{
-				"--anchor-name": `ank-${id}`,
+				"--anchor-name": `ank-${popoverId}`,
 			}}
 		>
-			<button popoverTarget={id} class={`${styles.dot} dot`}></button>
-			<div popover class={styles.popover} id={id}>
-				<button popoverTarget={id}>
-					x<div class="vh">close</div>
+			<button
+				popoverTarget={popoverId}
+				className={`${styles.dot} dot`}
+				type="button"
+			></button>
+			<div popover="auto" className={styles.popover} id={popoverId}>
+				<button popoverTarget={popoverId} type="button">
+					x<div className="vh">close</div>
 				</button>
-				<h2>{title}</h2>
-				<p>{content}</p>
+				<h2>{name}</h2>
 
-				<a href={link}>Link</a>
+				<a
+					href={`https://strava.com/activities/${id}`}
+					target="_blank"
+					className={"underline text-blue-500 mr-4"}
+				>
+					Link
+				</a>
 			</div>
 		</div>
 	);

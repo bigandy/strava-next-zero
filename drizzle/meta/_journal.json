@@ -5,43 +5,8 @@
     {
       "idx": 0,
       "version": "7",
-      "when": 1760542539441,
-      "tag": "0000_new_mulholland_black",
-      "breakpoints": true
-    },
-    {
-      "idx": 1,
-      "version": "7",
-      "when": 1760542946660,
-      "tag": "0001_tan_thanos",
-      "breakpoints": true
-    },
-    {
-      "idx": 2,
-      "version": "7",
-      "when": 1760543031464,
-      "tag": "0002_brave_carlie_cooper",
-      "breakpoints": true
-    },
-    {
-      "idx": 3,
-      "version": "7",
-      "when": 1760601449920,
-      "tag": "0003_lovely_sentry",
-      "breakpoints": true
-    },
-    {
-      "idx": 4,
-      "version": "7",
-      "when": 1760604083127,
-      "tag": "0004_sleepy_rattler",
-      "breakpoints": true
-    },
-    {
-      "idx": 5,
-      "version": "7",
-      "when": 1760604357671,
-      "tag": "0005_fancy_sentinel",
+      "when": 1760692964753,
+      "tag": "0000_wealthy_skin",
       "breakpoints": true
     }
   ]

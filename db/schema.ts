@@ -25,7 +25,7 @@ export const activities = pgTable("activity", {
 	name: text("name"),
 	description: text("description"),
 	kudos: integer("kudos"),
-	start: text("start"),
+	start: timestamp("start", { withTimezone: true }),
 	elapsedTime: numeric("elapsedTime"),
 	movingTime: numeric("movingTime"),
 	type: text("type"),

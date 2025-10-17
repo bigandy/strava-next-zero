@@ -2,7 +2,11 @@ import { auth } from "auth";
 import { NextResponse } from "next/server";
 import type { DetailedActivityResponse } from "strava-v3";
 
-import { getAllStravaActivities, getStravaClient } from "../utils";
+import {
+	deleteActivities,
+	getAllStravaActivities,
+	getStravaClient,
+} from "../utils";
 
 interface Activity extends DetailedActivityResponse {
 	type: string;
@@ -21,28 +25,9 @@ export const GET = auth(async (req) => {
 
 	const strava = await getStravaClient(userId);
 
+	await deleteActivities();
+
 	const syncAll = await getAllStravaActivities(userId);
-
-	// const stravaActivities = payload.map((activity: Activity) => {
-	// 	return {
-	// 		name: activity.name,
-	// 		distance: activity.distance,
-	// 		id: activity.id,
-	// 		kudos: activity.kudos_count,
-	// 		start: activity.start_date_local,
-	// 		elevation: activity.total_elevation_gain,
-	// 		description: activity.description,
-	// 		type: activity.type,
-	// 		athletes: activity.athlete_count,
-	// 		elapsedTime: activity.elapsed_time,
-	// 		movingTime: activity.moving_time,
-	// 	};
-	// });
-
-	// // Delete while activities DB
-	// await db.delete(activities);
-
-	// // Put them in the database!
 
 	return NextResponse.json({
 		message: "To Do",

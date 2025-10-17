@@ -1,3 +1,4 @@
+import dayjs from "dayjs";
 import { eq } from "drizzle-orm";
 import type { DetailedActivityResponse } from "strava-v3";
 import { default as strava } from "strava-v3";
@@ -58,18 +59,21 @@ export const getStravaClient = async (userId: string) => {
 
 export const writeActivitiesToDB = async (stravaActivities) => {
 	return await db.insert(activities).values(
-		stravaActivities.map((act) => ({
-			id: act.id,
-			name: act.name,
-			description: act.description,
-			kudos: act.kudos,
-			start: act.start,
-			elapsedTime: act.elapsedTime,
-			movingTime: act.movingTime,
-			type: act.type,
-			elevation: act.elevation,
-			distance: act.distance,
-		})),
+		stravaActivities.map((act) => {
+			const start = dayjs(act.start);
+			return {
+				id: act.id,
+				name: act.name,
+				description: act.description,
+				kudos: act.kudos,
+				start,
+				elapsedTime: act.elapsedTime,
+				movingTime: act.movingTime,
+				type: act.type,
+				elevation: act.elevation,
+				distance: act.distance,
+			};
+		}),
 	);
 };
 
@@ -92,6 +96,10 @@ export const formatStravaActivities = (activities) => {
 	});
 };
 
+export const deleteActivities = async () => {
+	return await db.delete(activities);
+};
+
 export const getAllStravaActivities = async (userId: string) => {
 	const strava = await getStravaClient(userId);
 	// There are currently 125 pages of 30 results. This will change.
@@ -101,8 +109,6 @@ export const getAllStravaActivities = async (userId: string) => {
 	const per_page = 100;
 
 	let continueFetching = true;
-
-	// await db.delete(activities);
 
 	const throttle = throttledQueue({
 		maxPerInterval: 1,
@@ -124,8 +130,6 @@ export const getAllStravaActivities = async (userId: string) => {
 
 			continueFetching = formattedActivities.length === per_page;
 			allStravaActivities.push(formattedActivities);
-
-			console.log(formattedActivities.length, page, Date.now());
 
 			page++;
 

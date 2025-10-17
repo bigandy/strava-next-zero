@@ -165,7 +165,7 @@ export const schema = {
           >,
         },
         start: {
-          type: "string",
+          type: "number",
           optional: true,
           customType: null as unknown as ZeroCustomType<
             typeof zeroSchema,

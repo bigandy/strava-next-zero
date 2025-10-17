@@ -1,33 +1,35 @@
+import type { Dispatch, SetStateAction } from "react";
 import { Button } from "../button";
 
-import styles from "./styles.module.css";
+interface Props {
+	year: number;
+	setYear: Dispatch<SetStateAction<number>>;
+	currentYear: number;
+}
 
-// interface Props {
-// 	offset: number;
-// 	setOffset: number;
-// }
-
-export const YearHeader = ({ year, setYear, currentYear }) => {
+export const YearHeader = ({ year, setYear, currentYear }: Props) => {
 	return (
-		<header className="flex border border-black p-2 flex-column gap-4">
-			<h2 className={styles.calendarYear}>{year}</h2>
-			<div className="flex p-2 flex-row gap-4">
-				<Button handleClick={() => setYear((y) => y - 1)}>
-					&lt;&lt; <span className="vh">previous year</span>
-				</Button>
+		<div className=" border border-black p-2 flex flex-col justify-center text-center">
+			<h2 className={`styles.calendarYear font-bold text-4xl`}>{year}</h2>
+			<header className="flex flex-column gap-4 justify-center">
+				<div className="flex p-2 flex-row gap-4">
+					<Button handleClick={() => setYear((y) => y - 1)}>
+						&lt;&lt; <span className="vh">previous year</span>
+					</Button>
 
-				<Button
-					// secondary
-					handleClick={() => setYear(currentYear)}
-					disabled={year === currentYear}
-				>
-					Now
-				</Button>
+					<Button
+						// secondary
+						handleClick={() => setYear(currentYear)}
+						disabled={year === currentYear}
+					>
+						Now
+					</Button>
 
-				<Button handleClick={() => setYear((o) => o + 1)}>
-					&gt;&gt; <span className="vh">next year</span>
-				</Button>
-			</div>
-		</header>
+					<Button handleClick={() => setYear((y) => y + 1)}>
+						&gt;&gt; <span className="vh">next year</span>
+					</Button>
+				</div>
+			</header>
+		</div>
 	);
 };

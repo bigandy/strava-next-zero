@@ -2,9 +2,10 @@ import { auth } from "auth";
 import { NextResponse } from "next/server";
 
 import {
+	deleteActivities,
 	formatStravaActivities,
 	getStravaClient,
-	// writeActivitiesToDB
+	writeActivitiesToDB,
 } from "../utils";
 
 export const GET = auth(async (req) => {
@@ -18,11 +19,11 @@ export const GET = auth(async (req) => {
 
 	const stravaActivities = formatStravaActivities(payload);
 
-	// // Delete while activities DB
-	// await db.delete(activities);
+	// Delete while activities DB
+	await deleteActivities();
 
 	// Put them in the database!
-	// await writeActivitiesToDB(stravaActivities);
+	await writeActivitiesToDB(stravaActivities);
 
 	if (stravaActivities) {
 		return NextResponse.json({ activities: stravaActivities });

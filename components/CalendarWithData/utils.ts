@@ -14,6 +14,10 @@ const dayToNumericDay = (firstDayofMonth: string) => {
 	return firstDayNumeric;
 };
 
+export const getDate = ({ day, month, year }) => {
+	return dayjs(`${year}-${month}-${day}`, "YYYY-M-D");
+};
+
 export const getMonth = (month: number, year: number) => {
 	const dateString = `${year}-${month}-01`;
 

@@ -1,5 +1,14 @@
 import "./globals.css";
 
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+	title: "Next Strava Viewer",
+	description:
+		"Next Strava Viewer with next-auth, drizzle, tailwind, zero-drizzle",
+	// metadataBase: new URL("https://next-learn-dashboard.vercel.sh"),
+};
+
 export default function RootLayout({
 	children,
 }: Readonly<{
