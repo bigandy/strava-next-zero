@@ -9,8 +9,6 @@ export const contentType = "image/png";
 
 // Image generation
 export default function Icon() {
-	console.log("I AM ICON!");
-
 	return new ImageResponse(
 		// ImageResponse JSX element
 		<div

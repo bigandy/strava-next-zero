@@ -1,15 +1,18 @@
-import { auth } from "auth";
+import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 import { ClientOnly } from "@/components/client-only";
 import { Header } from "@/components/Header";
 import { ZeroProvider } from "@/components/zero";
+import { auth } from "@/lib/auth";
 
 export default async function Layout({
 	children,
 }: Readonly<{
 	children: React.ReactNode;
 }>) {
-	const session = await auth();
+	const session = await auth.api.getSession({
+		headers: await headers(), // you need to pass the headers object.
+	});
 
 	if (!session) {
 		redirect("/");

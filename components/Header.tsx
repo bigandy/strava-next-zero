@@ -1,10 +1,17 @@
-import { auth } from "auth";
+import { headers } from "next/headers";
 import Link from "next/link";
 import { SignIn } from "@/components/sign-in";
 import { SignOut } from "@/components/sign-out";
+import { auth } from "@/lib/auth";
 
 export const Header = async () => {
-	const session = await auth();
+	// const session = await auth();
+
+	const session = await auth.api.getSession({
+		headers: await headers(), // you need to pass the headers object.
+	});
+
+	console.log(session);
 
 	return (
 		<div className="mb-4">
@@ -30,7 +37,10 @@ export const Header = async () => {
 					</details>
 				</>
 			) : (
-				<SignIn provider="strava" />
+				<>
+					<SignIn provider="strava" />
+					<SignIn provider="github" />
+				</>
 			)}
 
 			<div className="flex gap-2 mb-10">
