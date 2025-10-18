@@ -1,5 +1,5 @@
 import dayjs from "dayjs";
-import { eq, getTableColumns, sql } from "drizzle-orm";
+import { getTableColumns, sql } from "drizzle-orm";
 import type { PgTable } from "drizzle-orm/pg-core";
 import type { DetailedActivityResponse } from "strava-v3";
 import { default as strava } from "strava-v3";
@@ -179,17 +179,17 @@ export const getAllStravaActivities = async (account: Account) => {
 	return "done";
 };
 
-export const getStravaActivities = async (account: string, options = {}) => {
+export const getStravaActivities = async (account: Account, options = {}) => {
 	const strava = await getStravaClient(account);
 	const payload = await strava?.athlete.listActivities(options);
 	return formatStravaActivities(payload);
 };
 
 export const getOneStravaActivity = async (
-	userId: string,
+	account: Account,
 	activityId: string,
 ) => {
-	const strava = await getStravaClient(userId);
+	const strava = await getStravaClient(account);
 	const payload = await strava?.activities.get({ id: activityId });
 
 	return formatStravaActivities([payload]);

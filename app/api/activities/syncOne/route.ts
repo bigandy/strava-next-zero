@@ -17,12 +17,10 @@ export const GET = async (request) => {
 		return NextResponse.json({ message: "NO-AUTH" });
 	}
 
-	const userId = request.auth.user?.id;
-
 	const searchParams = request.nextUrl.searchParams;
 	const id = searchParams.get("id");
 
-	const stravaActivity = await getOneStravaActivity(userId!, id!);
+	const stravaActivity = await getOneStravaActivity(session.account, id!);
 
 	// Upsert them in the database!
 	await upsertActivitiesToDB(stravaActivity);

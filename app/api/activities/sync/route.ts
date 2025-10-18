@@ -13,13 +13,12 @@ export const GET = async (req) => {
 	const session = await auth.api.getSession({
 		headers: await headers(),
 	});
+
 	if (!session) {
 		return NextResponse.json({ message: "NO-AUTH" });
 	}
 
-	const userId = req.auth.user?.id;
-
-	const stravaActivities = await getStravaActivities(userId!);
+	const stravaActivities = await getStravaActivities(session.account);
 
 	// Upsert them in the database!
 	await upsertActivitiesToDB(stravaActivities);

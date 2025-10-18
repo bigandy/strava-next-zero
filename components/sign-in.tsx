@@ -2,49 +2,17 @@
 
 import { signIn } from "@/lib/auth-client";
 
-type Provider = "strava" | "github";
+type Provider = "strava";
 
 export function SignIn({ provider }: { provider: Provider }) {
 	const handleClick = async () => {
-		if (provider === "strava") {
-			const { data, error } = await signIn.oauth2({
-				providerId: "strava", // required
-				// callbackURL: "/dashboard",
-				// errorCallbackURL: "/error-page",
-				// newUserCallbackURL: "/welcome",
-				// disableRedirect: false,
-				// scopes: ["my-scope"],
-				requestSignUp: false,
-			});
-			console.log({ data, error });
-		} else {
-			await signIn.social({
-				/**
-				 * The social provider ID
-				 * @example "github", "google", "apple"
-				 */
-				provider: "github",
-				// /**
-				//  * A URL to redirect after the user authenticates with the provider
-				//  * @default "/"
-				//  */
-				// callbackURL: "/dashboard",
-				// /**
-				//  * A URL to redirect if an error occurs during the sign in process
-				//  */
-				// errorCallbackURL: "/error",
-				// /**
-				//  * A URL to redirect if the user is newly registered
-				//  */
-				// newUserCallbackURL: "/welcome",
-				// /**
-				//  * disable the automatic redirect to the provider.
-				//  * @default false
-				//  */
-				// disableRedirect: true,
-			});
-		}
+		const { data, error } = await signIn.oauth2({
+			providerId: "strava",
+			requestSignUp: false,
+		});
+		console.log({ data, error });
 	};
+
 	return (
 		<button
 			type="submit"

@@ -9,18 +9,11 @@ export const auth = betterAuth({
 		provider: "pg", // or "mysql", "sqlite"
 	}),
 
-	socialProviders: {
-		github: {
-			clientId: process.env.AUTH_GITHUB_ID!,
-			clientSecret: process.env.AUTH_GITHUB_SECRET!,
-		},
-	},
-
 	account: {
 		accountLinking: {
 			enabled: true,
 			allowDifferentEmails: true,
-			trustedProviders: ["github", "strava"],
+			trustedProviders: ["strava"],
 		},
 		fields: {
 			accountId: "providerAccountId",
