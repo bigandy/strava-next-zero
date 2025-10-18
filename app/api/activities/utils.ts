@@ -5,7 +5,7 @@ import type { DetailedActivityResponse } from "strava-v3";
 import { default as strava } from "strava-v3";
 import { seconds, throttledQueue } from "throttled-queue";
 import { db } from "@/db";
-import { accounts, activities } from "@/db/schema";
+import { account, activities } from "@/db/schema";
 
 interface Activity extends DetailedActivityResponse {
 	type: string;
@@ -16,8 +16,8 @@ interface Activity extends DetailedActivityResponse {
 const nowEpoc = () => Math.floor(Date.now()) / 1000;
 
 const getAccessToken = async ({ userId }) => {
-	const account = await db.query.accounts.findFirst({
-		where: (accounts, { eq }) => eq(accounts.userId, userId),
+	const account = await db.query.account.findFirst({
+		where: (account, { eq }) => eq(account.userId, userId),
 	});
 
 	if (account.provider !== "strava") {

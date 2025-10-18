@@ -19,34 +19,16 @@ import type { default as zeroSchema } from "./drizzle-zero.config";
  */
 export const schema = {
   tables: {
-    accounts: {
-      name: "accounts",
+    account: {
+      name: "account",
       columns: {
-        userId: {
+        id: {
           type: "string",
           optional: false,
           customType: null as unknown as ZeroCustomType<
             typeof zeroSchema,
-            "accounts",
-            "userId"
-          >,
-        },
-        type: {
-          type: "string",
-          optional: false,
-          customType: null as unknown as ZeroCustomType<
-            typeof zeroSchema,
-            "accounts",
-            "type"
-          >,
-        },
-        provider: {
-          type: "string",
-          optional: false,
-          customType: null as unknown as ZeroCustomType<
-            typeof zeroSchema,
-            "accounts",
-            "provider"
+            "account",
+            "id"
           >,
         },
         providerAccountId: {
@@ -54,8 +36,38 @@ export const schema = {
           optional: false,
           customType: null as unknown as ZeroCustomType<
             typeof zeroSchema,
-            "accounts",
+            "account",
             "providerAccountId"
+          >,
+          serverName: "provider_account_id",
+        },
+        providerId: {
+          type: "string",
+          optional: false,
+          customType: null as unknown as ZeroCustomType<
+            typeof zeroSchema,
+            "account",
+            "providerId"
+          >,
+          serverName: "provider_id",
+        },
+        userId: {
+          type: "string",
+          optional: false,
+          customType: null as unknown as ZeroCustomType<
+            typeof zeroSchema,
+            "account",
+            "userId"
+          >,
+          serverName: "user_id",
+        },
+        access_token: {
+          type: "string",
+          optional: true,
+          customType: null as unknown as ZeroCustomType<
+            typeof zeroSchema,
+            "account",
+            "access_token"
           >,
         },
         refresh_token: {
@@ -63,44 +75,8 @@ export const schema = {
           optional: true,
           customType: null as unknown as ZeroCustomType<
             typeof zeroSchema,
-            "accounts",
+            "account",
             "refresh_token"
-          >,
-        },
-        access_token: {
-          type: "string",
-          optional: true,
-          customType: null as unknown as ZeroCustomType<
-            typeof zeroSchema,
-            "accounts",
-            "access_token"
-          >,
-        },
-        expires_at: {
-          type: "number",
-          optional: true,
-          customType: null as unknown as ZeroCustomType<
-            typeof zeroSchema,
-            "accounts",
-            "expires_at"
-          >,
-        },
-        token_type: {
-          type: "string",
-          optional: true,
-          customType: null as unknown as ZeroCustomType<
-            typeof zeroSchema,
-            "accounts",
-            "token_type"
-          >,
-        },
-        scope: {
-          type: "string",
-          optional: true,
-          customType: null as unknown as ZeroCustomType<
-            typeof zeroSchema,
-            "accounts",
-            "scope"
           >,
         },
         id_token: {
@@ -108,22 +84,69 @@ export const schema = {
           optional: true,
           customType: null as unknown as ZeroCustomType<
             typeof zeroSchema,
-            "accounts",
+            "account",
             "id_token"
           >,
         },
-        session_state: {
+        access_token_expires: {
+          type: "number",
+          optional: true,
+          customType: null as unknown as ZeroCustomType<
+            typeof zeroSchema,
+            "account",
+            "access_token_expires"
+          >,
+        },
+        refreshTokenExpiresAt: {
+          type: "number",
+          optional: true,
+          customType: null as unknown as ZeroCustomType<
+            typeof zeroSchema,
+            "account",
+            "refreshTokenExpiresAt"
+          >,
+          serverName: "refresh_token_expires_at",
+        },
+        scope: {
           type: "string",
           optional: true,
           customType: null as unknown as ZeroCustomType<
             typeof zeroSchema,
-            "accounts",
-            "session_state"
+            "account",
+            "scope"
           >,
         },
+        password: {
+          type: "string",
+          optional: true,
+          customType: null as unknown as ZeroCustomType<
+            typeof zeroSchema,
+            "account",
+            "password"
+          >,
+        },
+        createdAt: {
+          type: "number",
+          optional: true,
+          customType: null as unknown as ZeroCustomType<
+            typeof zeroSchema,
+            "account",
+            "createdAt"
+          >,
+          serverName: "created_at",
+        },
+        updatedAt: {
+          type: "number",
+          optional: true,
+          customType: null as unknown as ZeroCustomType<
+            typeof zeroSchema,
+            "account",
+            "updatedAt"
+          >,
+          serverName: "updated_at",
+        },
       },
-      primaryKey: ["provider", "providerAccountId"],
-      serverName: "account",
+      primaryKey: ["id"],
     },
     activities: {
       name: "activities",
@@ -342,57 +365,77 @@ export const schema = {
       },
       primaryKey: ["id"],
     },
-    users: {
-      name: "users",
+    user: {
+      name: "user",
       columns: {
         id: {
           type: "string",
           optional: false,
           customType: null as unknown as ZeroCustomType<
             typeof zeroSchema,
-            "users",
+            "user",
             "id"
           >,
         },
         name: {
           type: "string",
-          optional: true,
+          optional: false,
           customType: null as unknown as ZeroCustomType<
             typeof zeroSchema,
-            "users",
+            "user",
             "name"
           >,
         },
         email: {
           type: "string",
-          optional: true,
+          optional: false,
           customType: null as unknown as ZeroCustomType<
             typeof zeroSchema,
-            "users",
+            "user",
             "email"
           >,
         },
         emailVerified: {
-          type: "number",
+          type: "boolean",
           optional: true,
           customType: null as unknown as ZeroCustomType<
             typeof zeroSchema,
-            "users",
+            "user",
             "emailVerified"
           >,
+          serverName: "email_verified",
         },
         image: {
           type: "string",
           optional: true,
           customType: null as unknown as ZeroCustomType<
             typeof zeroSchema,
-            "users",
+            "user",
             "image"
           >,
         },
+        createdAt: {
+          type: "number",
+          optional: true,
+          customType: null as unknown as ZeroCustomType<
+            typeof zeroSchema,
+            "user",
+            "createdAt"
+          >,
+          serverName: "created_at",
+        },
+        updatedAt: {
+          type: "number",
+          optional: true,
+          customType: null as unknown as ZeroCustomType<
+            typeof zeroSchema,
+            "user",
+            "updatedAt"
+          >,
+          serverName: "updated_at",
+        },
       },
       primaryKey: ["id"],
-      serverName: "user",
     },
   },
   relationships: {
@@ -401,7 +444,7 @@ export const schema = {
         {
           sourceField: ["createdById"],
           destField: ["id"],
-          destSchema: "users",
+          destSchema: "user",
           cardinality: "one",
         },
       ],
@@ -409,7 +452,7 @@ export const schema = {
         {
           sourceField: ["assignedToId"],
           destField: ["id"],
-          destSchema: "users",
+          destSchema: "user",
           cardinality: "one",
         },
       ],
@@ -419,7 +462,7 @@ export const schema = {
         {
           sourceField: ["createdById"],
           destField: ["id"],
-          destSchema: "users",
+          destSchema: "user",
           cardinality: "one",
         },
       ],
@@ -427,17 +470,17 @@ export const schema = {
         {
           sourceField: ["assignedToId"],
           destField: ["id"],
-          destSchema: "users",
+          destSchema: "user",
           cardinality: "one",
         },
       ],
     },
-    users: {
+    user: {
       provider: [
         {
           sourceField: ["id"],
           destField: ["userId"],
-          destSchema: "accounts",
+          destSchema: "account",
           cardinality: "one",
         },
       ],
@@ -453,10 +496,10 @@ export const schema = {
  */
 export type Schema = typeof schema;
 /**
- * Represents a row from the "accounts" table.
+ * Represents a row from the "account" table.
  * This type is auto-generated from your Drizzle schema definition.
  */
-export type Account = Row<Schema["tables"]["accounts"]>;
+export type Account = Row<Schema["tables"]["account"]>;
 /**
  * Represents a row from the "activities" table.
  * This type is auto-generated from your Drizzle schema definition.
@@ -473,10 +516,10 @@ export type Task = Row<Schema["tables"]["tasks"]>;
  */
 export type Todo = Row<Schema["tables"]["todos"]>;
 /**
- * Represents a row from the "users" table.
+ * Represents a row from the "user" table.
  * This type is auto-generated from your Drizzle schema definition.
  */
-export type User = Row<Schema["tables"]["users"]>;
+export type User = Row<Schema["tables"]["user"]>;
 
 /**
  * Represents the Zero schema query builder.

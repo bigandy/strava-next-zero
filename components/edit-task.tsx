@@ -12,7 +12,7 @@ export function EditTask({ taskId }: { taskId: string }) {
 			.where("id", "=", taskId)
 			.one(),
 	);
-	const [users] = useQuery(z.query.users);
+	const [users] = useQuery(z.query.user);
 	return (
 		<div className="grid grid-cols-1 gap-4 max-w-sm">
 			<div className="flex gap-2">

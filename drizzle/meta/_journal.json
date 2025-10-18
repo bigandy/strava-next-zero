@@ -5,29 +5,8 @@
     {
       "idx": 0,
       "version": "7",
-      "when": 1760692964753,
-      "tag": "0000_wealthy_skin",
-      "breakpoints": true
-    },
-    {
-      "idx": 1,
-      "version": "7",
-      "when": 1760700210591,
-      "tag": "0001_dusty_sasquatch",
-      "breakpoints": true
-    },
-    {
-      "idx": 2,
-      "version": "7",
-      "when": 1760703685046,
-      "tag": "0002_tiresome_the_hood",
-      "breakpoints": true
-    },
-    {
-      "idx": 3,
-      "version": "7",
-      "when": 1760706540396,
-      "tag": "0003_romantic_doctor_strange",
+      "when": 1760804593389,
+      "tag": "0000_chubby_absorbing_man",
       "breakpoints": true
     }
   ]
