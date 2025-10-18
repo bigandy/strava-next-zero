@@ -16,7 +16,7 @@ export const SingleActivity = ({ id }) => {
 	const syncActivity = async () => {
 		setLoading(true);
 
-		await fetch(`/activities/syncOne?id=${id}`);
+		await fetch(`/api/activities/syncOne?id=${id}`);
 
 		setLoading(false);
 	};

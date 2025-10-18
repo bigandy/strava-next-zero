@@ -20,7 +20,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
 			authorization: { params: { scope: "activity:read_all,activity:write" } },
 		}),
 	],
-	basePath: "/auth",
+	basePath: "/api/auth",
 	session: { strategy: "jwt" },
 	callbacks: {
 		authorized({ request, auth }) {
