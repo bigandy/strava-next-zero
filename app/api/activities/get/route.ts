@@ -1,24 +1,31 @@
-import { auth } from "auth";
+import { headers } from "next/headers";
 import { NextResponse } from "next/server";
+import { auth } from "@/lib/auth";
 
-import { getStravaActivities } from "../utils";
+import {
+	deleteActivities,
+	getStravaActivities,
+	writeActivitiesToDB,
+} from "../utils";
 
 /**
  * /activities/get route
  */
-export const GET = auth(async (req) => {
-	if (!req.auth) {
+export const GET = async (req, ctx) => {
+	const session = await auth.api.getSession({
+		headers: await headers(),
+	});
+	if (!session) {
 		return null;
 	}
-	const userId = req.auth.user?.id;
 
-	const stravaActivities = await getStravaActivities(userId!);
+	const stravaActivities = await getStravaActivities(session.account);
 
 	// Delete activities from DB
-	// await deleteActivities();
+	await deleteActivities();
 
 	// Put them in the database!
-	// await writeActivitiesToDB(stravaActivities);
+	await writeActivitiesToDB(stravaActivities);
 
 	if (stravaActivities) {
 		return NextResponse.json({ activities: stravaActivities });
@@ -27,4 +34,4 @@ export const GET = auth(async (req) => {
 			message: "no strava provider, log in with Strava please.",
 		});
 	}
-});
+};

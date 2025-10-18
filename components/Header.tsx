@@ -11,8 +11,6 @@ export const Header = async () => {
 		headers: await headers(), // you need to pass the headers object.
 	});
 
-	console.log(session);
-
 	return (
 		<div className="mb-4">
 			{session ? (
