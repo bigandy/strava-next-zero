@@ -1,6 +1,6 @@
 import { signIn } from "auth";
 
-type Provider = "strava" | "github";
+type Provider = "strava";
 
 export function SignIn({ provider }: { provider: Provider }) {
 	return (
