@@ -2,7 +2,7 @@
 
 Based on the [hello zero](https://github.com/a-poor/hellozero) repo by [Austin Poor](https://github.com/a-poor).
 
-Uses Docker for the DB. Zero-cache, zero-drizzle, drizzle, next-auth, next.js, tailwind.
+Uses Docker for the DB. Zero-cache, zero-drizzle, drizzle, better-auth, next.js, tailwind.
 
 ## Developing
 

@@ -11,11 +11,11 @@ export default drizzleZeroConfig(drizzleSchema, {
 	// Column names match your Drizzle schema definitions
 	tables: {
 		providers: true,
-		accounts: true,
+		account: true,
 		// this can be set to false
 		// e.g. users: false,
 		activities: true,
-		users: true,
+		user: true,
 		todos: {
 			id: true,
 			name: true,

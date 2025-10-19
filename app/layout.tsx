@@ -5,7 +5,7 @@ import type { Metadata } from "next";
 export const metadata: Metadata = {
 	title: "Next Strava Viewer",
 	description:
-		"Next Strava Viewer with next-auth, drizzle, tailwind, zero-drizzle",
+		"Next Strava Viewer with better-auth, drizzle, tailwind, zero-drizzle",
 	// metadataBase: new URL("https://next-learn-dashboard.vercel.sh"),
 };
 

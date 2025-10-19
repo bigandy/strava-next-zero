@@ -1,21 +1,25 @@
-import { signIn } from "auth";
+"use client";
+
+import { signIn } from "@/lib/auth-client";
 
 type Provider = "strava";
 
 export function SignIn({ provider }: { provider: Provider }) {
+	const handleClick = async () => {
+		const { data, error } = await signIn.oauth2({
+			providerId: "strava",
+			requestSignUp: false,
+		});
+		console.log({ data, error });
+	};
+
 	return (
-		<form
-			action={async () => {
-				"use server";
-				await signIn(provider);
-			}}
+		<button
+			type="submit"
+			className="border rounded-sm border-black p-4 mb-4 bg-[#F52] text-white"
+			onClick={handleClick}
 		>
-			<button
-				type="submit"
-				className="border rounded-sm border-black p-4 mb-4 bg-[#F52] text-white"
-			>
-				Signin with {provider}
-			</button>
-		</form>
+			Signin with {provider}
+		</button>
 	);
 }

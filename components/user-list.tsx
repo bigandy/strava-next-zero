@@ -6,7 +6,7 @@ import { useZero } from "@/components/zero";
 
 export function UserList() {
 	const z = useZero();
-	const [users] = useQuery(z.query.users.related('provider'));
+	const [users] = useQuery(z.query.user.related("provider"));
 
 	return (
 		<div className="">
@@ -16,12 +16,13 @@ export function UserList() {
 						const name = `${u.name} - ${u?.provider?.provider ?? "no provider provided"}`;
 
 						return (
-						<li key={u.id}>
-							<Link href={`/users/${u.id}`} className="underline">
-								{name}
-							</Link>
-						</li>
-					)})}
+							<li key={u.id}>
+								<Link href={`/users/${u.id}`} className="underline">
+									{name}
+								</Link>
+							</li>
+						);
+					})}
 				</ul>
 			) : (
 				<div>No Users Found</div>

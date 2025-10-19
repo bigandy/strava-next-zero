@@ -1,11 +1,12 @@
 import dayjs from "dayjs";
-import { eq, getTableColumns, sql } from "drizzle-orm";
+import { getTableColumns, sql } from "drizzle-orm";
 import type { PgTable } from "drizzle-orm/pg-core";
 import type { DetailedActivityResponse } from "strava-v3";
 import { default as strava } from "strava-v3";
 import { seconds, throttledQueue } from "throttled-queue";
 import { db } from "@/db";
-import { accounts, activities } from "@/db/schema";
+import { activities } from "@/db/schema";
+import type { Account } from "@/schema";
 
 interface Activity extends DetailedActivityResponse {
 	type: string;
@@ -15,44 +16,32 @@ interface Activity extends DetailedActivityResponse {
 
 const nowEpoc = () => Math.floor(Date.now()) / 1000;
 
-const getAccessToken = async ({ userId }) => {
-	const account = await db.query.accounts.findFirst({
-		where: (accounts, { eq }) => eq(accounts.userId, userId),
-	});
-
-	if (account.provider !== "strava") {
-		console.error("NOT STRAVA ACCOUNT, BAILING...");
-		return undefined;
-	}
-
+const getAccessToken = async (account: Account) => {
 	const now = nowEpoc();
-	const expires = account.expires_at;
+	const expires = dayjs(account.access_token_expires).valueOf() / 1000;
+
 	if (now > expires) {
 		console.log("NEED NEW TOKEN");
-
-		strava.config({
-			access_token: account.access_token!,
-			client_id: process.env.AUTH_STRAVA_ID!,
-			client_secret: process.env.AUTH_STRAVA_SECRET!,
-			redirect_uri: process.env.AUTH_STRAVA_REDIRECT_URL!,
-		});
-
-		const { access_token, refresh_token, expires_at } =
-			await strava.oauth.refreshToken(account.refresh_token);
-
-		await db
-			.update(accounts)
-			.set({ refresh_token, access_token, expires_at })
-			.where(eq(accounts.userId, userId));
-
-		return access_token;
+		// 	strava.config({
+		// 		access_token: account.access_token!,
+		// 		client_id: process.env.AUTH_STRAVA_ID!,
+		// 		client_secret: process.env.AUTH_STRAVA_SECRET!,
+		// 		redirect_uri: process.env.AUTH_STRAVA_REDIRECT_URL!,
+		// 	});
+		// 	const { access_token, refresh_token, expires_at } =
+		// 		await strava.oauth.refreshToken(account.refresh_token);
+		// 	await db
+		// 		.update(accounts)
+		// 		.set({ refresh_token, access_token, expires_at })
+		// 		.where(eq(accounts.userId, userId));
+		// 	return access_token;
 	}
 
 	return account.access_token;
 };
 
-const getStravaClient = async (userId: string) => {
-	const accessToken = await getAccessToken({ userId });
+const getStravaClient = async (account: Account) => {
+	const accessToken = await getAccessToken(account);
 	if (!accessToken) {
 		return null;
 	}
@@ -60,7 +49,7 @@ const getStravaClient = async (userId: string) => {
 	return client;
 };
 
-const writeActivitiesToDB = async (stravaActivities) => {
+export const writeActivitiesToDB = async (stravaActivities) => {
 	return await db.insert(activities).values(
 		stravaActivities.map((act) => {
 			return {
@@ -74,6 +63,7 @@ const writeActivitiesToDB = async (stravaActivities) => {
 				type: act.type,
 				elevation: act.elevation,
 				distance: act.distance,
+				visibility: act.visibility,
 			};
 		}),
 	);
@@ -146,9 +136,8 @@ export const deleteActivities = async () => {
 	return await db.delete(activities);
 };
 
-export const getAllStravaActivities = async (userId: string) => {
-	const strava = await getStravaClient(userId);
-	// There are currently 125 pages of 30 results. This will change.
+export const getAllStravaActivities = async (account: Account) => {
+	const strava = await getStravaClient(account);
 
 	const allStravaActivities = [];
 	let page = 1;
@@ -179,6 +168,8 @@ export const getAllStravaActivities = async (userId: string) => {
 
 			page++;
 
+			console.log(page, formattedActivities.length);
+
 			// Do I need this line??
 			return Promise.resolve("hello!");
 		});
@@ -188,17 +179,17 @@ export const getAllStravaActivities = async (userId: string) => {
 	return "done";
 };
 
-export const getStravaActivities = async (userId: string, options = {}) => {
-	const strava = await getStravaClient(userId);
+export const getStravaActivities = async (account: Account, options = {}) => {
+	const strava = await getStravaClient(account);
 	const payload = await strava?.athlete.listActivities(options);
 	return formatStravaActivities(payload);
 };
 
 export const getOneStravaActivity = async (
-	userId: string,
+	account: Account,
 	activityId: string,
 ) => {
-	const strava = await getStravaClient(userId);
+	const strava = await getStravaClient(account);
 	const payload = await strava?.activities.get({ id: activityId });
 
 	return formatStravaActivities([payload]);

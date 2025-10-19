@@ -8,13 +8,13 @@ export const User = ({ id }: { id: string }) => {
 	const z = useZero();
 
 	const [user] = useQuery(
-		z.query.users.related("provider").where("id", "=", id).one(),
+		z.query.user.related("provider").where("id", "=", id).one(),
 	);
 
 	const handleInput = (e) => {
 		const { value } = e.target;
 
-		z.mutate.users.update({
+		z.mutate.user.update({
 			id: user.id,
 			name: value,
 		});

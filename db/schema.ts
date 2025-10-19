@@ -5,19 +5,50 @@ import {
 	integer,
 	numeric,
 	pgTable,
-	primaryKey,
 	text,
 	timestamp,
 } from "drizzle-orm/pg-core";
 
-export const users = pgTable("user", {
+export const user = pgTable("user", {
 	id: text("id")
 		.primaryKey()
 		.$defaultFn(() => crypto.randomUUID()),
-	name: text("name"),
-	email: text("email").unique(),
-	emailVerified: timestamp("emailVerified", { mode: "date" }),
+	name: text("name").notNull(),
+	email: text("email").notNull().unique(),
+	emailVerified: boolean("email_verified").default(false).notNull(),
 	image: text("image"),
+	createdAt: timestamp("created_at").defaultNow().notNull(),
+	updatedAt: timestamp("updated_at")
+		.defaultNow()
+		.$onUpdate(() => /* @__PURE__ */ new Date())
+		.notNull(),
+});
+
+export const session = pgTable("session", {
+	id: text("id").primaryKey(),
+	expiresAt: timestamp("expires_at").notNull(),
+	token: text("token").notNull().unique(),
+	createdAt: timestamp("created_at").defaultNow().notNull(),
+	updatedAt: timestamp("updated_at")
+		.$onUpdate(() => /* @__PURE__ */ new Date())
+		.notNull(),
+	ipAddress: text("ip_address"),
+	userAgent: text("user_agent"),
+	userId: text("user_id")
+		.notNull()
+		.references(() => user.id, { onDelete: "cascade" }),
+});
+
+export const verification = pgTable("verification", {
+	id: text("id").primaryKey(),
+	identifier: text("identifier").notNull(),
+	value: text("value").notNull(),
+	expiresAt: timestamp("expires_at").notNull(),
+	createdAt: timestamp("created_at").defaultNow().notNull(),
+	updatedAt: timestamp("updated_at")
+		.defaultNow()
+		.$onUpdate(() => /* @__PURE__ */ new Date())
+		.notNull(),
 });
 
 export const activities = pgTable("activity", {
@@ -80,35 +111,31 @@ export const activities = pgTable("activity", {
 	//   end_latlng?: Array<number>;
 });
 
-export const accounts = pgTable(
-	"account",
-	{
-		userId: text("userId")
-			.notNull()
-			.references(() => users.id, { onDelete: "cascade" }),
-		type: text("type").$type<AdapterAccountType>().notNull(),
-		provider: text("provider").notNull(),
-		providerAccountId: text("providerAccountId").notNull(),
-		refresh_token: text("refresh_token"),
-		access_token: text("access_token"),
-		expires_at: integer("expires_at"),
-		token_type: text("token_type"),
-		scope: text("scope"),
-		id_token: text("id_token"),
-		session_state: text("session_state"),
-	},
-	(account) => ({
-		compositePk: primaryKey({
-			columns: [account.provider, account.providerAccountId],
-		}),
-	}),
-);
+export const account = pgTable("account", {
+	id: text("id").primaryKey(),
+	providerAccountId: text("provider_account_id").notNull(),
+	providerId: text("provider_id").notNull(),
+	userId: text("user_id")
+		.notNull()
+		.references(() => user.id, { onDelete: "cascade" }),
+	access_token: text("access_token"),
+	refresh_token: text("refresh_token"),
+	id_token: text("id_token"),
+	access_token_expires: timestamp("access_token_expires"),
+	refreshTokenExpiresAt: timestamp("refresh_token_expires_at"),
+	scope: text("scope"),
+	password: text("password"),
+	createdAt: timestamp("created_at").defaultNow().notNull(),
+	updatedAt: timestamp("updated_at")
+		.$onUpdate(() => /* @__PURE__ */ new Date())
+		.notNull(),
+});
 
 // export const sessions = pgTable("session", {
 // 	sessionToken: text("sessionToken").primaryKey(),
 // 	userId: text("userId")
 // 		.notNull()
-// 		.references(() => users.id, { onDelete: "cascade" }),
+// 		.references(() => user.id, { onDelete: "cascade" }),
 // 	expires: timestamp("expires", { mode: "date" }).notNull(),
 // });
 
@@ -134,7 +161,7 @@ export const accounts = pgTable(
 // 		credentialID: text("credentialID").notNull().unique().primaryKey(),
 // 		userId: text("userId")
 // 			.notNull()
-// 			.references(() => users.id, { onDelete: "cascade" }),
+// 			.references(() => user.id, { onDelete: "cascade" }),
 // 		providerAccountId: text("providerAccountId").notNull(),
 // 		credentialPublicKey: text("credentialPublicKey").notNull(),
 // 		counter: integer("counter").notNull(),
@@ -157,10 +184,10 @@ export const tasks = pgTable("tasks", {
 	status: text("status").notNull(),
 	createdById: text()
 		.notNull()
-		.references(() => users.id),
+		.references(() => user.id),
 	assignedToId: text()
 		.notNull()
-		.references(() => users.id),
+		.references(() => user.id),
 });
 
 export const todos = pgTable("todos", {
@@ -169,38 +196,38 @@ export const todos = pgTable("todos", {
 	done: boolean().notNull(),
 	createdById: text()
 		.notNull()
-		.references(() => users.id),
+		.references(() => user.id),
 	assignedToId: text()
 		.notNull()
-		.references(() => users.id),
+		.references(() => user.id),
 	timestamp: text("timestamp").notNull().default(sql`(current_timestamp)`),
 });
 
-export const userRelations = relations(users, ({ one }) => ({
-	provider: one(accounts, {
-		fields: [users.id],
-		references: [accounts.userId],
+export const userRelations = relations(user, ({ one }) => ({
+	provider: one(account, {
+		fields: [user.id],
+		references: [account.userId],
 	}),
 }));
 
 export const todosRelations = relations(todos, ({ one }) => ({
-	createdBy: one(users, {
+	createdBy: one(user, {
 		fields: [todos.createdById],
-		references: [users.id],
+		references: [user.id],
 	}),
-	assignedTo: one(users, {
+	assignedTo: one(user, {
 		fields: [todos.assignedToId],
-		references: [users.id],
+		references: [user.id],
 	}),
 }));
 
 export const tasksRelations = relations(tasks, ({ one }) => ({
-	createdBy: one(users, {
+	createdBy: one(user, {
 		fields: [tasks.createdById],
-		references: [users.id],
+		references: [user.id],
 	}),
-	assignedTo: one(users, {
+	assignedTo: one(user, {
 		fields: [tasks.assignedToId],
-		references: [users.id],
+		references: [user.id],
 	}),
 }));
