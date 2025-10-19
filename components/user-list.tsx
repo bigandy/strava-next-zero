@@ -13,7 +13,7 @@ export function UserList() {
 			{users.length > 0 ? (
 				<ul className="list-disc list-inside">
 					{users.map((u) => {
-						const name = `${u.name} - ${u?.provider?.provider ?? "no provider provided"}`;
+						const name = `${u.name} - ${u?.provider?.providerId ?? "no provider provided"}`;
 
 						return (
 							<li key={u.id}>
