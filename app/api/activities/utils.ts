@@ -6,7 +6,7 @@ import { default as strava } from "strava-v3";
 import { seconds, throttledQueue } from "throttled-queue";
 import { db } from "@/db";
 import { activities } from "@/db/schema";
-import type { Account } from "@/zero-schema.gen";
+import type { Account } from "@/schema";
 
 interface Activity extends DetailedActivityResponse {
 	type: string;
