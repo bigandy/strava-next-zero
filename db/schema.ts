@@ -1,4 +1,3 @@
-import type { AdapterAccountType } from "@auth/core/adapters";
 import { relations, sql } from "drizzle-orm";
 import {
 	boolean,
@@ -231,3 +230,10 @@ export const tasksRelations = relations(tasks, ({ one }) => ({
 		references: [user.id],
 	}),
 }));
+
+export const jwks = pgTable("jwkss", {
+	id: text("id").primaryKey(),
+	publicKey: text("public_key").notNull(),
+	privateKey: text("private_key").notNull(),
+	createdAt: timestamp("created_at").notNull(),
+});
