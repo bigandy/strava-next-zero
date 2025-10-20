@@ -1,11 +1,11 @@
 import dayjs from "dayjs";
-import { getTableColumns, sql } from "drizzle-orm";
+import { eq, getTableColumns, sql } from "drizzle-orm";
 import type { PgTable } from "drizzle-orm/pg-core";
 import type { DetailedActivityResponse } from "strava-v3";
 import { default as strava } from "strava-v3";
 import { seconds, throttledQueue } from "throttled-queue";
 import { db } from "@/db";
-import { activities } from "@/db/schema";
+import { account, activities } from "@/db/schema";
 import type { Account } from "@/schema";
 
 interface Activity extends DetailedActivityResponse {
@@ -16,32 +16,59 @@ interface Activity extends DetailedActivityResponse {
 
 const nowEpoc = () => Math.floor(Date.now()) / 1000;
 
-const getAccessToken = async (account: Account) => {
+const getAccessToken = async ({
+	refresh_token,
+	access_token,
+	access_token_expires,
+	userId,
+}: {
+	refresh_token: string;
+	access_token: string;
+	access_token_expires: number;
+	userId: string;
+}) => {
 	const now = nowEpoc();
-	const expires = dayjs(account.access_token_expires).valueOf() / 1000;
+	const expires = dayjs(access_token_expires).valueOf() / 1000;
 
 	if (now > expires) {
 		console.log("NEED NEW TOKEN");
-		// 	strava.config({
-		// 		access_token: account.access_token,
-		// 		client_id: process.env.AUTH_STRAVA_ID,
-		// 		client_secret: process.env.AUTH_STRAVA_SECRET,
-		// 		redirect_uri: process.env.AUTH_STRAVA_REDIRECT_URL,
-		// 	});
-		// 	const { access_token, refresh_token, expires_at } =
-		// 		await strava.oauth.refreshToken(account.refresh_token);
-		// 	await db
-		// 		.update(accounts)
-		// 		.set({ refresh_token, access_token, expires_at })
-		// 		.where(eq(accounts.userId, userId));
-		// 	return access_token;
+		strava.config({
+			access_token: access_token,
+			client_id: process.env.AUTH_STRAVA_ID,
+			client_secret: process.env.AUTH_STRAVA_SECRET,
+			redirect_uri: process.env.AUTH_STRAVA_REDIRECT_URL,
+		});
+
+		const {
+			access_token: newAccessToken,
+			refresh_token: newRefreshToken,
+			expires_at: newExpiresAt,
+		} = await strava.oauth.refreshToken(refresh_token);
+
+		await db
+			.update(account)
+			.set({
+				refresh_token: newRefreshToken,
+				access_token: newAccessToken,
+				access_token_expires: new Date(newExpiresAt * 1000),
+			})
+			.where(eq(account.userId, userId));
+		return access_token;
+	} else {
+		console.log("NOT EXPIRED YET");
 	}
 
-	return account.access_token;
+	return access_token;
 };
 
 const getStravaClient = async (account: Account) => {
-	const accessToken = await getAccessToken(account);
+	const accessToken = await getAccessToken({
+		access_token: account.access_token,
+		refresh_token: account.refresh_token,
+		access_token_expires: account.access_token_expires,
+		userId: account.userId,
+	});
+
 	if (!accessToken) {
 		return null;
 	}
