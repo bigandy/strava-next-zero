@@ -22,7 +22,7 @@ export default drizzleZeroConfig(drizzleSchema, {
 			assignedToId: true,
 			timestamp: true,
 		},
-		jwkss: false,
+		jwks: false,
 		tasks: {
 			id: true,
 			name: true,

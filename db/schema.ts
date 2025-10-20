@@ -231,7 +231,7 @@ export const tasksRelations = relations(tasks, ({ one }) => ({
 	}),
 }));
 
-export const jwks = pgTable("jwkss", {
+export const jwks = pgTable("jwks", {
 	id: text("id").primaryKey(),
 	publicKey: text("public_key").notNull(),
 	privateKey: text("private_key").notNull(),
