@@ -23,9 +23,7 @@ export default async function Layout({
 			<Header />
 
 			<ClientOnly fallback={<div>Loading...</div>}>
-				<ZeroProvider userID={session.user.id} token={session.token}>
-					{children}
-				</ZeroProvider>
+				<ZeroProvider userID={session.user.id}>{children}</ZeroProvider>
 			</ClientOnly>
 		</>
 	);

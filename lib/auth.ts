@@ -41,7 +41,6 @@ export const auth = betterAuth({
 						const data = await fetch("https://www.strava.com/api/v3/athlete", {
 							headers: { Authorization: `Bearer ${tokens.accessToken}` },
 						}).then((data) => data.json());
-						console.log({ data });
 						return {
 							...data,
 							email: data.username, // This is required to fix the error, even though it makes no sense b/c it isn't an email
