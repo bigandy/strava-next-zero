@@ -12,21 +12,35 @@ import { type Schema, schema } from "../schema";
 export function ZeroProvider({
 	children,
 	userID,
-	token,
 }: {
 	children: ReactNode;
 	userID: string;
-	token: string;
 }) {
 	const z = useMemo(() => {
+		const jwtStorageKey = `jwt-${userID}`;
+
 		return new Zero({
 			userID,
-			auth: token,
+			auth: async (error) => {
+				if (error === "invalid-token") {
+					sessionStorage.removeItem(jwtStorageKey);
+				}
+				let token = sessionStorage.getItem(jwtStorageKey);
+				if (!token) {
+					if (!userID) return undefined;
+					const response = await fetch("/api/auth/token");
+					const data = await response.json();
+					token = data.token;
+					if (!token) throw new Error("No token found");
+					sessionStorage.setItem(jwtStorageKey, token);
+				}
+				return token ?? undefined;
+			},
 			server: process.env.NEXT_PUBLIC_ZERO_SERVER,
 			schema,
 			kvStore: "mem",
 		});
-	}, [userID, token]);
+	}, [userID]);
 
 	return <ZeroProviderBase zero={z}>{children}</ZeroProviderBase>;
 }

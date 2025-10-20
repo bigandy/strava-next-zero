@@ -1,8 +1,7 @@
 import { betterAuth } from "better-auth";
 import { drizzleAdapter } from "better-auth/adapters/drizzle";
-import { customSession, genericOAuth } from "better-auth/plugins";
+import { customSession, genericOAuth, jwt } from "better-auth/plugins";
 import { db } from "@/db"; // your drizzle instance
-import { getNewToken } from "../app/actions";
 
 export const auth = betterAuth({
 	database: drizzleAdapter(db, {
@@ -42,7 +41,6 @@ export const auth = betterAuth({
 						const data = await fetch("https://www.strava.com/api/v3/athlete", {
 							headers: { Authorization: `Bearer ${tokens.accessToken}` },
 						}).then((data) => data.json());
-						console.log({ data });
 						return {
 							...data,
 							email: data.username, // This is required to fix the error, even though it makes no sense b/c it isn't an email
@@ -58,21 +56,13 @@ export const auth = betterAuth({
 				where: (account, { eq }) => eq(account.userId, user.id),
 			});
 
-			const getJWTToken = await getNewToken(user.id);
-
-			// console.log({ account });
-			// const roles = findUserRoles(session.session.userId);
 			return {
-				// roles,
-				user: {
-					...user,
-					newField: "newField",
-				},
+				user,
 				session,
 				account,
-				token: getJWTToken,
 			};
 		}),
+		jwt(),
 	],
 	baseURL: process.env.BETTER_AUTH_URL,
 });

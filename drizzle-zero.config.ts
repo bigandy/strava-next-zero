@@ -12,8 +12,6 @@ export default drizzleZeroConfig(drizzleSchema, {
 	tables: {
 		providers: true,
 		account: true,
-		// this can be set to false
-		// e.g. users: false,
 		activities: true,
 		user: true,
 		todos: {
@@ -24,6 +22,7 @@ export default drizzleZeroConfig(drizzleSchema, {
 			assignedToId: true,
 			timestamp: true,
 		},
+		jwks: false,
 		tasks: {
 			id: true,
 			name: true,

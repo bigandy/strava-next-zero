@@ -15,10 +15,14 @@ export const User = ({ id }: { id: string }) => {
 		const { value } = e.target;
 
 		z.mutate.user.update({
-			id: user.id,
+			id: user?.id,
 			name: value,
 		});
 	};
+
+	if (!user) {
+		return <div>Loading</div>;
+	}
 
 	return (
 		<div>
@@ -41,9 +45,9 @@ export const User = ({ id }: { id: string }) => {
 			) : (
 				<div>
 					<div>User: {user?.name}</div>
-					<div>User Email: {user?.email}</div>
+					{/* <div>User Email: {user?.email}</div> */}
 					<div>ID: {user?.id}</div>
-					<div>
+					{/* <div>
 						User Image:
 						{user?.image && (
 							<img
@@ -54,8 +58,8 @@ export const User = ({ id }: { id: string }) => {
 								alt="user avatar"
 							/>
 						)}
-					</div>
-					<div>Provider: {user?.provider?.provider}</div>
+					</div> */}
+					<div>Provider: {user?.provider?.providerId}</div>
 				</div>
 			)}
 		</div>
