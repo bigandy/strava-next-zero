@@ -37,9 +37,7 @@ export const Header = async () => {
 			)}
 
 			<div className="flex gap-2 mb-10">
-				<Link href="/tasks">Tasks</Link>
 				<Link href="/users">Users</Link>
-				<Link href="/todos">Todos</Link>
 				<Link href="/activities">Activities</Link>
 			</div>
 		</div>

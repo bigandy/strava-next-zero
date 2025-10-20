@@ -7,7 +7,6 @@ export const size = {
 };
 export const contentType = "image/png";
 
-// "WHY DO I NEED A SEPERATE ICON HERE???"
 // Image generation
 export default function Icon() {
 	return new ImageResponse(
@@ -15,7 +14,7 @@ export default function Icon() {
 		<div
 			style={{
 				fontSize: 24,
-				background: "black",
+				background: "orangered",
 				width: "100%",
 				height: "100%",
 				display: "flex",
