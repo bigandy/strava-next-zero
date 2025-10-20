@@ -29,8 +29,8 @@ export const auth = betterAuth({
 				{
 					providerId: "strava",
 					responseMode: "query",
-					clientId: process.env.AUTH_STRAVA_ID!,
-					clientSecret: process.env.AUTH_STRAVA_SECRET!,
+					clientId: process.env.AUTH_STRAVA_ID,
+					clientSecret: process.env.AUTH_STRAVA_SECRET,
 					redirectURI: `${process.env.AUTH_STRAVA_REDIRECT_URL}/api/auth/oauth2/callback/strava`,
 					authorizationUrl: "https://www.strava.com/oauth/authorize",
 					tokenUrl: "https://www.strava.com/oauth/token",

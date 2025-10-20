@@ -6,6 +6,6 @@ export default defineConfig({
 	schema: "./db/schema.ts",
 	dialect: "postgresql",
 	dbCredentials: {
-		url: process.env.ZERO_UPSTREAM_DB!,
+		url: process.env.ZERO_UPSTREAM_DB,
 	},
 });
