@@ -130,104 +130,10 @@ export const account = pgTable("account", {
 		.notNull(),
 });
 
-// export const sessions = pgTable("session", {
-// 	sessionToken: text("sessionToken").primaryKey(),
-// 	userId: text("userId")
-// 		.notNull()
-// 		.references(() => user.id, { onDelete: "cascade" }),
-// 	expires: timestamp("expires", { mode: "date" }).notNull(),
-// });
-
-// export const verificationTokens = pgTable(
-// 	"verificationToken",
-// 	{
-// 		identifier: text("identifier").notNull(),
-// 		token: text("token").notNull(),
-// 		expires: timestamp("expires", { mode: "date" }).notNull(),
-// 	},
-// 	(verificationToken) => [
-// 		{
-// 			compositePk: primaryKey({
-// 				columns: [verificationToken.identifier, verificationToken.token],
-// 			}),
-// 		},
-// 	],
-// );
-
-// export const authenticators = pgTable(
-// 	"authenticator",
-// 	{
-// 		credentialID: text("credentialID").notNull().unique().primaryKey(),
-// 		userId: text("userId")
-// 			.notNull()
-// 			.references(() => user.id, { onDelete: "cascade" }),
-// 		providerAccountId: text("providerAccountId").notNull(),
-// 		credentialPublicKey: text("credentialPublicKey").notNull(),
-// 		counter: integer("counter").notNull(),
-// 		credentialDeviceType: text("credentialDeviceType").notNull(),
-// 		credentialBackedUp: boolean("credentialBackedUp").notNull(),
-// 		transports: text("transports"),
-// 	},
-// 	(authenticator) => [
-// 		{
-// 			compositePK: primaryKey({
-// 				columns: [authenticator.userId, authenticator.credentialID],
-// 			}),
-// 		},
-// 	],
-// );
-
-export const tasks = pgTable("tasks", {
-	id: text("id").primaryKey(),
-	name: text("name").notNull(),
-	status: text("status").notNull(),
-	createdById: text()
-		.notNull()
-		.references(() => user.id),
-	assignedToId: text()
-		.notNull()
-		.references(() => user.id),
-});
-
-export const todos = pgTable("todos", {
-	id: text("id").primaryKey(),
-	name: text("name").notNull(),
-	done: boolean().notNull(),
-	createdById: text()
-		.notNull()
-		.references(() => user.id),
-	assignedToId: text()
-		.notNull()
-		.references(() => user.id),
-	timestamp: text("timestamp").notNull().default(sql`(current_timestamp)`),
-});
-
 export const userRelations = relations(user, ({ one }) => ({
 	provider: one(account, {
 		fields: [user.id],
 		references: [account.userId],
-	}),
-}));
-
-export const todosRelations = relations(todos, ({ one }) => ({
-	createdBy: one(user, {
-		fields: [todos.createdById],
-		references: [user.id],
-	}),
-	assignedTo: one(user, {
-		fields: [todos.assignedToId],
-		references: [user.id],
-	}),
-}));
-
-export const tasksRelations = relations(tasks, ({ one }) => ({
-	createdBy: one(user, {
-		fields: [tasks.createdById],
-		references: [user.id],
-	}),
-	assignedTo: one(user, {
-		fields: [tasks.assignedToId],
-		references: [user.id],
 	}),
 }));
 

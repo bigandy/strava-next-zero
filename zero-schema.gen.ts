@@ -254,117 +254,6 @@ export const schema = {
       primaryKey: ["id"],
       serverName: "activity",
     },
-    tasks: {
-      name: "tasks",
-      columns: {
-        id: {
-          type: "string",
-          optional: false,
-          customType: null as unknown as ZeroCustomType<
-            typeof zeroSchema,
-            "tasks",
-            "id"
-          >,
-        },
-        name: {
-          type: "string",
-          optional: false,
-          customType: null as unknown as ZeroCustomType<
-            typeof zeroSchema,
-            "tasks",
-            "name"
-          >,
-        },
-        status: {
-          type: "string",
-          optional: false,
-          customType: null as unknown as ZeroCustomType<
-            typeof zeroSchema,
-            "tasks",
-            "status"
-          >,
-        },
-        createdById: {
-          type: "string",
-          optional: false,
-          customType: null as unknown as ZeroCustomType<
-            typeof zeroSchema,
-            "tasks",
-            "createdById"
-          >,
-        },
-        assignedToId: {
-          type: "string",
-          optional: false,
-          customType: null as unknown as ZeroCustomType<
-            typeof zeroSchema,
-            "tasks",
-            "assignedToId"
-          >,
-        },
-      },
-      primaryKey: ["id"],
-    },
-    todos: {
-      name: "todos",
-      columns: {
-        id: {
-          type: "string",
-          optional: false,
-          customType: null as unknown as ZeroCustomType<
-            typeof zeroSchema,
-            "todos",
-            "id"
-          >,
-        },
-        name: {
-          type: "string",
-          optional: false,
-          customType: null as unknown as ZeroCustomType<
-            typeof zeroSchema,
-            "todos",
-            "name"
-          >,
-        },
-        done: {
-          type: "boolean",
-          optional: false,
-          customType: null as unknown as ZeroCustomType<
-            typeof zeroSchema,
-            "todos",
-            "done"
-          >,
-        },
-        createdById: {
-          type: "string",
-          optional: false,
-          customType: null as unknown as ZeroCustomType<
-            typeof zeroSchema,
-            "todos",
-            "createdById"
-          >,
-        },
-        assignedToId: {
-          type: "string",
-          optional: false,
-          customType: null as unknown as ZeroCustomType<
-            typeof zeroSchema,
-            "todos",
-            "assignedToId"
-          >,
-        },
-        timestamp: {
-          type: "string",
-          optional: true,
-          customType: null as unknown as ZeroCustomType<
-            typeof zeroSchema,
-            "todos",
-            "timestamp"
-          >,
-        },
-      },
-      primaryKey: ["id"],
-    },
     user: {
       name: "user",
       columns: {
@@ -439,42 +328,6 @@ export const schema = {
     },
   },
   relationships: {
-    tasks: {
-      createdBy: [
-        {
-          sourceField: ["createdById"],
-          destField: ["id"],
-          destSchema: "user",
-          cardinality: "one",
-        },
-      ],
-      assignedTo: [
-        {
-          sourceField: ["assignedToId"],
-          destField: ["id"],
-          destSchema: "user",
-          cardinality: "one",
-        },
-      ],
-    },
-    todos: {
-      createdBy: [
-        {
-          sourceField: ["createdById"],
-          destField: ["id"],
-          destSchema: "user",
-          cardinality: "one",
-        },
-      ],
-      assignedTo: [
-        {
-          sourceField: ["assignedToId"],
-          destField: ["id"],
-          destSchema: "user",
-          cardinality: "one",
-        },
-      ],
-    },
     user: {
       provider: [
         {
@@ -505,16 +358,6 @@ export type Account = Row<Schema["tables"]["account"]>;
  * This type is auto-generated from your Drizzle schema definition.
  */
 export type Activity = Row<Schema["tables"]["activities"]>;
-/**
- * Represents a row from the "tasks" table.
- * This type is auto-generated from your Drizzle schema definition.
- */
-export type Task = Row<Schema["tables"]["tasks"]>;
-/**
- * Represents a row from the "todos" table.
- * This type is auto-generated from your Drizzle schema definition.
- */
-export type Todo = Row<Schema["tables"]["todos"]>;
 /**
  * Represents a row from the "user" table.
  * This type is auto-generated from your Drizzle schema definition.

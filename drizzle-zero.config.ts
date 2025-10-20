@@ -14,22 +14,7 @@ export default drizzleZeroConfig(drizzleSchema, {
 		account: true,
 		activities: true,
 		user: true,
-		todos: {
-			id: true,
-			name: true,
-			done: true,
-			createdById: true,
-			assignedToId: true,
-			timestamp: true,
-		},
 		jwks: false,
-		tasks: {
-			id: true,
-			name: true,
-			status: true,
-			createdById: true,
-			assignedToId: true,
-		},
 	},
 
 	// Specify the casing style to use for the schema.
