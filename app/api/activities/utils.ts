@@ -11,7 +11,6 @@ import type { Account } from "@/schema";
 interface Activity extends DetailedActivityResponse {
 	type: string;
 	visibility: string;
-	private_note: string;
 }
 
 const nowEpoc = () => Math.floor(Date.now()) / 1000;
@@ -53,12 +52,11 @@ const getAccessToken = async ({
 				access_token_expires: new Date(newExpiresAt * 1000),
 			})
 			.where(eq(account.userId, userId));
-		return access_token;
+		return newAccessToken;
 	} else {
 		console.log("NOT EXPIRED YET");
+		return access_token;
 	}
-
-	return access_token;
 };
 
 const getStravaClient = async (account: Account) => {
@@ -128,7 +126,6 @@ const formatStravaActivities = (activities) => {
 			elapsedTime: activity.elapsed_time,
 			movingTime: activity.moving_time,
 			visibility: activity.visibility,
-			// private: activity.private_note,
 		};
 	});
 };
@@ -220,4 +217,18 @@ export const getOneStravaActivity = async (
 	const payload = await strava?.activities.get({ id: activityId });
 
 	return formatStravaActivities([payload]);
+};
+
+export const updateOneStravaActivity = async (
+	account: Account,
+	activityId: string,
+	data,
+) => {
+	const strava = await getStravaClient(account);
+
+	const update = await strava?.activities.update({
+		id: activityId,
+		...data,
+	});
+	console.log(update, data);
 };

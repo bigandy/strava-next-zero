@@ -1,8 +1,21 @@
-export const Button = ({ handleClick, children, ...rest }) => {
+import type { HTMLAttributes } from "react";
+
+interface Props extends HTMLAttributes<HTMLButtonElement> {
+	handleClick: () => void;
+	children: React.ReactElement | string;
+	className?: string;
+}
+
+export const Button = ({
+	handleClick,
+	children,
+	className,
+	...rest
+}: Props) => {
 	return (
 		<button
 			type="button"
-			className="bg-red-500 p-4 rounded-sm text-white disabled:bg-red-100"
+			className={`bg-red-500 p-4 rounded-sm text-white disabled:bg-red-100 hover:bg-red-400 ${className}`}
 			onClick={handleClick}
 			{...rest}
 		>

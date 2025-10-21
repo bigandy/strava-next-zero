@@ -1,15 +1,17 @@
 import { headers } from "next/headers";
-import { NextResponse } from "next/server";
+import { type NextRequest, NextResponse } from "next/server";
+import {
+	getOneStravaActivity,
+	upsertActivitiesToDB,
+} from "@/app/api/activities/utils";
 import { auth } from "@/lib/auth";
 
-import { getOneStravaActivity, upsertActivitiesToDB } from "../utils";
-
 /**
- * /activities/sync-one api route
+ * /activities/sync/one api route
  * This Route syncs the activity with the passed id
  * Will upsert into the db the latest changes.
  */
-export const GET = async (request) => {
+export const GET = async (request: NextRequest) => {
 	const session = await auth.api.getSession({
 		headers: await headers(),
 	});

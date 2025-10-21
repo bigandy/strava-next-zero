@@ -1,17 +1,16 @@
 import { headers } from "next/headers";
 import { NextResponse } from "next/server";
-import { auth } from "@/lib/auth";
-
 import {
 	deleteActivities,
 	getStravaActivities,
 	writeActivitiesToDB,
-} from "../utils";
+} from "@/app/api/activities/utils";
+import { auth } from "@/lib/auth";
 
 /**
  * /activities/get route
  */
-export const GET = async (req, ctx) => {
+export const GET = async () => {
 	const session = await auth.api.getSession({
 		headers: await headers(),
 	});
