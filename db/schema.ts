@@ -53,7 +53,7 @@ export const verification = pgTable("verification", {
 export const activities = pgTable("activity", {
 	id: text("id").primaryKey().notNull(),
 	name: text("name").notNull(),
-	// description: text("description"), // API DOESN'T RETURN THIS.
+	description: text("description"), // Single activitity api does return this but not activities api
 	kudos: integer("kudos").notNull(),
 	start: timestamp("start", { withTimezone: true }).notNull(),
 	elapsedTime: numeric("elapsedTime").notNull(),
@@ -67,6 +67,7 @@ export const activities = pgTable("activity", {
 		.notNull()
 		.default(sql`(CURRENT_TIMESTAMP)`)
 		.$onUpdate(() => sql`(CURRENT_TIMESTAMP)`),
+
 	// isPrivate: boolean("isPrivate"), // API DOESN'T RETURN THIS.
 	//   athlete: {
 	// 	resource_state: number;

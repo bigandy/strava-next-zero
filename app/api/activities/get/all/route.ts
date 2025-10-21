@@ -1,14 +1,14 @@
 import { headers } from "next/headers";
 import { NextResponse } from "next/server";
+import { getAllStravaActivities } from "@/app/api/activities/utils";
 import { auth } from "@/lib/auth";
 
-import { getAllStravaActivities } from "../utils";
-
 /**
- * This Route will get ALL the Strava Activities.
- * Will upsert into the db the latest changes.
+ * /api/activities/get/all
+ * This Route gets ALL the Strava Activities.
+ * Then upserts into the db the latest changes.
  */
-export const GET = async (req) => {
+export const GET = async () => {
 	const session = await auth.api.getSession({
 		headers: await headers(),
 	});
