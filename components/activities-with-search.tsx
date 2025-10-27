@@ -1,13 +1,27 @@
 "use client";
 
 import { escapeLike } from "@rocicorp/zero";
-import { useQuery } from "@rocicorp/zero/react";
+import { useQuery, useZero } from "@rocicorp/zero/react";
+import {
+	flexRender,
+	getCoreRowModel,
+	getPaginationRowModel,
+	getSortedRowModel,
+	type PaginationState,
+	useReactTable,
+} from "@tanstack/react-table";
+import { useState } from "react";
 import { useDebounceValue } from "usehooks-ts";
-import { useZero } from "@/components/zero";
-import { ActivityRow } from "./activity-row";
+import { PaginationButtons } from "./pagination-buttons";
+import { TableHead } from "./table-head";
+import { columns } from "./utils";
 
 export const ActivitiesWithSearch = () => {
 	const z = useZero();
+	const [pagination, setPagination] = useState<PaginationState>({
+		pageIndex: 0,
+		pageSize: 20,
+	});
 
 	const [search, setValue] = useDebounceValue("", 100);
 
@@ -16,6 +30,20 @@ export const ActivitiesWithSearch = () => {
 			.orderBy("start", "desc")
 			.where(({ cmp }) => cmp("name", "ILIKE", `%${escapeLike(search)}%`)),
 	);
+
+	const table = useReactTable({
+		// @ts-expect-error
+		data: activities,
+		columns,
+		getCoreRowModel: getCoreRowModel(),
+		getPaginationRowModel: getPaginationRowModel(),
+		getSortedRowModel: getSortedRowModel(),
+
+		state: {
+			pagination,
+		},
+		onPaginationChange: setPagination,
+	});
 
 	const handleInput = (event: React.ChangeEvent<HTMLInputElement>) => {
 		setValue(event.target.value);
@@ -40,33 +68,20 @@ export const ActivitiesWithSearch = () => {
 
 			<div className="activities-table">
 				<table className="w-full" style={{ tableLayout: "fixed" }}>
-					<thead>
-						<tr>
-							<th>Name</th>
-							<th>Distance</th>
-							<th>Kudos</th>
-							<th>Start</th>
-							<th>Elevation</th>
-							<th>Elapsed</th>
-							<th>Moving</th>
-							<th>Type</th>
-							<th>Edit?</th>
-						</tr>
-					</thead>
+					<TableHead table={table} />
 					<tbody>
-						{activities.length > 0 ? (
-							activities.map((activity) => {
-								return <ActivityRow key={activity.id} activity={activity} />;
-							})
-						) : (
-							<tr>
-								<td colSpan={9} className="!text-center">
-									No Activities
-								</td>
+						{table.getRowModel().rows.map((row) => (
+							<tr key={row.id}>
+								{row.getVisibleCells().map((cell) => (
+									<td key={cell.id}>
+										{flexRender(cell.column.columnDef.cell, cell.getContext())}
+									</td>
+								))}
 							</tr>
-						)}
+						))}
 					</tbody>
 				</table>
+				<PaginationButtons table={table} />
 			</div>
 		</>
 	);

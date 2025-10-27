@@ -1,11 +1,13 @@
 "use client";
 
 import { useQuery } from "@rocicorp/zero/react";
+
 import Link from "next/link";
 import { useState } from "react";
-import { ActivityRow } from "@/components/activity-row";
 import { Button } from "@/components/button";
 import { useZero } from "@/components/zero";
+
+import { SingleActivityTable } from "./single-activity-table";
 
 export const SingleActivity = ({ id }: { id: string }) => {
 	const z = useZero();
@@ -68,7 +70,7 @@ export const SingleActivity = ({ id }: { id: string }) => {
 		<>
 			<h2>Single Activity View</h2>
 
-			<Link href="/activities">&larr; Back to Table</Link>
+			<Link href={"/activities/"}>&larr; Back to Table</Link>
 
 			<Button
 				disabled={loading}
@@ -81,7 +83,7 @@ export const SingleActivity = ({ id }: { id: string }) => {
 			<Button onClick={() => setIsEditing((e) => !e)}>Edit?</Button>
 
 			<div className="activities-table">
-				{isEditing ? (
+				{isEditing && (
 					<form onSubmit={handleSubmit}>
 						<label htmlFor="name">Activity Name:</label>
 						<input
@@ -103,25 +105,9 @@ export const SingleActivity = ({ id }: { id: string }) => {
 							Submit
 						</Button>
 					</form>
-				) : (
-					<table className="w-full" style={{ tableLayout: "fixed" }}>
-						<thead>
-							<tr>
-								<th>Name</th>
-								<th>Distance</th>
-								<th>Kudos</th>
-								<th>Start</th>
-								<th>Elevation</th>
-								<th>Elapsed</th>
-								<th>Moving</th>
-								<th>Type</th>
-							</tr>
-						</thead>
-						<tbody>
-							<ActivityRow activity={activity} showEdit={false} />
-						</tbody>
-					</table>
 				)}
+
+				{!isEditing && activity && <SingleActivityTable activity={activity} />}
 			</div>
 		</>
 	);
