@@ -1,4 +1,4 @@
-# Intro to Zero Sync
+# Strava with Zero and Next.js
 
 Based on the [hello zero](https://github.com/a-poor/hellozero) repo by [Austin Poor](https://github.com/a-poor).
 
