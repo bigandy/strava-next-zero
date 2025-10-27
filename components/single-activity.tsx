@@ -22,8 +22,8 @@ export const SingleActivity = ({ id }: { id: string }) => {
 		setLoading(false);
 	};
 
-	const handleSubmit = async (e) => {
-		e.preventDefault();
+	const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+		event.preventDefault();
 		console.log("form submit", activity?.description);
 
 		await fetch(`/api/activities/update-strava/one?id=${id}`, {
@@ -38,8 +38,8 @@ export const SingleActivity = ({ id }: { id: string }) => {
 		});
 	};
 
-	const handleNameInput = (e) => {
-		const { value } = e.target;
+	const handleNameInput = (event: React.ChangeEvent<HTMLInputElement>) => {
+		const { value } = event.target;
 		if (activity?.id) {
 			z.mutate.activities.update({
 				id: activity.id,
@@ -48,8 +48,10 @@ export const SingleActivity = ({ id }: { id: string }) => {
 		}
 	};
 
-	const handleDescriptionInput = (e) => {
-		const { value } = e.target;
+	const handleDescriptionInput = (
+		event: React.ChangeEvent<HTMLTextAreaElement>,
+	) => {
+		const { value } = event.target;
 		if (activity?.id) {
 			z.mutate.activities.update({
 				id: activity.id,
@@ -70,13 +72,13 @@ export const SingleActivity = ({ id }: { id: string }) => {
 
 			<Button
 				disabled={loading}
-				handleClick={() => syncActivity()}
+				onClick={() => syncActivity()}
 				className="mx-4"
 			>
 				Sync Activity
 			</Button>
 
-			<Button handleClick={() => setIsEditing((e) => !e)}>Edit?</Button>
+			<Button onClick={() => setIsEditing((e) => !e)}>Edit?</Button>
 
 			<div className="activities-table">
 				{isEditing ? (
@@ -93,11 +95,11 @@ export const SingleActivity = ({ id }: { id: string }) => {
 						<textarea
 							id="description"
 							onInput={handleDescriptionInput}
-							value={activity?.description}
+							value={activity?.description ?? ""}
 							className="border border-black p-4 block w-full"
 						></textarea>
 
-						<Button handleClick={() => {}} type="submit" className="mt-4">
+						<Button onClick={() => {}} type="submit" className="mt-4">
 							Submit
 						</Button>
 					</form>

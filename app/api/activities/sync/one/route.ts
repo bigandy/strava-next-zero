@@ -15,14 +15,18 @@ export const GET = async (request: NextRequest) => {
 	const session = await auth.api.getSession({
 		headers: await headers(),
 	});
-	if (!session) {
+	if (!session?.account) {
 		return NextResponse.json({ message: "NO-AUTH" });
 	}
 
 	const searchParams = request.nextUrl.searchParams;
 	const id = searchParams.get("id");
 
-	const stravaActivity = await getOneStravaActivity(session.account, id!);
+	if (!id) {
+		return NextResponse.json({ message: "NO-ID" });
+	}
+
+	const stravaActivity = await getOneStravaActivity(session.account, id);
 
 	// Upsert them in the database!
 	await upsertActivitiesToDB(stravaActivity);

@@ -7,7 +7,19 @@ export { schema, type Schema };
 
 export type User = Row<typeof schema.tables.user>;
 export type Activity = Row<typeof schema.tables.activities>;
-export type Account = Row<typeof schema.tables.account>;
+
+type _Account = Row<typeof schema.tables.account>;
+
+export interface Account
+	extends Omit<
+		_Account,
+		"access_token_expires" | "createdAt" | "updatedAt" | "refreshTokenExpiresAt"
+	> {
+	access_token_expires: Date | null;
+	createdAt: Date | null;
+	updatedAt: Date | null;
+	refreshTokenExpiresAt: Date | null;
+}
 
 // Define permissions with the inferred types from Drizzle
 export const permissions = definePermissions(schema, () => ({

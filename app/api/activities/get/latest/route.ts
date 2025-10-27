@@ -14,8 +14,8 @@ export const GET = async () => {
 	const session = await auth.api.getSession({
 		headers: await headers(),
 	});
-	if (!session) {
-		return null;
+	if (!session?.account) {
+		return NextResponse.json({ message: "NO-AUTH" });
 	}
 
 	const stravaActivities = await getStravaActivities(session.account);

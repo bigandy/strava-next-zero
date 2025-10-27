@@ -17,8 +17,8 @@ export const ActivitiesWithSearch = () => {
 			.where(({ cmp }) => cmp("name", "ILIKE", `%${escapeLike(search)}%`)),
 	);
 
-	const handleInput = (e) => {
-		setValue(e.target.value);
+	const handleInput = (event: React.ChangeEvent<HTMLInputElement>) => {
+		setValue(event.target.value);
 	};
 
 	return (

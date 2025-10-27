@@ -63,7 +63,7 @@ export const schema = {
         },
         access_token: {
           type: "string",
-          optional: true,
+          optional: false,
           customType: null as unknown as ZeroCustomType<
             typeof zeroSchema,
             "account",
@@ -72,7 +72,7 @@ export const schema = {
         },
         refresh_token: {
           type: "string",
-          optional: true,
+          optional: false,
           customType: null as unknown as ZeroCustomType<
             typeof zeroSchema,
             "account",
@@ -90,7 +90,7 @@ export const schema = {
         },
         access_token_expires: {
           type: "number",
-          optional: true,
+          optional: false,
           customType: null as unknown as ZeroCustomType<
             typeof zeroSchema,
             "account",

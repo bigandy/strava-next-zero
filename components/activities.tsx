@@ -28,7 +28,7 @@ export const Activities = () => {
 	return (
 		<>
 			<div>
-				<Button handleClick={() => setPage((p) => p - 1)} disabled={page === 1}>
+				<Button onClick={() => setPage((p) => p - 1)} disabled={page === 1}>
 					Down
 				</Button>
 				<div className="inline-block">
@@ -38,10 +38,12 @@ export const Activities = () => {
 						min="1"
 						max={activities.length / perPage}
 						value={page}
-						onInput={(e) => setPage(+e.target.value)}
+						onInput={(event: React.ChangeEvent<HTMLInputElement>) =>
+							setPage(+event.target.value)
+						}
 					/>
 				</div>
-				<Button handleClick={() => setPage((p) => p + 1)}>Up</Button>
+				<Button onClick={() => setPage((p) => p + 1)}>Up</Button>
 
 				<div>
 					<label htmlFor="perPage">Per Page:</label>
@@ -52,7 +54,9 @@ export const Activities = () => {
 						max="100"
 						value={perPage}
 						id="perPage"
-						onInput={(e) => setPerPage(+e.target.value)}
+						onInput={(event: React.ChangeEvent<HTMLInputElement>) =>
+							setPerPage(+event.target.value)
+						}
 					/>
 				</div>
 			</div>

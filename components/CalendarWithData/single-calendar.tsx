@@ -5,14 +5,6 @@ import { Rows } from "./row";
 import { TableHeader } from "./table-header";
 import { getDate } from "./utils";
 
-export interface DotData {
-	date: string;
-	information?: {
-		title?: string;
-		content?: string;
-		link?: string;
-	};
-}
 interface CalendarWithDataProps {
 	month: number;
 	year: number;

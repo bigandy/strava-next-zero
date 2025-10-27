@@ -16,7 +16,7 @@ export const GET = async () => {
 		headers: await headers(),
 	});
 
-	if (!session) {
+	if (!session?.account) {
 		return NextResponse.json({ message: "NO-AUTH" });
 	}
 
