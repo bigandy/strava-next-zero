@@ -2,9 +2,7 @@
 
 import { signIn } from "@/lib/auth-client";
 
-type Provider = "strava";
-
-export function SignIn({ provider }: { provider: Provider }) {
+export function SignInButton() {
 	const handleClick = async () => {
 		const { data, error } = await signIn.oauth2({
 			providerId: "strava",
@@ -19,7 +17,7 @@ export function SignIn({ provider }: { provider: Provider }) {
 			className="border rounded-sm border-black p-4 mb-4 bg-[#F52] text-white"
 			onClick={handleClick}
 		>
-			Signin with {provider}
+			Signin with Strava
 		</button>
 	);
 }

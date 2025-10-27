@@ -13,19 +13,19 @@ export const YearHeader = ({ year, setYear, currentYear }: Props) => {
 			<h2 className={`styles.calendarYear font-bold text-4xl`}>{year}</h2>
 			<header className="flex flex-column gap-4 justify-center">
 				<div className="flex p-2 flex-row gap-4">
-					<Button handleClick={() => setYear((y) => y - 1)}>
+					<Button onClick={() => setYear((y) => y - 1)}>
 						&lt;&lt; <span className="vh">previous year</span>
 					</Button>
 
 					<Button
 						// secondary
-						handleClick={() => setYear(currentYear)}
+						onClick={() => setYear(currentYear)}
 						disabled={year === currentYear}
 					>
 						Now
 					</Button>
 
-					<Button handleClick={() => setYear((y) => y + 1)}>
+					<Button onClick={() => setYear((y) => y + 1)}>
 						&gt;&gt; <span className="vh">next year</span>
 					</Button>
 				</div>

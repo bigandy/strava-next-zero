@@ -18,7 +18,12 @@ const formatTime = (seconds: number) => {
 	return `${outMinutes}:${outSeconds}`;
 };
 
-export const ActivityRow = ({ activity, showEdit = true }) => {
+interface Props {
+	activity: any;
+	showEdit?: boolean;
+}
+
+export const ActivityRow = ({ activity, showEdit = true }: Props) => {
 	return (
 		<tr className="border border-black p-4">
 			<td>

@@ -23,7 +23,7 @@ const getAccessToken = async ({
 }: {
 	refresh_token: string;
 	access_token: string;
-	access_token_expires: number;
+	access_token_expires: Date;
 	userId: string;
 }) => {
 	const now = nowEpoc();
@@ -60,6 +60,9 @@ const getAccessToken = async ({
 };
 
 const getStravaClient = async (account: Account) => {
+	if (!account.access_token_expires) {
+		return null;
+	}
 	const accessToken = await getAccessToken({
 		access_token: account.access_token,
 		refresh_token: account.refresh_token,
@@ -70,13 +73,14 @@ const getStravaClient = async (account: Account) => {
 	if (!accessToken) {
 		return null;
 	}
+	// @ts-expect-error
 	const client = new strava.client(accessToken);
 	return client;
 };
 
-export const writeActivitiesToDB = async (stravaActivities) => {
+export const writeActivitiesToDB = async (stravaActivities: any) => {
 	return await db.insert(activities).values(
-		stravaActivities.map((act) => {
+		stravaActivities.map((act: any) => {
 			return {
 				id: act.id,
 				name: act.name,
@@ -111,7 +115,7 @@ const conflictUpdateAllExcept = <
 			.map(([colName, { name }]) => [colName, sql.raw(`EXCLUDED."${name}"`)]),
 	);
 
-const formatStravaActivities = (activities) => {
+const formatStravaActivities = (activities: any) => {
 	return activities?.map((activity: Activity) => {
 		return {
 			name: activity.name,
@@ -130,11 +134,11 @@ const formatStravaActivities = (activities) => {
 	});
 };
 
-export const upsertActivitiesToDB = async (stravaActivities) => {
+export const upsertActivitiesToDB = async (stravaActivities: any) => {
 	return await db
 		.insert(activities)
 		.values(
-			stravaActivities.map((act) => {
+			stravaActivities.map((act: any) => {
 				return {
 					id: act.id,
 					name: act.name,
@@ -222,13 +226,12 @@ export const getOneStravaActivity = async (
 export const updateOneStravaActivity = async (
 	account: Account,
 	activityId: string,
-	data,
+	data: any,
 ) => {
 	const strava = await getStravaClient(account);
 
-	const update = await strava?.activities.update({
+	return await strava?.activities.update({
 		id: activityId,
 		...data,
 	});
-	console.log(update, data);
 };

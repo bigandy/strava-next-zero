@@ -1,23 +1,16 @@
-import type { HTMLAttributes } from "react";
+import type { JSX } from "react";
 
-interface Props extends HTMLAttributes<HTMLButtonElement> {
-	handleClick: () => void;
-	children: React.ReactElement | string;
+interface Props
+	extends React.PropsWithChildren<JSX.IntrinsicElements["button"]> {
 	className?: string;
 }
 
-export const Button = ({
-	handleClick,
-	children,
-	className,
-	...rest
-}: Props) => {
+export const Button = ({ children, className, ...attr }: Props) => {
 	return (
 		<button
 			type="button"
 			className={`bg-red-500 p-4 rounded-sm text-white disabled:bg-red-100 hover:bg-red-400 ${className}`}
-			onClick={handleClick}
-			{...rest}
+			{...attr}
 		>
 			{children}
 		</button>

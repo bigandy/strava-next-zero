@@ -1,6 +1,6 @@
 import { headers } from "next/headers";
 import Link from "next/link";
-import { SignIn } from "@/components/sign-in";
+import { SignInButton } from "@/components/sign-in";
 import { SignOut } from "@/components/sign-out";
 import { auth } from "@/lib/auth";
 
@@ -33,7 +33,7 @@ export const Header = async () => {
 					</details>
 				</>
 			) : (
-				<SignIn provider="strava" />
+				<SignInButton />
 			)}
 
 			<div className="flex gap-2 mb-10">

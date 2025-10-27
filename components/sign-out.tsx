@@ -2,6 +2,7 @@
 
 import { redirect } from "next/navigation";
 import { signOut } from "@/lib/auth-client";
+import { Button } from "./button";
 
 export function SignOut() {
 	const handleClick = async () => {
@@ -9,8 +10,8 @@ export function SignOut() {
 		await redirect("/");
 	};
 	return (
-		<button onClick={handleClick} type="submit">
+		<Button onClick={handleClick} type="submit">
 			Sign Out
-		</button>
+		</Button>
 	);
 }

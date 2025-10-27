@@ -11,9 +11,13 @@ export const User = ({ id }: { id: string }) => {
 		z.query.user.related("provider").where("id", "=", id).one(),
 	);
 
-	const handleInput = (e) => {
-		const { value } = e.target;
+	const handleInput = (event: React.ChangeEvent<HTMLInputElement>) => {
+		const { value } = event.target;
 
+		if (!user) {
+			console.error("no user defined");
+			return;
+		}
 		z.mutate.user.update({
 			id: user?.id,
 			name: value,

@@ -11,6 +11,10 @@ interface Props {
 	data?: Array<DotData>;
 }
 
+interface DotData {
+	start: number;
+}
+
 export const Rows = ({ month, year, data }: Props) => {
 	const rows = getMonthDays(month, year);
 
@@ -28,7 +32,7 @@ export const Rows = ({ month, year, data }: Props) => {
 							}
 
 							const todayDots = data?.filter((dot) => {
-								return formattedGetDMY(dot.start) === cell.date;
+								return formattedGetDMY(dot.start.toString()) === cell.date;
 							});
 
 							const isToday = dateString.isToday();
@@ -48,52 +52,4 @@ export const Rows = ({ month, year, data }: Props) => {
 			})}
 		</>
 	);
-	// {row.map((cell, cellIndex) => {
-	//                             if (!cell) {
-	//                                 return <td />;
-	//                             }
-
-	//                             const todayDots = props.data?.filter(
-	//                                 (dot) => dot.date === cell.date,
-	//                             );
-
-	//                             return (
-	//                                 <div>CELL</div>
-	//                                 // <CellWithDots
-	//                                 //     number={cell.number}
-	//                                 //     activeDay={cell.activeDay}
-	//                                 //     dots={todayDots || []}
-	//                                 //     index={cellIndex() + 1}
-	//                                 // />
-	//                             );
-	//                         })}
-
-	// return (
-	// 	<For each={rows()}>
-	// 		{(row) => (
-	// 			<tr>
-	// 				<For each={row}>
-	// 					{(cell, cellIndex) => {
-	// 						if (!cell) {
-	// 							return <td />;
-	// 						}
-
-	// 						const todayDots = props.data?.filter(
-	// 							(dot) => dot.date === cell.date,
-	// 						);
-
-	// 						return (
-	// 							<CellWithDots
-	// 								number={cell.number}
-	// 								activeDay={cell.activeDay}
-	// 								dots={todayDots || []}
-	// 								index={cellIndex() + 1}
-	// 							/>
-	// 						);
-	// 					}}
-	// 				</For>
-	// 			</tr>
-	// 		)}
-	// 	</For>
-	// );
 };
