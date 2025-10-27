@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { useId } from "react";
 import styles from "./dot.styles.module.css";
 
@@ -32,8 +33,15 @@ export const DotWithPopover = ({ name = "Popover Title", id }: Props) => {
 					target="_blank"
 					className={"underline text-blue-500 mr-4"}
 				>
-					Link
+					See in Strava
 				</a>
+				<br />
+				<Link
+					href={`/activities/${id}`}
+					className={"underline text-blue-500 mr-4"}
+				>
+					See in App
+				</Link>
 			</div>
 		</div>
 	);
