@@ -1,6 +1,12 @@
-import { getCoreRowModel, useReactTable } from "@tanstack/react-table";
+import {
+	flexRender,
+	getCoreRowModel,
+	type Table,
+	useReactTable,
+} from "@tanstack/react-table";
 import type { Activity } from "@/schema";
 import { TableHead } from "./table-head";
+import type { TData } from "./utils";
 import { columns as allColumns } from "./utils";
 
 // remove the final column which is edit
@@ -21,9 +27,6 @@ export const SingleActivityTable = ({ activity }: { activity: Activity }) => {
 		</table>
 	);
 };
-
-import { flexRender, type Table } from "@tanstack/react-table";
-import type { TData } from "./utils";
 
 export const TableBody = ({ table }: { table: Table<TData> }) => {
 	return (

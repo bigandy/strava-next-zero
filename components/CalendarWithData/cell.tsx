@@ -19,9 +19,6 @@ export const CellWithDots = ({
 	dots,
 	index,
 }: CellWithDotsProps) => {
-	if (dots.length > 0) {
-		console.log({ dots });
-	}
 	return (
 		<td
 			className={clsx({

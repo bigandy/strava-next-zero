@@ -4,11 +4,10 @@ import { signIn } from "@/lib/auth-client";
 
 export function SignInButton() {
 	const handleClick = async () => {
-		const { data, error } = await signIn.oauth2({
+		await signIn.oauth2({
 			providerId: "strava",
 			requestSignUp: false,
 		});
-		console.log({ data, error });
 	};
 
 	return (
