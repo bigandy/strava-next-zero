@@ -19,6 +19,9 @@ export const CellWithDots = ({
 	dots,
 	index,
 }: CellWithDotsProps) => {
+	if (dots.length > 0) {
+		console.log({ dots });
+	}
 	return (
 		<td
 			className={clsx({
@@ -30,7 +33,7 @@ export const CellWithDots = ({
 
 			{dots && dots.length > 0 && (
 				<div className={styles.dots}>
-					{dots.map((dot, index) => {
+					{dots.map((dot) => {
 						return (
 							<DotWithPopover
 								key={`dot-${dot.id}`}
