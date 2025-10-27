@@ -19,6 +19,7 @@ export const columns = [
 	{
 		accessorKey: "name",
 		header: "Name",
+		enableSorting: false,
 	},
 	{
 		accessorKey: "distance",
@@ -57,6 +58,7 @@ export const columns = [
 	{
 		accessorKey: "id",
 		header: "Edit",
+		enableSorting: false,
 		cell: ({ cell }: CellProps) => {
 			return (
 				<Link href={`/activities/${cell.getValue()}`}>Edit Activity?</Link>
