@@ -17,9 +17,9 @@ export const Header = async () => {
 					{session.user?.image && (
 						<img
 							src={session.user?.image}
-							height="50"
-							width="50"
-							className="rounded-sm"
+							height="124"
+							width="124"
+							className="rounded-sm my-4"
 							alt="user avatar"
 						/>
 					)}

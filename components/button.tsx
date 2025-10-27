@@ -9,7 +9,7 @@ export const Button = ({ children, className, ...attr }: Props) => {
 	return (
 		<button
 			type="button"
-			className={`bg-red-500 p-4 rounded-sm text-white disabled:bg-red-100 hover:bg-red-400 ${className}`}
+			className={`bg-red-500 p-4 rounded-sm text-white cursor-pointer disabled:bg-red-100 hover:bg-red-400 ${className}`}
 			{...attr}
 		>
 			{children}

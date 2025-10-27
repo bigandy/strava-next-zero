@@ -235,3 +235,11 @@ export const updateOneStravaActivity = async (
 		...data,
 	});
 };
+
+export const getStravaUserInformation = async (account: Account) => {
+	const strava = await getStravaClient(account);
+
+	const athlete = await strava.athlete.get({});
+
+	return { athlete };
+};

@@ -36,16 +36,25 @@ export const auth = betterAuth({
 					tokenUrl: "https://www.strava.com/oauth/token",
 					userInfoUrl: "https://www.strava.com/api/v3/athlete",
 					scopes: ["activity:read_all,activity:write"],
-
-					async getUserInfo(tokens) {
+					// mapProfileToUser: async (profile) => {
+					// 	console.log({ profile });
+					// 	return {
+					// 		athleteId: profile.id,
+					// 		// firstName: profile.given_name,
+					// 		// ... map other fields as needed
+					// 	};
+					// },
+					getUserInfo: async (tokens) => {
 						const data = await fetch("https://www.strava.com/api/v3/athlete", {
 							headers: { Authorization: `Bearer ${tokens.accessToken}` },
 						}).then((data) => data.json());
+
 						return {
 							...data,
 							email: data.username, // This is required to fix the error, even though it makes no sense b/c it isn't an email
 							emailVerified: true,
 							name: `${data.firstname} ${data.lastname}`,
+							image: data.profile,
 						};
 					},
 				},
