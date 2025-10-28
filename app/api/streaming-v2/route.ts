@@ -6,38 +6,50 @@ export const throttle = throttledQueue({
 	interval: seconds(1),
 }); // at most make 1 request every second.
 
+export interface Beer {
+	name: string;
+	id: string;
+}
+
 export const GET = async () => {
 	const baseUrl = "https://punkapi.online/v3/";
 
-	let page_number = 1;
-	const per_page = 30;
+	let pageNumber = 1;
 	let continueFetching = true;
+	const perPage = 30;
 
 	const stream = new ReadableStream({
 		start(controller) {
 			const getBeers = async () => {
-				const allBeers = [];
+				const allBeers: Array<Beer> = [];
 
-				while (continueFetching) {
+				const maxPages = Infinity;
+
+				while (continueFetching && pageNumber <= maxPages) {
 					await throttle(async () => {
-						const res = await fetch(`${baseUrl}beers?page=${page_number}`);
+						const res = await fetch(`${baseUrl}beers?page=${pageNumber}`);
 						const beers = await res.json();
 
-						continueFetching = beers.length === per_page;
-						allBeers.push([
-							...beers.map((beer) => ({ id: beer.id, name: beer.name })),
-						]);
+						continueFetching = beers.length === perPage;
+
+						const newBeer = beers.map((beer: Beer) => ({
+							// beer.id is not unique so making my own.
+							id: crypto.randomUUID(),
+							name: beer.name,
+						}));
+
+						allBeers.push(newBeer);
 
 						controller.enqueue(
 							JSON.stringify({
-								page_number,
+								pageNumber,
 								status: "loading",
 							}),
 						);
 
-						page_number++;
+						pageNumber++;
 
-						console.log(page_number, beers.length);
+						console.log(pageNumber, beers.length);
 
 						// Do I need this line??
 						return Promise.resolve(beers);
@@ -49,7 +61,7 @@ export const GET = async () => {
 				await sleep(1);
 				controller.enqueue(
 					JSON.stringify({
-						page_number: page_number - 1,
+						pageNumber: pageNumber - 1,
 						status: "finished",
 						beers: allBeers.flat(),
 					}),

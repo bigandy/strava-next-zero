@@ -9,9 +9,7 @@ export default function StreamReaderV1() {
 	const [count, setCount] = useState(0);
 	const [status, setStatus] = useState<LoadingState>("initial");
 
-	const handleClick = async (e) => {
-		e.preventDefault();
-
+	const handleClick = async () => {
 		setStatus("loading");
 		setCount(0);
 

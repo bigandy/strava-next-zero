@@ -1,37 +1,41 @@
 "use client";
 
 import { useState } from "react";
+import type { Beer } from "@/app/api/streaming-v2/route";
 import { Button } from "@/components/button";
 
 type LoadingState = "initial" | "loading" | "done" | "success" | "error";
 
 export default function StreamReaderV2() {
-	const [count, setCount] = useState(0);
+	const [pageNumber, setPageNumber] = useState(0);
 	const [beers, setBeers] = useState([]);
 	const [status, setStatus] = useState<LoadingState>("initial");
 
 	const handleClick = async () => {
 		setStatus("loading");
-		setCount(0);
+		setPageNumber(0);
 		setBeers([]);
 
 		try {
 			const response = await fetch("/api/streaming-v2");
 			const reader = response.body?.getReader();
-			const decoder = new TextDecoder();
-			const done = false;
+			if (!reader) {
+				return;
+			}
 
-			while (!done) {
-				const result = await reader?.read();
-				if (result?.done) {
+			const decoder = new TextDecoder();
+
+			while (true) {
+				const { done, value } = await reader?.read();
+				if (done) {
 					break;
 				}
-				const text = decoder.decode(result?.value, { stream: true });
+				const text = decoder.decode(value);
 				const json = JSON.parse(text);
 
 				// console.log({ json });
 
-				setCount(json.page_number);
+				setPageNumber(json.pageNumber);
 				if (json.beers) {
 					setBeers(json.beers);
 				}
@@ -48,7 +52,7 @@ export default function StreamReaderV2() {
 
 	return (
 		<main>
-			<div>Page of API: {count}</div>
+			<div>Page of API: {pageNumber}</div>
 			<div>
 				<Button
 					onClick={handleClick}
@@ -65,7 +69,7 @@ export default function StreamReaderV2() {
 				<>
 					<h2 className="font-bold mt-4">Beers from BrewDog API</h2>
 					<ol className="list-decimal m-4">
-						{beers.map((beer) => {
+						{beers.map((beer: Beer) => {
 							return <li key={`beer-${beer.id}`}>{beer.name}</li>;
 						})}
 					</ol>
