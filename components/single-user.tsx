@@ -3,12 +3,15 @@ import { useQuery } from "@rocicorp/zero/react";
 import { useState } from "react";
 import { Button } from "@/components/button";
 import { useZero } from "@/components/zero";
+import { useSession } from "@/lib/auth-client";
+import { ActivitiesMap } from "./ActivitiesMap";
 
 export const User = ({ id }: { id: string }) => {
 	const [pageNumber, setPageNumber] = useState(0);
 	const [editing, setEditing] = useState(false);
 	const [loading, setLoading] = useState(false);
 	const z = useZero();
+	const session = useSession();
 
 	const [user] = useQuery(
 		z.query.user.related("provider").where("id", "=", id).one(),
@@ -70,7 +73,7 @@ export const User = ({ id }: { id: string }) => {
 			"TODO: sync ALL activities from strava please. show some sort of information to the user ",
 		);
 
-		console.log({ activities: activities.length });
+		// console.log({ activities: activities.length });
 
 		// Can re-use the above api call. And we know the total activities so can give a progress bar.
 	};
@@ -115,6 +118,17 @@ export const User = ({ id }: { id: string }) => {
 					Sync All Activities from Strava
 				</Button>
 			</div>
+
+			<details>
+				<summary>User Information</summary>
+
+				<pre className="whitespace-pre-wrap break-all px-4 py-6">
+					{JSON.stringify(session, null, 2)}
+				</pre>
+			</details>
+
+			<ActivitiesMap />
+
 			{editing ? (
 				<>
 					<h2>Editing</h2>
@@ -127,21 +141,19 @@ export const User = ({ id }: { id: string }) => {
 			) : (
 				<div>
 					<div>User: {user?.name}</div>
-					{/* <div>User Email: {user?.email}</div> */}
 					<div>ID: {user?.id}</div>
-					{/* <div>
+					<div>
 						User Image:
 						{user?.image && (
 							<img
 								src={user?.image}
-								height="50"
-								width="50"
+								height="100"
+								width="100"
 								className="rounded-sm inline"
 								alt="user avatar"
 							/>
 						)}
-					</div> */}
-					<div>Provider: {user?.provider?.providerId}</div>
+					</div>
 				</div>
 			)}
 		</div>
