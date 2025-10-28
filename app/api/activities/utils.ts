@@ -200,18 +200,22 @@ export const getAllStravaActivities = async (account: Account) => {
 			console.log(page, formattedActivities.length);
 
 			// Do I need this line??
-			return Promise.resolve("hello!");
+			return Promise.resolve("done");
 		});
 	}
 
-	// Probably best not returning the activities here;
 	return "done";
 };
 
-export const getStravaActivities = async (account: Account, options = {}) => {
+export const getStravaActivities = async (
+	account: Account,
+	options = {},
+	formatted = true,
+) => {
 	const strava = await getStravaClient(account);
 	const payload = await strava?.athlete.listActivities(options);
-	return formatStravaActivities(payload);
+
+	return formatted ? formatStravaActivities(payload) : payload;
 };
 
 export const getOneStravaActivity = async (
@@ -222,6 +226,16 @@ export const getOneStravaActivity = async (
 	const payload = await strava?.activities.get({ id: activityId });
 
 	return formatStravaActivities([payload]);
+};
+
+export const getOneRawStravaActivity = async (
+	account: Account,
+	activityId: string,
+) => {
+	const strava = await getStravaClient(account);
+	const payload = await strava?.activities.get({ id: activityId });
+
+	return payload;
 };
 
 export const updateOneStravaActivity = async (
@@ -245,6 +259,12 @@ export const getStravaUserInformation = async (account: Account) => {
 	return { athlete };
 };
 
+/**
+ * Streams the response back to the user. In future possible to also pass back the activities themselves?
+ * @param account
+ * @param maxPages
+ * @returns
+ */
 export const getAllStravaActivitiesWithStreaming = async (
 	account: Account,
 	maxPages: number = Infinity,
@@ -297,7 +317,6 @@ export const getAllStravaActivitiesWithStreaming = async (
 					JSON.stringify({
 						page: page - 1,
 						status: "finished",
-						// activities: allStravaActivities.flat(),
 					}),
 				);
 
