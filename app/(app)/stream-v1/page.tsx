@@ -5,7 +5,7 @@ import { Button } from "@/components/button";
 
 type LoadingState = "initial" | "loading" | "done" | "success" | "error";
 
-export default function Home() {
+export default function StreamReaderV1() {
 	const [count, setCount] = useState(0);
 	const [status, setStatus] = useState<LoadingState>("initial");
 
@@ -16,7 +16,7 @@ export default function Home() {
 		setCount(0);
 
 		try {
-			const response = await fetch("/api/streaming-trial");
+			const response = await fetch("/api/streaming-v1");
 			const reader = response.body?.getReader();
 			const decoder = new TextDecoder();
 			const done = false;

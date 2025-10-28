@@ -14,8 +14,12 @@ const pages = [
 		title: "Activities",
 	},
 	{
-		href: "/stream-reader",
+		href: "/stream-v1",
 		title: "Stream Reader",
+	},
+	{
+		href: "/stream-v2",
+		title: "Stream Reader v2",
 	},
 ];
 
