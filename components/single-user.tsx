@@ -26,8 +26,14 @@ export const User = ({ id }: { id: string }) => {
 	};
 
 	const getAllActivities = () => {
-		console.log(
-			"get all activities from strava please. show some sort of information to the user ",
+		console.info(
+			"TODO: get all activities from strava please. show some sort of information to the user ",
+		);
+	};
+
+	const syncLatestActivities = () => {
+		console.info(
+			"TODO: sync activities from strava please. show some sort of information to the user ",
 		);
 	};
 
@@ -45,6 +51,14 @@ export const User = ({ id }: { id: string }) => {
 					onClick={getAllActivities}
 				>
 					Grab All Activities from Strava
+				</Button>
+
+				<Button
+					className="bg-red-500 p-4 rounded-sm text-white"
+					onClick={syncLatestActivities}
+					disabled
+				>
+					Sync Latest Activities from Strava
 				</Button>
 			</div>
 			{editing ? (

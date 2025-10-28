@@ -31,15 +31,16 @@ export const Header = async () => {
 							{JSON.stringify(session, null, 2)}
 						</pre>
 					</details>
+
+					<div className="flex gap-2 mb-10">
+						<Link href="/users">Users</Link>
+						<Link href="/activities">Activities</Link>
+						<Link href="/stream-reader">Stream Reader</Link>
+					</div>
 				</>
 			) : (
 				<SignInButton />
 			)}
-
-			<div className="flex gap-2 mb-10">
-				<Link href="/users">Users</Link>
-				<Link href="/activities">Activities</Link>
-			</div>
 		</div>
 	);
 };
