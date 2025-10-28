@@ -5,12 +5,16 @@ import { Button } from "@/components/button";
 import { useZero } from "@/components/zero";
 
 export const User = ({ id }: { id: string }) => {
+	const [pageNumber, setPageNumber] = useState(0);
 	const [editing, setEditing] = useState(false);
+	const [loading, setLoading] = useState(false);
 	const z = useZero();
 
 	const [user] = useQuery(
 		z.query.user.related("provider").where("id", "=", id).one(),
 	);
+
+	// const [activities] = useQuery(z.query.activities);
 
 	const handleInput = (event: React.ChangeEvent<HTMLInputElement>) => {
 		const { value } = event.target;
@@ -25,15 +29,55 @@ export const User = ({ id }: { id: string }) => {
 		});
 	};
 
-	const getAllActivities = () => {
+	const getAllActivities = async () => {
 		console.info(
 			"TODO: get all activities from strava please. show some sort of information to the user ",
 		);
+
+		setLoading(true);
+		setPageNumber(0);
+
+		try {
+			const response = await fetch("/api/activities/stream/all");
+			const reader = response.body?.getReader();
+			if (!reader) {
+				return;
+			}
+
+			const decoder = new TextDecoder();
+
+			while (true) {
+				const { done, value } = await reader.read();
+				if (done) {
+					break;
+				}
+				const text = decoder.decode(value);
+				console.log({ text });
+				const json = JSON.parse(text);
+
+				setPageNumber(json.page);
+			}
+		} catch (error) {
+			console.error(error);
+		} finally {
+			console.log("done");
+			setLoading(false);
+		}
+	};
+
+	const syncAllActivities = () => {
+		console.info(
+			"TODO: sync ALL activities from strava please. show some sort of information to the user ",
+		);
+
+		console.log({ activities: activities.length });
+
+		// Can re-use the above api call. And we know the total activities so can give a progress bar.
 	};
 
 	const syncLatestActivities = () => {
 		console.info(
-			"TODO: sync activities from strava please. show some sort of information to the user ",
+			"TODO: sync 'Latest' activities from strava please. show some sort of information to the user ",
 		);
 	};
 
@@ -49,6 +93,8 @@ export const User = ({ id }: { id: string }) => {
 				<Button
 					className="bg-red-500 p-4 rounded-sm text-white"
 					onClick={getAllActivities}
+					loading={loading}
+					loadingText={`loading ${pageNumber} page`}
 				>
 					Grab All Activities from Strava
 				</Button>
@@ -59,6 +105,14 @@ export const User = ({ id }: { id: string }) => {
 					disabled
 				>
 					Sync Latest Activities from Strava
+				</Button>
+
+				<Button
+					className="bg-red-500 p-4 rounded-sm text-white"
+					onClick={syncAllActivities}
+					disabled
+				>
+					Sync All Activities from Strava
 				</Button>
 			</div>
 			{editing ? (

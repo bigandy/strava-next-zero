@@ -4,6 +4,8 @@
 	"type": "module",
 	"private": true,
 	"scripts": {
+		"dev": "npm run open-browser && next dev",
+		"open-browser": "open http://localhost:3000",
 		"dev:ui": "next dev",
 		"dev:cache": "zero-cache-dev -p ./schema.ts",
 		"dev:db-up": "docker compose up",

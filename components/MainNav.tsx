@@ -13,14 +13,14 @@ const pages = [
 		href: "/activities",
 		title: "Activities",
 	},
-	{
-		href: "/stream-v1",
-		title: "Stream Reader",
-	},
-	{
-		href: "/stream-v2",
-		title: "Stream Reader v2",
-	},
+	// {
+	// 	href: "/stream-v1",
+	// 	title: "Stream Reader",
+	// },
+	// {
+	// 	href: "/stream-v2",
+	// 	title: "Stream Reader v2",
+	// },
 ];
 
 export const MainNav = () => {
