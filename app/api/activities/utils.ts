@@ -1,3 +1,4 @@
+import { setTimeout as sleep } from "node:timers/promises";
 import dayjs from "dayjs";
 import { eq, getTableColumns, sql } from "drizzle-orm";
 import type { PgTable } from "drizzle-orm/pg-core";
@@ -242,4 +243,70 @@ export const getStravaUserInformation = async (account: Account) => {
 	const athlete = await strava.athlete.get({});
 
 	return { athlete };
+};
+
+export const getAllStravaActivitiesWithStreaming = async (
+	account: Account,
+	maxPages: number = Infinity,
+) => {
+	const strava = await getStravaClient(account);
+
+	const allStravaActivities = [];
+	let page = 1;
+	const per_page = 100;
+
+	let continueFetching = true;
+
+	const stream = new ReadableStream({
+		start(controller) {
+			const getActivities = async () => {
+				while (continueFetching && page <= maxPages) {
+					const newActivities = await throttle(async () => {
+						const activities = await strava?.athlete.listActivities({
+							page,
+							per_page,
+						});
+
+						// format so can go into db
+						const formattedActivities = formatStravaActivities(activities);
+
+						// write to the db
+						await upsertActivitiesToDB(formattedActivities);
+
+						continueFetching = formattedActivities.length === per_page;
+
+						controller.enqueue(
+							JSON.stringify({
+								page,
+								status: "loading",
+							}),
+						);
+
+						page++;
+
+						return formattedActivities;
+					});
+
+					allStravaActivities.push(newActivities);
+				}
+
+				// For some reason this is needed to prevent two messages being sent at the same time. The finished message and the one before.
+				await sleep(10);
+
+				controller.enqueue(
+					JSON.stringify({
+						page: page - 1,
+						status: "finished",
+						// activities: allStravaActivities.flat(),
+					}),
+				);
+
+				controller.close();
+			};
+
+			getActivities();
+		},
+	});
+
+	return stream;
 };
