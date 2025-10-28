@@ -1,6 +1,7 @@
 "use client";
 import { useQuery } from "@rocicorp/zero/react";
 import { useState } from "react";
+import { Button } from "@/components/button";
 import { useZero } from "@/components/zero";
 
 export const User = ({ id }: { id: string }) => {
@@ -24,19 +25,42 @@ export const User = ({ id }: { id: string }) => {
 		});
 	};
 
+	const getAllActivities = () => {
+		console.info(
+			"TODO: get all activities from strava please. show some sort of information to the user ",
+		);
+	};
+
+	const syncLatestActivities = () => {
+		console.info(
+			"TODO: sync activities from strava please. show some sort of information to the user ",
+		);
+	};
+
 	if (!user) {
 		return <div>Loading</div>;
 	}
 
 	return (
 		<div>
-			<button
-				type="button"
-				className="bg-red-500 p-4 rounded-sm text-white"
-				onClick={() => setEditing((e) => !e)}
-			>
-				Toggle Editing
-			</button>
+			<div className="flex gap-4 my-4">
+				<Button onClick={() => setEditing((e) => !e)}>Toggle Editing</Button>
+
+				<Button
+					className="bg-red-500 p-4 rounded-sm text-white"
+					onClick={getAllActivities}
+				>
+					Grab All Activities from Strava
+				</Button>
+
+				<Button
+					className="bg-red-500 p-4 rounded-sm text-white"
+					onClick={syncLatestActivities}
+					disabled
+				>
+					Sync Latest Activities from Strava
+				</Button>
+			</div>
 			{editing ? (
 				<>
 					<h2>Editing</h2>

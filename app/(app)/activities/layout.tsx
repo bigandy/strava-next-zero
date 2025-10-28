@@ -7,8 +7,6 @@ export default async function Layout({
 }>) {
 	return (
 		<>
-			<h1>Activities</h1>
-
 			<Nav />
 
 			{children}

@@ -1,5 +1,6 @@
 import { headers } from "next/headers";
-import Link from "next/link";
+
+import { MainNav } from "@/components/MainNav";
 import { SignInButton } from "@/components/sign-in";
 import { SignOut } from "@/components/sign-out";
 import { auth } from "@/lib/auth";
@@ -17,9 +18,9 @@ export const Header = async () => {
 					{session.user?.image && (
 						<img
 							src={session.user?.image}
-							height="50"
-							width="50"
-							className="rounded-sm"
+							height="124"
+							width="124"
+							className="rounded-sm my-4"
 							alt="user avatar"
 						/>
 					)}
@@ -31,15 +32,12 @@ export const Header = async () => {
 							{JSON.stringify(session, null, 2)}
 						</pre>
 					</details>
+
+					<MainNav />
 				</>
 			) : (
 				<SignInButton />
 			)}
-
-			<div className="flex gap-2 mb-10">
-				<Link href="/users">Users</Link>
-				<Link href="/activities">Activities</Link>
-			</div>
 		</div>
 	);
 };

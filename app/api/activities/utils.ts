@@ -13,6 +13,11 @@ interface Activity extends DetailedActivityResponse {
 	visibility: string;
 }
 
+export const throttle = throttledQueue({
+	maxPerInterval: 1,
+	interval: seconds(1),
+}); // at most make 1 request every second.
+
 const nowEpoc = () => Math.floor(Date.now()) / 1000;
 
 const getAccessToken = async ({
@@ -59,7 +64,7 @@ const getAccessToken = async ({
 	}
 };
 
-const getStravaClient = async (account: Account) => {
+export const getStravaClient = async (account: Account) => {
 	if (!account.access_token_expires) {
 		return null;
 	}
@@ -115,7 +120,7 @@ const conflictUpdateAllExcept = <
 			.map(([colName, { name }]) => [colName, sql.raw(`EXCLUDED."${name}"`)]),
 	);
 
-const formatStravaActivities = (activities: any) => {
+export const formatStravaActivities = (activities: any) => {
 	return activities?.map((activity: Activity) => {
 		return {
 			name: activity.name,
@@ -173,11 +178,6 @@ export const getAllStravaActivities = async (account: Account) => {
 
 	let continueFetching = true;
 
-	const throttle = throttledQueue({
-		maxPerInterval: 1,
-		interval: seconds(1),
-	}); // at most make 1 request every second.
-
 	while (continueFetching) {
 		await throttle(async () => {
 			const activities = await strava?.athlete.listActivities({
@@ -234,4 +234,12 @@ export const updateOneStravaActivity = async (
 		id: activityId,
 		...data,
 	});
+};
+
+export const getStravaUserInformation = async (account: Account) => {
+	const strava = await getStravaClient(account);
+
+	const athlete = await strava.athlete.get({});
+
+	return { athlete };
 };
