@@ -50,14 +50,12 @@ export const ActivitiesWithSearch = () => {
 
 	return (
 		<>
-			<div className="my-10">
-				<input
-					className="border border-black p-4 w-full"
-					type="text"
-					defaultValue=""
-					onChange={handleInput}
-				/>
-			</div>
+			<input
+				className="border border-black p-4 w-full"
+				type="text"
+				defaultValue=""
+				onChange={handleInput}
+			/>
 			{search !== "" && (
 				<div>
 					<strong>{activities.length}</strong> activities featuring{" "}

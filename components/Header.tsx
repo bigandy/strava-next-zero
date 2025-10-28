@@ -1,5 +1,6 @@
 import { headers } from "next/headers";
-import Link from "next/link";
+
+import { MainNav } from "@/components/MainNav";
 import { SignInButton } from "@/components/sign-in";
 import { SignOut } from "@/components/sign-out";
 import { auth } from "@/lib/auth";
@@ -32,11 +33,7 @@ export const Header = async () => {
 						</pre>
 					</details>
 
-					<div className="flex gap-2 mb-10">
-						<Link href="/users">Users</Link>
-						<Link href="/activities">Activities</Link>
-						<Link href="/stream-reader">Stream Reader</Link>
-					</div>
+					<MainNav />
 				</>
 			) : (
 				<SignInButton />

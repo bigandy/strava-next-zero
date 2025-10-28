@@ -6,18 +6,17 @@ import { Button } from "@/components/button";
 type LoadingState = "initial" | "loading" | "done" | "success" | "error";
 
 export default function Home() {
-	// const [count, setCount] = useState(0);
-
+	const [count, setCount] = useState(0);
 	const [status, setStatus] = useState<LoadingState>("initial");
 
 	const handleClick = async (e) => {
 		e.preventDefault();
 
 		setStatus("loading");
-		// setCount(0);
+		setCount(0);
 
 		try {
-			const response = await fetch("/api/activities/get/all/streaming");
+			const response = await fetch("/api/streaming-trial");
 			const reader = response.body?.getReader();
 			const decoder = new TextDecoder();
 			const done = false;
@@ -28,11 +27,10 @@ export default function Home() {
 					break;
 				}
 				const text = decoder.decode(result?.value, { stream: true });
-				console.log({ text });
-				// const json = JSON.parse(text);
-				// console.log({ status: json.status, count: json.count });
+				const json = JSON.parse(text);
+				console.log({ status: json.status, count: json.count });
 
-				// setCount(json.count);
+				setCount(json.count);
 			}
 
 			// setLogs((prev) => [...prev, "Done ✅"]);
@@ -48,7 +46,7 @@ export default function Home() {
 
 	return (
 		<main>
-			{/* <div>{count}</div> */}
+			<div>{count}</div>
 			<div>
 				<Button
 					onClick={handleClick}
@@ -58,7 +56,6 @@ export default function Home() {
 					{status === "loading" ? "Loading..." : "Click Me!"}
 				</Button>
 			</div>
-			{/* <div>{log && log.map((l, i) => <p key={`log-${i}`}>{l}</p>)}</div> */}
 		</main>
 	);
 }
