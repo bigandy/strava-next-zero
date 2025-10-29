@@ -64,6 +64,16 @@
   height: 1000px;
 }
 
+.leaflet-container--loading {
+	display: grid;
+	place-content: center;
+
+	div {
+		font-size: 30px;
+		font-weight: bold;
+	}
+}
+
 .map {
   height: 350px;
   margin: 30px;

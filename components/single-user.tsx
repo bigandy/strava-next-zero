@@ -1,15 +1,22 @@
 "use client";
 import { useQuery } from "@rocicorp/zero/react";
-import { useState } from "react";
+import dynamic from "next/dynamic";
+import { useMemo, useState } from "react";
 import { Button } from "@/components/button";
 import { useZero } from "@/components/zero";
 import { useSession } from "@/lib/auth-client";
-// import { ActivitiesMap } from "./ActivitiesMap";
-import dynamic from "next/dynamic";
 
-const MapComponent = dynamic(() => import("./ActivitiesMap"), {
-	ssr: false,
-});
+const MapComponent = dynamic(
+	() => import("./ActivitiesMap").then((module) => module.ActivitiesMap),
+	{
+		// ssr: false,
+		loading: () => (
+			<div className="leaflet-container leaflet-container--loading">
+				<div>Loading...</div>
+			</div>
+		),
+	},
+);
 
 export const User = ({ id }: { id: string }) => {
 	const [pageNumber, setPageNumber] = useState(0);
@@ -22,7 +29,7 @@ export const User = ({ id }: { id: string }) => {
 		z.query.user.related("provider").where("id", "=", id).one(),
 	);
 
-	// const [activities] = useQuery(z.query.activities);
+	const [activities] = useQuery(z.query.activities);
 
 	const handleInput = (event: React.ChangeEvent<HTMLInputElement>) => {
 		const { value } = event.target;
@@ -35,6 +42,10 @@ export const User = ({ id }: { id: string }) => {
 			id: user?.id,
 			name: value,
 		});
+	};
+
+	const getLatestActivities = async () => {
+		await fetch("/api/activities/get/latest");
 	};
 
 	const getAllActivities = async () => {
@@ -89,6 +100,16 @@ export const User = ({ id }: { id: string }) => {
 		);
 	};
 
+	const coords = useMemo(() => {
+		return activities
+			.filter(({ startCoords }) => startCoords !== null)
+			.map(({ startCoords, id, name }) => {
+				const [x, y] = JSON.parse(startCoords);
+
+				return { coords: [x, y], id, name };
+			});
+	}, [activities]);
+
 	if (!user) {
 		return <div>Loading</div>;
 	}
@@ -100,11 +121,19 @@ export const User = ({ id }: { id: string }) => {
 
 				<Button
 					className="bg-red-500 p-4 rounded-sm text-white"
+					onClick={getLatestActivities}
+					loading={loading}
+				>
+					Grab <strong>Latest</strong> Activities from Strava
+				</Button>
+
+				<Button
+					className="bg-red-500 p-4 rounded-sm text-white"
 					onClick={getAllActivities}
 					loading={loading}
 					loadingText={`loading ${pageNumber} page`}
 				>
-					Grab All Activities from Strava
+					Grab <strong>All</strong> Activities from Strava
 				</Button>
 
 				<Button
@@ -132,7 +161,7 @@ export const User = ({ id }: { id: string }) => {
 				</pre>
 			</details>
 
-			<MapComponent />
+			<MapComponent coords={coords} />
 
 			{editing ? (
 				<>

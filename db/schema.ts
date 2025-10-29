@@ -64,8 +64,8 @@ export const activities = pgTable("activity", {
 	distance: numeric("distance").notNull(),
 	visibility: text("visibility").notNull(),
 	summaryPolyline: text("summaryPolyline").notNull(),
-	startCoords: point().notNull(),
-	endCoords: point().notNull(),
+	startCoords: text(),
+	endCoords: text(),
 
 	updatedAt: text()
 		.notNull()

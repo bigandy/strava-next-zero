@@ -1,13 +1,27 @@
 "use client";
 
 import { useQuery } from "@rocicorp/zero/react";
-
+import dynamic from "next/dynamic";
 import Link from "next/link";
 import { useState } from "react";
 import { Button } from "@/components/button";
 import { useZero } from "@/components/zero";
-
 import { SingleActivityTable } from "./single-activity-table";
+
+const MapComponent = dynamic(
+	() =>
+		import("./ActivitiesMap/single-activity-map").then(
+			(module) => module.SingleActivitiesMap,
+		),
+	{
+		// ssr: false,
+		loading: () => (
+			<div className="leaflet-container leaflet-container--loading">
+				<div>Loading...</div>
+			</div>
+		),
+	},
+);
 
 export const SingleActivity = ({ id }: { id: string }) => {
 	const z = useZero();
@@ -108,6 +122,12 @@ export const SingleActivity = ({ id }: { id: string }) => {
 				)}
 
 				{!isEditing && activity && <SingleActivityTable activity={activity} />}
+			</div>
+			<div className="my-4">
+				<MapComponent
+					polyline={activity.summaryPolyline}
+					coords={activity.startCoords}
+				/>
 			</div>
 		</>
 	);

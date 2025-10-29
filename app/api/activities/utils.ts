@@ -124,8 +124,22 @@ const conflictUpdateAllExcept = <
 			.map(([colName, { name }]) => [colName, sql.raw(`EXCLUDED."${name}"`)]),
 	);
 
+const formatCoords = (coords, activityType) => {
+	if (activityType === "VirtualRide") {
+		return null;
+	}
+
+	if (Number.isNaN(Number(coords[0])) || Number.isNaN(Number(coords[1]))) {
+		return null;
+	}
+
+	return JSON.stringify(coords);
+};
+
 export const formatStravaActivities = (activities: any) => {
 	return activities?.map((activity: Activity) => {
+		console.log({ coords: activity.start_latlng });
+
 		return {
 			name: activity.name,
 			distance: activity.distance,
@@ -139,9 +153,10 @@ export const formatStravaActivities = (activities: any) => {
 			elapsedTime: activity.elapsed_time,
 			movingTime: activity.moving_time,
 			visibility: activity.visibility,
-			summaryPolyline: activity.map.summary_polyline,
-			startCoords: activity.start_latlng,
-			endCoords: activity.end_latlng,
+			summaryPolyline:
+				activity.type !== "VirtualRide" && activity.map.summary_polyline,
+			startCoords: formatCoords(activity.start_latlng, activity.type),
+			endCoords: formatCoords(activity.end_latlng, activity.type),
 		};
 	});
 };

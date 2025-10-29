@@ -1,13 +1,18 @@
 "use client";
+import P from "@mapbox/polyline";
 import Leaflet from "leaflet";
-import Link from "next/link";
 import { useEffect } from "react";
-import { MapContainer, Marker, Popup, TileLayer } from "react-leaflet";
-
+import {
+	MapContainer,
+	Marker,
+	Polyline,
+	Popup,
+	TileLayer,
+} from "react-leaflet";
 import "leaflet/dist/leaflet.css";
-const position: [number, number] = [48.864716, 2.349014];
 
-export const ActivitiesMap = ({ coords }) => {
+const limeOptions = { color: "red" };
+export const SingleActivitiesMap = ({ polyline, coords }) => {
 	// AHTODO: There must be a better way of doing this as it smells!
 	useEffect(() => {
 		(async function init() {
@@ -20,24 +25,39 @@ export const ActivitiesMap = ({ coords }) => {
 		})();
 	}, []);
 
+	console.log({
+		example: P.decode("_p~iF~ps|U_ulLnnqC_mqNvxq`@"),
+		polyline: P.decode(polyline),
+		coords,
+	});
+
+	// returns an array of lat, lon pairs
+
 	return (
 		<div className="leaflet-container">
-			<MapContainer center={position} zoom={6} scrollWheelZoom={false}>
+			<MapContainer
+				center={JSON.parse(coords)}
+				zoom={15}
+				scrollWheelZoom={false}
+			>
 				<TileLayer
 					attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
 					url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
 				/>
-				{coords.length > 0
-					? coords.map((activity) => (
-							<Marker key={activity.id} position={activity.coords}>
-								<Popup>
+
+				<Marker key={1} position={JSON.parse(coords)}>
+					{/* <Popup>
 									<Link href={`/activities/${activity.id}`}>
 										{activity.name}
 									</Link>
-								</Popup>
-							</Marker>
-						))
-					: null}
+								</Popup> */}
+				</Marker>
+
+				{/* {P.decode(polyline).map((coords, index) => {
+					return <Marker key={index} position={coords} />;
+				})} */}
+
+				<Polyline pathOptions={limeOptions} positions={P.decode(polyline)} />
 			</MapContainer>
 		</div>
 	);

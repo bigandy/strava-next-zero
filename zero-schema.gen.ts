@@ -259,6 +259,24 @@ export const schema = {
             "summaryPolyline"
           >,
         },
+        startCoords: {
+          type: "string",
+          optional: true,
+          customType: null as unknown as ZeroCustomType<
+            typeof zeroSchema,
+            "activities",
+            "startCoords"
+          >,
+        },
+        endCoords: {
+          type: "string",
+          optional: true,
+          customType: null as unknown as ZeroCustomType<
+            typeof zeroSchema,
+            "activities",
+            "endCoords"
+          >,
+        },
         updatedAt: {
           type: "string",
           optional: true,

@@ -1,6 +1,6 @@
 {
-  "id": "d9d6b414-544c-4afe-8c0a-242dfb36e153",
-  "prevId": "0ded6a98-d3f3-4941-8f21-8d2b91101595",
+  "id": "eb762ee8-d600-4e65-9b6f-fa74bb4e2a56",
+  "prevId": "d9d6b414-544c-4afe-8c0a-242dfb36e153",
   "version": "7",
   "dialect": "postgresql",
   "tables": {
@@ -188,13 +188,13 @@
         },
         "startCoords": {
           "name": "startCoords",
-          "type": "point",
+          "type": "text",
           "primaryKey": false,
           "notNull": false
         },
         "endCoords": {
           "name": "endCoords",
-          "type": "point",
+          "type": "text",
           "primaryKey": false,
           "notNull": false
         },
