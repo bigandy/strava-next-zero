@@ -14,6 +14,7 @@ const ActivitiesMap = () => {
 	const z = useZero();
 	const [activities] = useQuery(z.query.activities);
 
+	// AHTODO: There must be a better way of doing this as it smells!
 	useEffect(() => {
 		(async function init() {
 			delete Leaflet.Icon.Default.prototype._getIconUrl;
