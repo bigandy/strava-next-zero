@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useEffect } from "react";
 import { MapContainer, Marker, Popup, TileLayer } from "react-leaflet";
 
+// AHTODO: move this to the .html
 import "leaflet/dist/leaflet.css";
 const position: [number, number] = [48.864716, 2.349014];
 

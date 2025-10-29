@@ -29,7 +29,9 @@ export const User = ({ id }: { id: string }) => {
 		z.query.user.related("provider").where("id", "=", id).one(),
 	);
 
-	const [activities] = useQuery(z.query.activities);
+	const [activities] = useQuery(
+		z.query.activities.where("startCoords", "!=", "null"),
+	);
 
 	const handleInput = (event: React.ChangeEvent<HTMLInputElement>) => {
 		const { value } = event.target;
@@ -71,7 +73,6 @@ export const User = ({ id }: { id: string }) => {
 					break;
 				}
 				const text = decoder.decode(value);
-				console.log({ text });
 				const json = JSON.parse(text);
 
 				setPageNumber(json.page);
@@ -79,7 +80,7 @@ export const User = ({ id }: { id: string }) => {
 		} catch (error) {
 			console.error(error);
 		} finally {
-			console.log("done");
+			console.info("done");
 			setLoading(false);
 		}
 	};
@@ -101,13 +102,12 @@ export const User = ({ id }: { id: string }) => {
 	};
 
 	const coords = useMemo(() => {
-		return activities
-			.filter(({ startCoords }) => startCoords !== null)
-			.map(({ startCoords, id, name }) => {
-				const [x, y] = JSON.parse(startCoords);
+		return activities.map(({ startCoords, id, name }) => {
+			// @ts-expect-error startCoords is defined!
+			const [x, y] = JSON.parse(startCoords);
 
-				return { coords: [x, y], id, name };
-			});
+			return { coords: [x, y], id, name };
+		});
 	}, [activities]);
 
 	if (!user) {

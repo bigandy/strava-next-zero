@@ -138,8 +138,6 @@ const formatCoords = (coords, activityType) => {
 
 export const formatStravaActivities = (activities: any) => {
 	return activities?.map((activity: Activity) => {
-		console.log({ coords: activity.start_latlng });
-
 		return {
 			name: activity.name,
 			distance: activity.distance,
@@ -154,7 +152,7 @@ export const formatStravaActivities = (activities: any) => {
 			movingTime: activity.moving_time,
 			visibility: activity.visibility,
 			summaryPolyline:
-				activity.type !== "VirtualRide" && activity.map.summary_polyline,
+				activity.type !== "VirtualRide" && activity?.map?.summary_polyline,
 			startCoords: formatCoords(activity.start_latlng, activity.type),
 			endCoords: formatCoords(activity.end_latlng, activity.type),
 		};

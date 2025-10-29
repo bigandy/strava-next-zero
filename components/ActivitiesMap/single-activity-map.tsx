@@ -1,18 +1,23 @@
 "use client";
-import P from "@mapbox/polyline";
+import { decode } from "@mapbox/polyline";
 import Leaflet from "leaflet";
+// AHTODO: move this to the .html
+import "leaflet/dist/leaflet.css";
 import { useEffect } from "react";
 import {
 	MapContainer,
-	Marker,
-	Polyline,
-	Popup,
+	Polygon,
+	// Polyline,
 	TileLayer,
 } from "react-leaflet";
-import "leaflet/dist/leaflet.css";
 
 const limeOptions = { color: "red" };
-export const SingleActivitiesMap = ({ polyline, coords }) => {
+
+interface Props {
+	polyline: string;
+	coords: string;
+}
+export const SingleActivitiesMap = ({ polyline, coords }: Props) => {
 	// AHTODO: There must be a better way of doing this as it smells!
 	useEffect(() => {
 		(async function init() {
@@ -25,39 +30,21 @@ export const SingleActivitiesMap = ({ polyline, coords }) => {
 		})();
 	}, []);
 
-	console.log({
-		example: P.decode("_p~iF~ps|U_ulLnnqC_mqNvxq`@"),
-		polyline: P.decode(polyline),
-		coords,
-	});
-
-	// returns an array of lat, lon pairs
-
 	return (
 		<div className="leaflet-container">
 			<MapContainer
 				center={JSON.parse(coords)}
 				zoom={15}
-				scrollWheelZoom={false}
+				// scrollWheelZoom={false}
 			>
 				<TileLayer
 					attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
 					url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
 				/>
 
-				<Marker key={1} position={JSON.parse(coords)}>
-					{/* <Popup>
-									<Link href={`/activities/${activity.id}`}>
-										{activity.name}
-									</Link>
-								</Popup> */}
-				</Marker>
+				{/* <Polyline pathOptions={limeOptions} positions={decode(polyline)} /> */}
 
-				{/* {P.decode(polyline).map((coords, index) => {
-					return <Marker key={index} position={coords} />;
-				})} */}
-
-				<Polyline pathOptions={limeOptions} positions={P.decode(polyline)} />
+				<Polygon pathOptions={limeOptions} positions={decode(polyline)} />
 			</MapContainer>
 		</div>
 	);

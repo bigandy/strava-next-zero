@@ -1,7 +1,6 @@
 import { headers } from "next/headers";
 import { NextResponse } from "next/server";
 import {
-	deleteActivities,
 	getStravaActivities,
 	writeActivitiesToDB,
 } from "@/app/api/activities/utils";
@@ -21,7 +20,7 @@ export const GET = async () => {
 	const stravaActivities = await getStravaActivities(session.account);
 
 	// Delete activities from DB
-	await deleteActivities();
+	// await deleteActivities();
 
 	// Put them in the database!
 	await writeActivitiesToDB(stravaActivities);
