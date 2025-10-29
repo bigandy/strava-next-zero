@@ -4,7 +4,12 @@ import { useState } from "react";
 import { Button } from "@/components/button";
 import { useZero } from "@/components/zero";
 import { useSession } from "@/lib/auth-client";
-import { ActivitiesMap } from "./ActivitiesMap";
+// import { ActivitiesMap } from "./ActivitiesMap";
+import dynamic from "next/dynamic";
+
+const MapComponent = dynamic(() => import("./ActivitiesMap"), {
+	ssr: false,
+});
 
 export const User = ({ id }: { id: string }) => {
 	const [pageNumber, setPageNumber] = useState(0);
@@ -127,7 +132,7 @@ export const User = ({ id }: { id: string }) => {
 				</pre>
 			</details>
 
-			<ActivitiesMap />
+			<MapComponent />
 
 			{editing ? (
 				<>

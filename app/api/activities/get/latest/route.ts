@@ -18,17 +18,13 @@ export const GET = async () => {
 		return NextResponse.json({ message: "NO-AUTH" });
 	}
 
-	const stravaActivities = await getStravaActivities(
-		session.account,
-		{},
-		false,
-	);
+	const stravaActivities = await getStravaActivities(session.account);
 
 	// Delete activities from DB
-	// await deleteActivities();
+	await deleteActivities();
 
 	// Put them in the database!
-	// await writeActivitiesToDB(stravaActivities);
+	await writeActivitiesToDB(stravaActivities);
 
 	if (stravaActivities) {
 		return NextResponse.json({ activities: stravaActivities });

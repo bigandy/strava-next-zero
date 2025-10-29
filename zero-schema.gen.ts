@@ -250,6 +250,15 @@ export const schema = {
             "visibility"
           >,
         },
+        summaryPolyline: {
+          type: "string",
+          optional: false,
+          customType: null as unknown as ZeroCustomType<
+            typeof zeroSchema,
+            "activities",
+            "summaryPolyline"
+          >,
+        },
         updatedAt: {
           type: "string",
           optional: true,

@@ -36,6 +36,20 @@
       "when": 1761555109477,
       "tag": "0004_cuddly_yellowjacket",
       "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "7",
+      "when": 1761683581572,
+      "tag": "0005_rich_sleeper",
+      "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "7",
+      "when": 1761685122863,
+      "tag": "0006_tiny_spectrum",
+      "breakpoints": true
     }
   ]
 }

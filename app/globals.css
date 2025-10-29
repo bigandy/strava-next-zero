@@ -58,3 +58,21 @@
 :root {
 	color-scheme: light dark;
 }
+
+.leaflet-container {
+  /* width: 350px; */
+  height: 1000px;
+}
+
+.map {
+  height: 350px;
+  margin: 30px;
+  border: 1px solid gray;
+  background-color: rgb(125, 193, 220);
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  color: whitesmoke;
+  border-radius: 5px;
+}

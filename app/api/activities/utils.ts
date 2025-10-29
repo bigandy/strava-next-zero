@@ -99,6 +99,9 @@ export const writeActivitiesToDB = async (stravaActivities: any) => {
 				elevation: act.elevation,
 				distance: act.distance,
 				visibility: act.visibility,
+				summaryPolyline: act.summaryPolyline,
+				startCoords: act.startCoords,
+				endCoords: act.endCoords,
 			};
 		}),
 	);
@@ -136,6 +139,9 @@ export const formatStravaActivities = (activities: any) => {
 			elapsedTime: activity.elapsed_time,
 			movingTime: activity.moving_time,
 			visibility: activity.visibility,
+			summaryPolyline: activity.map.summary_polyline,
+			startCoords: activity.start_latlng,
+			endCoords: activity.end_latlng,
 		};
 	});
 };
@@ -157,6 +163,9 @@ export const upsertActivitiesToDB = async (stravaActivities: any) => {
 					elevation: act.elevation,
 					distance: act.distance,
 					visibility: act.visibility,
+					summaryPolyline: act.summaryPolyline,
+					startCoords: act.startCoords,
+					endCoords: act.endCoords,
 				};
 			}),
 		)
