@@ -13,10 +13,10 @@ const pages = [
 		href: "/activities",
 		title: "Activities",
 	},
-	{
-		href: "/map",
-		title: "Test Map Page",
-	},
+	// {
+	// 	href: "/map",
+	// 	title: "Test Map Page",
+	// },
 ];
 
 export const MainNav = () => {

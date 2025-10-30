@@ -103,7 +103,7 @@ export const SingleActivity = ({ id }: { id: string }) => {
 						<input
 							id="name"
 							onInput={handleNameInput}
-							value={activity?.name}
+							defaultValue={activity?.name}
 							className="border border-black p-4 block w-full"
 						></input>
 
@@ -124,10 +124,12 @@ export const SingleActivity = ({ id }: { id: string }) => {
 				{!isEditing && activity && <SingleActivityTable activity={activity} />}
 			</div>
 			<div className="my-4">
-				<MapComponent
-					polyline={activity.summaryPolyline}
-					coords={activity.startCoords}
-				/>
+				{activity.startCoords && (
+					<MapComponent
+						polyline={activity.summaryPolyline}
+						coords={activity.startCoords}
+					/>
+				)}
 			</div>
 		</>
 	);

@@ -1,27 +1,29 @@
 "use client";
 import { useQuery } from "@rocicorp/zero/react";
+
 import dynamic from "next/dynamic";
-import { useMemo, useState } from "react";
+import { useState } from "react";
 import { Button } from "@/components/button";
 import { useZero } from "@/components/zero";
 import { useSession } from "@/lib/auth-client";
 
-const MapComponent = dynamic(
+import { CustomMarker } from "./ActivitiesMap/CustomMarker";
+import type { Coord } from "./ActivitiesMap/types";
+
+const DynamicMap = dynamic(
 	() => import("./ActivitiesMap").then((module) => module.ActivitiesMap),
 	{
-		ssr: false,
 		loading: () => (
 			<div className="leaflet-container leaflet-container--loading">
 				<div>Loading...</div>
 			</div>
 		),
+		ssr: false,
 	},
 );
 
 export const User = ({ id }: { id: string }) => {
 	const z = useZero();
-
-	z.query.activities.where("startCoords", "IS NOT", null).limit(1000).preload();
 
 	const [pageNumber, setPageNumber] = useState(0);
 	const [editing, setEditing] = useState(false);
@@ -104,18 +106,16 @@ export const User = ({ id }: { id: string }) => {
 		);
 	};
 
-	const coords = useMemo(() => {
-		return activities.map(({ startCoords, id, name }) => {
-			// @ts-expect-error startCoords is defined!
-			const [x, y] = JSON.parse(startCoords);
-
-			return { coords: [x, y], id, name };
-		});
-	}, [activities]);
-
 	if (!user) {
 		return <div>Loading</div>;
 	}
+
+	const coords = activities.map(({ startCoords, id, name }) => {
+		// @ts-expect-error startCoords is definitely there!
+		const [x, y] = JSON.parse(startCoords);
+
+		return { position: [x, y], id, name } as Coord;
+	});
 
 	return (
 		<div>
@@ -164,7 +164,20 @@ export const User = ({ id }: { id: string }) => {
 				</pre>
 			</details>
 
-			<MapComponent coords={coords} />
+			<DynamicMap>
+				{coords.length > 0 &&
+					coords.map((coord: Coord) => {
+						return (
+							<CustomMarker
+								position={coord.position}
+								key={coord.id}
+								id={coord.id}
+								name={coord.name}
+								useCircles={true}
+							/>
+						);
+					})}
+			</DynamicMap>
 
 			{editing ? (
 				<>
