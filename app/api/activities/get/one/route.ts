@@ -1,15 +1,14 @@
 import { headers } from "next/headers";
 import { type NextRequest, NextResponse } from "next/server";
 import {
-	getOneStravaActivity,
+	getOneRawStravaActivity,
 	upsertActivitiesToDB,
 } from "@/app/api/activities/utils";
 import { auth } from "@/lib/auth";
 
 /**
- * /activities/sync/one api route
- * This Route syncs the activity with the passed id
- * Will upsert into the db the latest changes.
+ * /activities/get/one api route
+ * This Route gets the activity with the passed id
  */
 export const GET = async (request: NextRequest) => {
 	const searchParams = request.nextUrl.searchParams;
@@ -26,7 +25,7 @@ export const GET = async (request: NextRequest) => {
 		return NextResponse.json({ message: "NO-AUTH" });
 	}
 
-	const stravaActivity = await getOneStravaActivity(session.account, id);
+	const stravaActivity = await getOneRawStravaActivity(session.account, id);
 
 	// Upsert them in the database!
 	await upsertActivitiesToDB(stravaActivity);

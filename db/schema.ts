@@ -4,6 +4,7 @@ import {
 	integer,
 	numeric,
 	pgTable,
+	point,
 	text,
 	timestamp,
 } from "drizzle-orm/pg-core";
@@ -62,6 +63,9 @@ export const activities = pgTable("activity", {
 	elevation: numeric("elevation").notNull(),
 	distance: numeric("distance").notNull(),
 	visibility: text("visibility").notNull(),
+	summaryPolyline: text("summaryPolyline").notNull(),
+	startCoords: text(),
+	endCoords: text(),
 
 	updatedAt: text()
 		.notNull()

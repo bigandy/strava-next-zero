@@ -7,10 +7,9 @@ import {
 import type { Activity } from "@/schema";
 import { TableHead } from "./table-head";
 import type { TData } from "./utils";
-import { columns as allColumns } from "./utils";
+import { singleRowColumns as columns } from "./utils";
 
 // remove the final column which is edit
-const columns = allColumns.toSpliced(allColumns.length - 1);
 
 export const SingleActivityTable = ({ activity }: { activity: Activity }) => {
 	const table = useReactTable({

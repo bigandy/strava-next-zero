@@ -99,6 +99,9 @@ export const writeActivitiesToDB = async (stravaActivities: any) => {
 				elevation: act.elevation,
 				distance: act.distance,
 				visibility: act.visibility,
+				summaryPolyline: act.summaryPolyline,
+				startCoords: act.startCoords,
+				endCoords: act.endCoords,
 			};
 		}),
 	);
@@ -121,6 +124,18 @@ const conflictUpdateAllExcept = <
 			.map(([colName, { name }]) => [colName, sql.raw(`EXCLUDED."${name}"`)]),
 	);
 
+const formatCoords = (coords, activityType) => {
+	if (activityType === "VirtualRide") {
+		return null;
+	}
+
+	if (Number.isNaN(Number(coords[0])) || Number.isNaN(Number(coords[1]))) {
+		return null;
+	}
+
+	return JSON.stringify(coords);
+};
+
 export const formatStravaActivities = (activities: any) => {
 	return activities?.map((activity: Activity) => {
 		return {
@@ -136,6 +151,10 @@ export const formatStravaActivities = (activities: any) => {
 			elapsedTime: activity.elapsed_time,
 			movingTime: activity.moving_time,
 			visibility: activity.visibility,
+			summaryPolyline:
+				activity.type !== "VirtualRide" && activity?.map?.summary_polyline,
+			startCoords: formatCoords(activity.start_latlng, activity.type),
+			endCoords: formatCoords(activity.end_latlng, activity.type),
 		};
 	});
 };
@@ -157,6 +176,9 @@ export const upsertActivitiesToDB = async (stravaActivities: any) => {
 					elevation: act.elevation,
 					distance: act.distance,
 					visibility: act.visibility,
+					summaryPolyline: act.summaryPolyline,
+					startCoords: act.startCoords,
+					endCoords: act.endCoords,
 				};
 			}),
 		)
@@ -200,18 +222,22 @@ export const getAllStravaActivities = async (account: Account) => {
 			console.log(page, formattedActivities.length);
 
 			// Do I need this line??
-			return Promise.resolve("hello!");
+			return Promise.resolve("done");
 		});
 	}
 
-	// Probably best not returning the activities here;
 	return "done";
 };
 
-export const getStravaActivities = async (account: Account, options = {}) => {
+export const getStravaActivities = async (
+	account: Account,
+	options = {},
+	formatted = true,
+) => {
 	const strava = await getStravaClient(account);
 	const payload = await strava?.athlete.listActivities(options);
-	return formatStravaActivities(payload);
+
+	return formatted ? formatStravaActivities(payload) : payload;
 };
 
 export const getOneStravaActivity = async (
@@ -222,6 +248,16 @@ export const getOneStravaActivity = async (
 	const payload = await strava?.activities.get({ id: activityId });
 
 	return formatStravaActivities([payload]);
+};
+
+export const getOneRawStravaActivity = async (
+	account: Account,
+	activityId: string,
+) => {
+	const strava = await getStravaClient(account);
+	const payload = await strava?.activities.get({ id: activityId });
+
+	return payload;
 };
 
 export const updateOneStravaActivity = async (
@@ -245,6 +281,12 @@ export const getStravaUserInformation = async (account: Account) => {
 	return { athlete };
 };
 
+/**
+ * Streams the response back to the user. In future possible to also pass back the activities themselves?
+ * @param account
+ * @param maxPages
+ * @returns
+ */
 export const getAllStravaActivitiesWithStreaming = async (
 	account: Account,
 	maxPages: number = Infinity,
@@ -297,7 +339,6 @@ export const getAllStravaActivitiesWithStreaming = async (
 					JSON.stringify({
 						page: page - 1,
 						status: "finished",
-						// activities: allStravaActivities.flat(),
 					}),
 				);
 

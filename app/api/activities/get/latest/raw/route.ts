@@ -1,13 +1,11 @@
 import { headers } from "next/headers";
 import { NextResponse } from "next/server";
-import {
-	getStravaActivities,
-	writeActivitiesToDB,
-} from "@/app/api/activities/utils";
+import { getStravaActivities } from "@/app/api/activities/utils";
 import { auth } from "@/lib/auth";
 
 /**
- * /activities/get route
+ * /activities/get/latest/raw route
+ *
  */
 export const GET = async () => {
 	const session = await auth.api.getSession({
@@ -17,13 +15,11 @@ export const GET = async () => {
 		return NextResponse.json({ message: "NO-AUTH" });
 	}
 
-	const stravaActivities = await getStravaActivities(session.account);
-
-	// Delete activities from DB
-	// await deleteActivities();
-
-	// Put them in the database!
-	await writeActivitiesToDB(stravaActivities);
+	const stravaActivities = await getStravaActivities(
+		session.account,
+		{},
+		false,
+	);
 
 	if (stravaActivities) {
 		return NextResponse.json({ activities: stravaActivities });

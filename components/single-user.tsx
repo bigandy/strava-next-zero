@@ -1,20 +1,42 @@
 "use client";
 import { useQuery } from "@rocicorp/zero/react";
+
+import dynamic from "next/dynamic";
 import { useState } from "react";
 import { Button } from "@/components/button";
 import { useZero } from "@/components/zero";
+import { useSession } from "@/lib/auth-client";
+
+import { CustomMarker } from "./ActivitiesMap/CustomMarker";
+import type { Coord } from "./ActivitiesMap/types";
+
+const DynamicMap = dynamic(
+	() => import("./ActivitiesMap").then((module) => module.ActivitiesMap),
+	{
+		loading: () => (
+			<div className="leaflet-container leaflet-container--loading">
+				<div>Loading...</div>
+			</div>
+		),
+		ssr: false,
+	},
+);
 
 export const User = ({ id }: { id: string }) => {
+	const z = useZero();
+
 	const [pageNumber, setPageNumber] = useState(0);
 	const [editing, setEditing] = useState(false);
 	const [loading, setLoading] = useState(false);
-	const z = useZero();
+	const session = useSession();
 
 	const [user] = useQuery(
 		z.query.user.related("provider").where("id", "=", id).one(),
 	);
 
-	// const [activities] = useQuery(z.query.activities);
+	const [activities] = useQuery(
+		z.query.activities.where("startCoords", "IS NOT", null),
+	);
 
 	const handleInput = (event: React.ChangeEvent<HTMLInputElement>) => {
 		const { value } = event.target;
@@ -27,6 +49,10 @@ export const User = ({ id }: { id: string }) => {
 			id: user?.id,
 			name: value,
 		});
+	};
+
+	const syncLatestActivities = async () => {
+		await fetch("/api/activities/sync/latest");
 	};
 
 	const getAllActivities = async () => {
@@ -52,7 +78,6 @@ export const User = ({ id }: { id: string }) => {
 					break;
 				}
 				const text = decoder.decode(value);
-				console.log({ text });
 				const json = JSON.parse(text);
 
 				setPageNumber(json.page);
@@ -60,7 +85,7 @@ export const User = ({ id }: { id: string }) => {
 		} catch (error) {
 			console.error(error);
 		} finally {
-			console.log("done");
+			console.info("done");
 			setLoading(false);
 		}
 	};
@@ -70,12 +95,12 @@ export const User = ({ id }: { id: string }) => {
 			"TODO: sync ALL activities from strava please. show some sort of information to the user ",
 		);
 
-		console.log({ activities: activities.length });
+		// console.log({ activities: activities.length });
 
 		// Can re-use the above api call. And we know the total activities so can give a progress bar.
 	};
 
-	const syncLatestActivities = () => {
+	const syncAllLatestActivities = () => {
 		console.info(
 			"TODO: sync 'Latest' activities from strava please. show some sort of information to the user ",
 		);
@@ -85,6 +110,13 @@ export const User = ({ id }: { id: string }) => {
 		return <div>Loading</div>;
 	}
 
+	const coords = activities.map(({ startCoords, id, name }) => {
+		// @ts-expect-error startCoords is definitely there!
+		const [x, y] = JSON.parse(startCoords);
+
+		return { position: [x, y], id, name } as Coord;
+	});
+
 	return (
 		<div>
 			<div className="flex gap-4 my-4">
@@ -92,19 +124,27 @@ export const User = ({ id }: { id: string }) => {
 
 				<Button
 					className="bg-red-500 p-4 rounded-sm text-white"
-					onClick={getAllActivities}
+					onClick={syncLatestActivities}
 					loading={loading}
-					loadingText={`loading ${pageNumber} page`}
 				>
-					Grab All Activities from Strava
+					Sync <strong>Latest</strong> Activities from Strava
 				</Button>
 
 				<Button
 					className="bg-red-500 p-4 rounded-sm text-white"
-					onClick={syncLatestActivities}
+					onClick={getAllActivities}
+					loading={loading}
+					loadingText={`loading ${pageNumber} page`}
+				>
+					Grab <strong>All</strong> Activities from Strava
+				</Button>
+
+				<Button
+					className="bg-red-500 p-4 rounded-sm text-white"
+					onClick={syncAllLatestActivities}
 					disabled
 				>
-					Sync Latest Activities from Strava
+					Sync <strong>All</strong> Latest Activities from Strava
 				</Button>
 
 				<Button
@@ -115,6 +155,30 @@ export const User = ({ id }: { id: string }) => {
 					Sync All Activities from Strava
 				</Button>
 			</div>
+
+			<details>
+				<summary>User Information</summary>
+
+				<pre className="whitespace-pre-wrap break-all px-4 py-6">
+					{JSON.stringify(session, null, 2)}
+				</pre>
+			</details>
+
+			<DynamicMap>
+				{coords.length > 0 &&
+					coords.map((coord: Coord) => {
+						return (
+							<CustomMarker
+								position={coord.position}
+								key={coord.id}
+								id={coord.id}
+								name={coord.name}
+								useCircles={true}
+							/>
+						);
+					})}
+			</DynamicMap>
+
 			{editing ? (
 				<>
 					<h2>Editing</h2>
@@ -127,21 +191,19 @@ export const User = ({ id }: { id: string }) => {
 			) : (
 				<div>
 					<div>User: {user?.name}</div>
-					{/* <div>User Email: {user?.email}</div> */}
 					<div>ID: {user?.id}</div>
-					{/* <div>
+					<div>
 						User Image:
 						{user?.image && (
 							<img
 								src={user?.image}
-								height="50"
-								width="50"
+								height="100"
+								width="100"
 								className="rounded-sm inline"
 								alt="user avatar"
 							/>
 						)}
-					</div> */}
-					<div>Provider: {user?.provider?.providerId}</div>
+					</div>
 				</div>
 			)}
 		</div>

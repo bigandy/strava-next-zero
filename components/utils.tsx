@@ -66,3 +66,22 @@ export const columns = [
 		},
 	},
 ];
+
+export const singleRowColumns = [
+	...columns.toSpliced(columns.length - 1),
+	{
+		accessorKey: "id",
+		header: "View on Strava",
+		enableSorting: false,
+		cell: ({ cell }: CellProps) => {
+			return (
+				<Link
+					href={`https://strava.com/activities/${cell.getValue()}`}
+					target="_blank"
+				>
+					View Activity on Strava
+				</Link>
+			);
+		},
+	},
+];
