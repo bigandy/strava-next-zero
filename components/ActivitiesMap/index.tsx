@@ -1,26 +1,11 @@
 "use client";
-import Leaflet from "leaflet";
-import Link from "next/link";
-import { useEffect } from "react";
-import { MapContainer, Marker, Popup, TileLayer } from "react-leaflet";
+import { MapContainer, Marker, TileLayer } from "react-leaflet";
 
-// AHTODO: move this to the .html
-import "leaflet/dist/leaflet.css";
+import { PopupWithLink } from "./popup-with-link";
+
 const position: [number, number] = [48.864716, 2.349014];
 
 export const ActivitiesMap = ({ coords }) => {
-	// AHTODO: There must be a better way of doing this as it smells!
-	useEffect(() => {
-		(async function init() {
-			delete Leaflet.Icon.Default.prototype._getIconUrl;
-			Leaflet.Icon.Default.mergeOptions({
-				iconRetinaUrl: "/leaflet/marker-icon-2x.png",
-				iconUrl: "/leaflet/marker-icon.png",
-				shadowUrl: "/leaflet/marker-shadow.png",
-			});
-		})();
-	}, []);
-
 	return (
 		<div className="leaflet-container">
 			<MapContainer center={position} zoom={6} scrollWheelZoom={false}>
@@ -31,11 +16,7 @@ export const ActivitiesMap = ({ coords }) => {
 				{coords.length > 0
 					? coords.map((activity) => (
 							<Marker key={activity.id} position={activity.coords}>
-								<Popup>
-									<Link href={`/activities/${activity.id}`}>
-										{activity.name}
-									</Link>
-								</Popup>
+								<PopupWithLink name={activity.name} id={activity.id} />
 							</Marker>
 						))
 					: null}

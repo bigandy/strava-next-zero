@@ -9,7 +9,7 @@ import { useSession } from "@/lib/auth-client";
 const MapComponent = dynamic(
 	() => import("./ActivitiesMap").then((module) => module.ActivitiesMap),
 	{
-		// ssr: false,
+		ssr: false,
 		loading: () => (
 			<div className="leaflet-container leaflet-container--loading">
 				<div>Loading...</div>
@@ -19,10 +19,13 @@ const MapComponent = dynamic(
 );
 
 export const User = ({ id }: { id: string }) => {
+	const z = useZero();
+
+	z.query.activities.where("startCoords", "IS NOT", null).limit(1000).preload();
+
 	const [pageNumber, setPageNumber] = useState(0);
 	const [editing, setEditing] = useState(false);
 	const [loading, setLoading] = useState(false);
-	const z = useZero();
 	const session = useSession();
 
 	const [user] = useQuery(
@@ -30,7 +33,7 @@ export const User = ({ id }: { id: string }) => {
 	);
 
 	const [activities] = useQuery(
-		z.query.activities.where("startCoords", "!=", "null"),
+		z.query.activities.where("startCoords", "IS NOT", null),
 	);
 
 	const handleInput = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -46,8 +49,8 @@ export const User = ({ id }: { id: string }) => {
 		});
 	};
 
-	const getLatestActivities = async () => {
-		await fetch("/api/activities/get/latest");
+	const syncLatestActivities = async () => {
+		await fetch("/api/activities/sync/latest");
 	};
 
 	const getAllActivities = async () => {
@@ -95,7 +98,7 @@ export const User = ({ id }: { id: string }) => {
 		// Can re-use the above api call. And we know the total activities so can give a progress bar.
 	};
 
-	const syncLatestActivities = () => {
+	const syncAllLatestActivities = () => {
 		console.info(
 			"TODO: sync 'Latest' activities from strava please. show some sort of information to the user ",
 		);
@@ -121,10 +124,10 @@ export const User = ({ id }: { id: string }) => {
 
 				<Button
 					className="bg-red-500 p-4 rounded-sm text-white"
-					onClick={getLatestActivities}
+					onClick={syncLatestActivities}
 					loading={loading}
 				>
-					Grab <strong>Latest</strong> Activities from Strava
+					Sync <strong>Latest</strong> Activities from Strava
 				</Button>
 
 				<Button
@@ -138,10 +141,10 @@ export const User = ({ id }: { id: string }) => {
 
 				<Button
 					className="bg-red-500 p-4 rounded-sm text-white"
-					onClick={syncLatestActivities}
+					onClick={syncAllLatestActivities}
 					disabled
 				>
-					Sync Latest Activities from Strava
+					Sync <strong>All</strong> Latest Activities from Strava
 				</Button>
 
 				<Button
