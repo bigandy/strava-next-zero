@@ -27,7 +27,10 @@ export const SingleActivityTable = ({ activity }: { activity: Activity }) => {
 	);
 };
 
-export const TableBody = ({ table }: { table: Table<TData> }) => {
+/**
+ * URGENT! DO NOT DELETE THIS AND COMBINE WITH THE ABOVE. CAUSES THE PAGE TO BREAK!!!
+ */
+const TableBody = ({ table }: { table: Table<TData> }) => {
 	return (
 		<tbody>
 			{table.getRowModel().rows.map((row) => (

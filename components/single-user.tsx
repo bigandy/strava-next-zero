@@ -110,13 +110,6 @@ export const User = ({ id }: { id: string }) => {
 		return <div>Loading</div>;
 	}
 
-	const coords = activities.map(({ startCoords, id, name }) => {
-		// @ts-expect-error startCoords is definitely there!
-		const [x, y] = JSON.parse(startCoords);
-
-		return { position: [x, y], id, name } as Coord;
-	});
-
 	return (
 		<div>
 			<div className="flex gap-4 my-4">
@@ -163,21 +156,6 @@ export const User = ({ id }: { id: string }) => {
 					{JSON.stringify(session, null, 2)}
 				</pre>
 			</details>
-
-			<DynamicMap>
-				{coords.length > 0 &&
-					coords.map((coord: Coord) => {
-						return (
-							<CustomMarker
-								position={coord.position}
-								key={coord.id}
-								id={coord.id}
-								name={coord.name}
-								useCircles={true}
-							/>
-						);
-					})}
-			</DynamicMap>
 
 			{editing ? (
 				<>

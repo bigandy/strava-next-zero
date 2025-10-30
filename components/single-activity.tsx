@@ -96,7 +96,7 @@ export const SingleActivity = ({ id }: { id: string }) => {
 
 			<Button onClick={() => setIsEditing((e) => !e)}>Edit?</Button>
 
-			<div className="activities-table">
+			<div className="activity-table">
 				{isEditing && (
 					<form onSubmit={handleSubmit}>
 						<label htmlFor="name">Activity Name:</label>

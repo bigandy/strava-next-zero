@@ -13,7 +13,7 @@ export function SignInButton() {
 	return (
 		<button
 			type="submit"
-			className="border rounded-sm border-black p-4 mb-4 bg-[#F52]  hover:bg-[#cc4200] text-white cursor-pointer"
+			className="border rounded-sm border-black p-4 mb-4 bg-strava  hover:bg-strava-hover text-white cursor-pointer"
 			onClick={handleClick}
 		>
 			Signin with Strava

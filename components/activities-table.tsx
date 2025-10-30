@@ -9,11 +9,13 @@ import {
 	type PaginationState,
 	useReactTable,
 } from "@tanstack/react-table";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { columns, type SortingState } from "@/components/utils";
 import { useZero } from "@/components/zero";
 
 export const ActivitiesTable = () => {
+	const router = useRouter();
 	const [pagination, setPagination] = useState<PaginationState>({
 		pageIndex: 0,
 		pageSize: 20,
@@ -37,6 +39,11 @@ export const ActivitiesTable = () => {
 		onPaginationChange: setPagination,
 		onSortingChange: setSorting,
 	});
+
+	const handleRowClick = (id: string) => {
+		// console.log("clicked on row", id);
+		router.push(`/activities/${id}`);
+	};
 
 	return (
 		<div className="activities-table">
@@ -82,7 +89,11 @@ export const ActivitiesTable = () => {
 				</thead>
 				<tbody>
 					{table.getRowModel().rows.map((row) => (
-						<tr key={row.id}>
+						<tr
+							key={row.id}
+							onClick={() => handleRowClick(row.original.id)}
+							className="cursor-pointer"
+						>
 							{row.getVisibleCells().map((cell) => (
 								<td key={cell.id}>
 									{flexRender(cell.column.columnDef.cell, cell.getContext())}

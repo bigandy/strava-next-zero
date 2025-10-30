@@ -15,7 +15,7 @@ const pages = [
 	},
 	// {
 	// 	href: "/map",
-	// 	title: "Test Map Page",
+	// 	title: "Map",
 	// },
 ];
 

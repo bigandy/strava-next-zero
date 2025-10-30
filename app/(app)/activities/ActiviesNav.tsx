@@ -17,13 +17,17 @@ const pages = [
 		href: "/activities/search",
 		title: "Search",
 	},
+	{
+		href: "/activities/map",
+		title: "Map",
+	},
 ];
 
-export const Nav = () => {
+export const ActiviesNav = () => {
 	const pathname = usePathname();
 
 	return (
-		<>
+		<div className="mb-4">
 			{pages.map((page) => {
 				return (
 					<Link
@@ -37,6 +41,6 @@ export const Nav = () => {
 					</Link>
 				);
 			})}
-		</>
+		</div>
 	);
 };

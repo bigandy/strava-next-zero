@@ -14,8 +14,11 @@ export const Header = async () => {
 		<div className="mb-4">
 			{session ? (
 				<>
-					<SignOut />
-					<Link href={`/users/${session.user.id}`}>
+					<div>
+						<SignOut />
+					</div>
+
+					<Link href={`/users/${session.user.id}`} className="inline-block">
 						{session.user?.image && (
 							<img
 								src={session.user?.image}
