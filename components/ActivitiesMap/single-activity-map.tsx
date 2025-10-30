@@ -7,7 +7,7 @@ import {
 	TileLayer,
 } from "react-leaflet";
 
-const limeOptions = { color: "red" };
+const limeOptions = { color: "#fc4c02" };
 
 interface Props {
 	polyline: string;

@@ -3,6 +3,9 @@
 @theme {
 	--color-background: var(--background);
 	--color-foreground: var(--foreground);
+
+	--color-strava: #fc4c02;
+	--color-strava-hover: #cc4200;
 }
 
 /*
@@ -23,6 +26,7 @@
 	}
 }
 
+.activity-table,
 .activities-table {
 	th,
 	td {
@@ -33,9 +37,21 @@
 	td {
 		text-align: left;
 	}
+}
 
+.activity-table {
+	tbody td {
+		background: lightgray;
+	}
+}
+
+.activities-table {
 	tbody tr:nth-child(odd) td {
 		background: lightgray;
+	}
+
+	tbody tr:hover td {
+		background: var(--color-strava);
 	}
 }
 

@@ -10,12 +10,14 @@ import {
 	type PaginationState,
 	useReactTable,
 } from "@tanstack/react-table";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useDebounceValue } from "usehooks-ts";
 import { TableHead } from "./table-head";
 import { columns } from "./utils";
 
 export const ActivitiesWithSearch = () => {
+	const router = useRouter();
 	const z = useZero();
 	const [pagination, setPagination] = useState<PaginationState>({
 		pageIndex: 0,
@@ -48,6 +50,10 @@ export const ActivitiesWithSearch = () => {
 		setValue(event.target.value);
 	};
 
+	const handleRowClick = (id: string) => {
+		router.push(`/activities/${id}`);
+	};
+
 	return (
 		<>
 			<input
@@ -68,7 +74,11 @@ export const ActivitiesWithSearch = () => {
 					<TableHead table={table} />
 					<tbody>
 						{table.getRowModel().rows.map((row) => (
-							<tr key={row.id}>
+							<tr
+								key={row.id}
+								onClick={() => handleRowClick(row.original.id)}
+								className="cursor-pointer"
+							>
 								{row.getVisibleCells().map((cell) => (
 									<td key={cell.id}>
 										{flexRender(cell.column.columnDef.cell, cell.getContext())}

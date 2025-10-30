@@ -55,20 +55,21 @@ export const columns = [
 		accessorKey: "type",
 		header: "Type",
 	},
-	{
-		accessorKey: "id",
-		header: "Edit",
-		enableSorting: false,
-		cell: ({ cell }: CellProps) => {
-			return (
-				<Link href={`/activities/${cell.getValue()}`}>Edit Activity?</Link>
-			);
-		},
-	},
+	// {
+	// 	accessorKey: "id",
+	// 	header: "Edit",
+	// 	enableSorting: false,
+	// 	cell: ({ cell }: CellProps) => {
+	// 		return (
+	// 			<Link href={`/activities/${cell.getValue()}`}>Edit Activity?</Link>
+	// 		);
+	// 	},
+	// },
 ];
 
 export const singleRowColumns = [
-	...columns.toSpliced(columns.length - 1),
+	// ...columns.toSpliced(columns.length - 1),
+	...columns,
 	{
 		accessorKey: "id",
 		header: "View on Strava",

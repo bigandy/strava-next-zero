@@ -19,7 +19,7 @@ export const Button = ({
 		<button
 			type="button"
 			className={clsx(
-				`bg-red-500 p-4 rounded-sm text-white cursor-pointer disabled:bg-red-100 hover:bg-red-400 ${className}`,
+				`bg-strava hover:bg-strava-hover p-4 rounded-sm text-white cursor-pointer disabled:bg-red-100  ${className}`,
 				{
 					"bg-red-200": loading,
 				},
