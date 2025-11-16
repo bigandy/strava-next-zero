@@ -17,29 +17,35 @@ export function ZeroProvider({
 	userID: string;
 }) {
 	const z = useMemo(() => {
-		const jwtStorageKey = `jwt-${userID}`;
+		// const jwtStorageKey = `jwt-${userID}`;
 
-		return new Zero({
+		const zero = new Zero({
 			userID,
-			auth: async (error) => {
-				if (error === "invalid-token") {
-					sessionStorage.removeItem(jwtStorageKey);
-				}
-				let token = sessionStorage.getItem(jwtStorageKey);
-				if (!token) {
-					if (!userID) return undefined;
-					const response = await fetch("/api/auth/token");
-					const data = await response.json();
-					token = data.token;
-					if (!token) throw new Error("No token found");
-					sessionStorage.setItem(jwtStorageKey, token);
-				}
-				return token ?? undefined;
-			},
+			// auth: async (error) => {
+			// 	if (error === "invalid-token") {
+			// 		sessionStorage.removeItem(jwtStorageKey);
+			// 	}
+			// 	let token = sessionStorage.getItem(jwtStorageKey);
+			// 	if (!token) {
+			// 		if (!userID) return undefined;
+			// 		const response = await fetch("/api/auth/token");
+			// 		const data = await response.json();
+			// 		token = data.token;
+			// 		if (!token) throw new Error("No token found");
+			// 		sessionStorage.setItem(jwtStorageKey, token);
+			// 	}
+			// 	return token ?? undefined;
+			// },
 			server: process.env.NEXT_PUBLIC_ZERO_SERVER,
 			schema,
 			kvStore: "mem",
 		});
+
+		zero.query.activities.limit(1_000).preload({
+			ttl: "1m",
+		});
+
+		return zero;
 	}, [userID]);
 
 	return <ZeroProviderBase zero={z}>{children}</ZeroProviderBase>;

@@ -16,7 +16,7 @@
   If we ever want to remove these styles, we need to add an explicit border
   color utility to any element that depends on these defaults.
 */
-@layer base {
+/* @layer base {
 	*,
 	::after,
 	::before,
@@ -24,7 +24,7 @@
 	::file-selector-button {
 		border-color: var(--color-gray-200, currentcolor);
 	}
-}
+} */
 
 .activity-table,
 .activities-table {
@@ -76,8 +76,8 @@
 }
 
 .leaflet-container {
-  /* width: 350px; */
-  height: 1000px;
+	/* width: 350px; */
+	height: 1000px;
 }
 
 .leaflet-container--loading {
@@ -88,17 +88,4 @@
 		font-size: 30px;
 		font-weight: bold;
 	}
-}
-
-.map {
-  height: 350px;
-  margin: 30px;
-  border: 1px solid gray;
-  background-color: rgb(125, 193, 220);
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: center;
-  color: whitesmoke;
-  border-radius: 5px;
 }

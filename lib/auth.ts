@@ -49,26 +49,34 @@ export const auth = betterAuth({
 							headers: { Authorization: `Bearer ${tokens.accessToken}` },
 						}).then((data) => data.json());
 
+						console.log(data);
+
 						return {
 							...data,
 							email: data.username, // This is required to fix the error, even though it makes no sense b/c it isn't an email
 							emailVerified: true,
 							name: `${data.firstname} ${data.lastname}`,
 							image: data.profile,
+							athleteId: data.id,
 						};
 					},
 				},
 			],
 		}),
-		customSession(async ({ user, session }) => {
+		customSession(async ({ user }) => {
 			const account = await db.query.account.findFirst({
 				where: (account, { eq }) => eq(account.userId, user.id),
 			});
 
 			return {
-				user,
-				session,
-				account,
+				userId: user.id,
+				userImage: user.image,
+				account: {
+					access_token: account?.access_token,
+					access_token_expires: account?.access_token_expires,
+					refresh_token: account?.refresh_token,
+					userId: account?.userId,
+				},
 			};
 		}),
 		jwt(),
