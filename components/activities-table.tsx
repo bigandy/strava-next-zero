@@ -12,7 +12,7 @@ import {
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { columns, type SortingState } from "@/components/utils";
-import { useZero } from "@/components/zero";
+import { queries } from "@/zero/queries";
 
 export const ActivitiesTable = () => {
 	const router = useRouter();
@@ -21,8 +21,8 @@ export const ActivitiesTable = () => {
 		pageSize: 20,
 	});
 	const [sorting, setSorting] = useState<SortingState>([]); // can set initial sorting state here
-	const z = useZero();
-	const [activities] = useQuery(z.query.activities.orderBy("start", "desc"));
+
+	const [activities] = useQuery(queries.activities.all());
 
 	const table = useReactTable({
 		// @ts-expect-error

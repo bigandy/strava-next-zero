@@ -12,6 +12,7 @@ interface CalendarWithDataProps {
 
 import clsx from "clsx";
 import dayjs from "dayjs";
+import { queries } from "@/zero/queries";
 import styles from "./styles.module.css";
 
 // Better in component or out?
@@ -29,10 +30,10 @@ export const SingleCalendar = ({ month, year }: CalendarWithDataProps) => {
 	const endOfMonth = calendarDate.endOf("month");
 
 	const [activities] = useQuery(
-		z.query.activities
-			.where("start", ">=", startOfMonth.valueOf())
-			.where("start", "<=", endOfMonth.valueOf())
-			.orderBy("start", "desc"),
+		queries.activities.getByMonth({
+			start: startOfMonth.valueOf(),
+			end: endOfMonth.valueOf(),
+		}),
 	);
 
 	return (

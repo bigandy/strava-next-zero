@@ -13,6 +13,7 @@ import {
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useDebounceValue } from "usehooks-ts";
+import { queries } from "@/zero/queries";
 import { TableHead } from "./table-head";
 import { columns } from "./utils";
 
@@ -27,9 +28,10 @@ export const ActivitiesWithSearch = () => {
 	const [search, setValue] = useDebounceValue("", 100);
 
 	const [activities] = useQuery(
-		z.query.activities
-			.orderBy("start", "desc")
-			.where(({ cmp }) => cmp("name", "ILIKE", `%${escapeLike(search)}%`)),
+		queries.activities.all(),
+		// AHTODO: fix the search!
+		// .orderBy("start", "desc")
+		// .where(({ cmp }) => cmp("name", "ILIKE", `%${escapeLike(search)}%`)),
 	);
 
 	const table = useReactTable({

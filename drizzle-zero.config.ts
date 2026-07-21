@@ -3,7 +3,7 @@ import { drizzleZeroConfig } from "drizzle-zero";
 import * as drizzleSchema from "./db/schema";
 
 // Define your configuration file for the CLI
-export default drizzleZeroConfig(drizzleSchema, {
+export const schema = drizzleZeroConfig(drizzleSchema, {
 	// Specify which tables and columns to include in the Zero schema.
 	// This allows for the "expand/migrate/contract" pattern recommended in the Zero docs.
 

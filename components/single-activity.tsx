@@ -6,6 +6,7 @@ import Link from "next/link";
 import { useState } from "react";
 import { Button } from "@/components/button";
 import { useZero } from "@/components/zero";
+import { queries } from "@/zero/queries";
 import { SingleActivityTable } from "./single-activity-table";
 
 const MapComponent = dynamic(
@@ -28,7 +29,7 @@ export const SingleActivity = ({ id }: { id: string }) => {
 	const [loading, setLoading] = useState(false);
 	const [isEditing, setIsEditing] = useState(false);
 
-	const [activity] = useQuery(z.query.activities.where("id", id).one());
+	const [activity] = useQuery(queries.activities.getWithId({ id }));
 
 	const syncActivity = async () => {
 		setLoading(true);
@@ -115,7 +116,7 @@ export const SingleActivity = ({ id }: { id: string }) => {
 							className="border border-black p-4 block w-full"
 						></textarea>
 
-						<Button onClick={() => {}} type="submit" className="mt-4">
+						<Button onClick={() => { }} type="submit" className="mt-4">
 							Submit
 						</Button>
 					</form>

@@ -6,7 +6,7 @@ import { useState } from "react";
 import { Button } from "@/components/button";
 import { useZero } from "@/components/zero";
 import { useSession } from "@/lib/auth-client";
-
+import { queries } from "@/zero/queries";
 import { CustomMarker } from "./ActivitiesMap/CustomMarker";
 import type { Coord } from "./ActivitiesMap/types";
 
@@ -30,13 +30,12 @@ export const User = ({ id }: { id: string }) => {
 	const [loading, setLoading] = useState(false);
 	const session = useSession();
 
-	const [user] = useQuery(
-		z.query.user.related("provider").where("id", "=", id).one(),
-	);
+	const [user] = useQuery(queries.user.getById({ id }));
 
-	const [activities] = useQuery(
-		z.query.activities.where("startCoords", "IS NOT", null),
-	);
+	console.log({ user });
+
+	const [activities] = useQuery(queries.activities.withStartCoords());
+	console.log({ user, activities });
 
 	const handleInput = (event: React.ChangeEvent<HTMLInputElement>) => {
 		const { value } = event.target;

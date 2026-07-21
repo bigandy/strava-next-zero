@@ -19,23 +19,26 @@ export function ZeroProvider({
 	const z = useMemo(() => {
 		const jwtStorageKey = `jwt-${userID}`;
 
+		console.log({ userID })
+
 		return new Zero({
-			userID,
-			auth: async (error) => {
-				if (error === "invalid-token") {
-					sessionStorage.removeItem(jwtStorageKey);
-				}
-				let token = sessionStorage.getItem(jwtStorageKey);
-				if (!token) {
-					if (!userID) return undefined;
-					const response = await fetch("/api/auth/token");
-					const data = await response.json();
-					token = data.token;
-					if (!token) throw new Error("No token found");
-					sessionStorage.setItem(jwtStorageKey, token);
-				}
-				return token ?? undefined;
-			},
+			// userID, // AHTODO: is it possible to use the provided userID??
+			userID: null,
+			// auth: async (error) => {
+			// 	if (error === "invalid-token") {
+			// 		sessionStorage.removeItem(jwtStorageKey);
+			// 	}
+			// 	let token = sessionStorage.getItem(jwtStorageKey);
+			// 	if (!token) {
+			// 		if (!userID) return undefined;
+			// 		const response = await fetch("/api/auth/token");
+			// 		const data = await response.json();
+			// 		token = data.token;
+			// 		if (!token) throw new Error("No token found");
+			// 		sessionStorage.setItem(jwtStorageKey, token);
+			// 	}
+			// 	return token ?? undefined;
+			// },
 			server: process.env.NEXT_PUBLIC_ZERO_SERVER,
 			schema,
 			kvStore: "mem",

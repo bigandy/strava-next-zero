@@ -2,17 +2,20 @@
 
 import { useQuery } from "@rocicorp/zero/react";
 import Link from "next/link";
-import { useZero } from "@/components/zero";
+import { queries } from "@/zero/queries";
 
 export function UserList() {
-	const z = useZero();
-	const [users] = useQuery(z.query.user.related("provider"));
+	const [users] = useQuery(queries.user.all());
+	// const [all] = useQuery(queries.all.all());
+
+	console.log({ users });
 
 	return (
 		<div className="">
 			{users.length > 0 ? (
 				<ul className="list-disc list-inside">
 					{users.map((u) => {
+						console.log({ u })
 						const name = `${u.name} - ${u?.provider?.providerId ?? "no provider provided"}`;
 
 						return (

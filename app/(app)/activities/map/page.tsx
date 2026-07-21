@@ -3,7 +3,7 @@ import { useQuery } from "@rocicorp/zero/react";
 import dynamic from "next/dynamic";
 import { CustomMarker } from "@/components/ActivitiesMap/CustomMarker";
 import type { Coord } from "@/components/ActivitiesMap/types";
-import { useZero } from "@/components/zero";
+import { queries } from '@/zero/queries'
 
 const DynamicMap = dynamic(
 	() =>
@@ -21,11 +21,10 @@ const DynamicMap = dynamic(
 );
 
 export default function Page() {
-	const z = useZero();
-
 	const [activities] = useQuery(
-		z.query.activities.where("startCoords", "IS NOT", null),
+		queries.activities.all()
 	);
+
 	const coords = activities.map(({ startCoords, id, name }) => {
 		// @ts-expect-error startCoords is definitely there!
 		const [x, y] = JSON.parse(startCoords);

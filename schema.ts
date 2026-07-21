@@ -1,9 +1,9 @@
 import type { Row } from "@rocicorp/zero";
-import { ANYONE_CAN_DO_ANYTHING, definePermissions } from "@rocicorp/zero";
+// import { ANYONE_CAN_DO_ANYTHING, definePermissions } from "@rocicorp/zero";
 
-import { type Schema, schema } from "./zero-schema.gen";
+import { type Schema, schema, zql } from "./zero-schema.gen.ts";
 
-export { schema, type Schema };
+export { schema, type Schema, zql };
 
 export type User = Row<typeof schema.tables.user>;
 export type Activity = Row<typeof schema.tables.activities>;
@@ -16,14 +16,14 @@ export interface Account
 		"access_token_expires" | "createdAt" | "updatedAt" | "refreshTokenExpiresAt"
 	> {
 	access_token_expires: Date | null;
-	createdAt: Date | null;
-	updatedAt: Date | null;
+	createdAt: string | null;
+	updatedAt: string | null;
 	refreshTokenExpiresAt: Date | null;
 }
 
-// Define permissions with the inferred types from Drizzle
-export const permissions = definePermissions(schema, () => ({
-	user: ANYONE_CAN_DO_ANYTHING,
-	account: ANYONE_CAN_DO_ANYTHING,
-	activities: ANYONE_CAN_DO_ANYTHING,
-}));
+// // Define permissions with the inferred types from Drizzle
+// export const permissions = definePermissions(schema, () => ({
+// 	user: ANYONE_CAN_DO_ANYTHING,
+// 	account: ANYONE_CAN_DO_ANYTHING,
+// 	activities: ANYONE_CAN_DO_ANYTHING,
+// }));
