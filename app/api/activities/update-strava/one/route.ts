@@ -24,7 +24,7 @@ export const POST = async (request: NextRequest) => {
 		return NextResponse.json({ message: "NO-ID" });
 	}
 
-	await updateOneStravaActivity(session.account, id, data);
+	const update = await updateOneStravaActivity(session.account, id, data);
 
 	// // Upsert them in the database!
 	// await upsertActivitiesToDB(stravaActivities);
@@ -32,5 +32,6 @@ export const POST = async (request: NextRequest) => {
 	return NextResponse.json({
 		message: "upload-to-strava",
 		data,
+		update,
 	});
 };

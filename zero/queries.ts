@@ -1,11 +1,8 @@
 import { defineQueries } from "@rocicorp/zero";
-
-import { activitiesQueries } from "./activities";
-import { allQueries } from "./all";
-import { userQueries } from "./user";
+import { activitiesQueries } from "./queries/activities";
+import { userQueries } from "./queries/user";
 
 export const queries = defineQueries({
-    all: allQueries,
     activities: activitiesQueries,
     user: userQueries,
 });

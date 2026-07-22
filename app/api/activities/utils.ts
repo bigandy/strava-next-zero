@@ -79,7 +79,6 @@ export const getStravaClient = async (account: Account) => {
 	if (!accessToken) {
 		return null;
 	}
-	// @ts-expect-error
 	const client = new strava.client(accessToken);
 	return client;
 };
@@ -195,6 +194,10 @@ export const deleteActivities = async () => {
 export const getAllStravaActivities = async (account: Account) => {
 	const strava = await getStravaClient(account);
 
+	if (!strava) {
+		throw new Error("strava not initialised.");
+	}
+
 	const allStravaActivities = [];
 	let page = 1;
 	const per_page = 100;
@@ -203,7 +206,7 @@ export const getAllStravaActivities = async (account: Account) => {
 
 	while (continueFetching) {
 		await throttle(async () => {
-			const activities = await strava?.athlete.listActivities({
+			const activities = await strava.athlete.listActivities({
 				page,
 				per_page,
 			});
@@ -235,7 +238,10 @@ export const getStravaActivities = async (
 	formatted = true,
 ) => {
 	const strava = await getStravaClient(account);
-	const payload = await strava?.athlete.listActivities(options);
+	if (!strava) {
+		throw new Error("strava not initialised.");
+	}
+	const payload = await strava.athlete.listActivities(options);
 
 	return formatted ? formatStravaActivities(payload) : payload;
 };
@@ -245,7 +251,10 @@ export const getOneStravaActivity = async (
 	activityId: string,
 ) => {
 	const strava = await getStravaClient(account);
-	const payload = await strava?.activities.get({ id: activityId });
+	if (!strava) {
+		throw new Error("strava not initialised.");
+	}
+	const payload = await strava.activities.get({ id: activityId });
 
 	return formatStravaActivities([payload]);
 };
@@ -255,7 +264,12 @@ export const getOneRawStravaActivity = async (
 	activityId: string,
 ) => {
 	const strava = await getStravaClient(account);
-	const payload = await strava?.activities.get({ id: activityId });
+
+	if (!strava) {
+		throw new Error("strava not initialised.");
+	}
+
+	const payload = await strava.activities.get({ id: activityId });
 
 	return payload;
 };
@@ -267,14 +281,25 @@ export const updateOneStravaActivity = async (
 ) => {
 	const strava = await getStravaClient(account);
 
-	return await strava?.activities.update({
+	if (!strava) {
+		throw new Error("strava not initialised.");
+	}
+
+	return await strava.activities.update({
 		id: activityId,
-		...data,
+		// @ts-expect-error this has changed in the API but not the node-strava-v3 package. AHTODO: remove when this has been fixed in the package.
+		body: {
+			...data
+		}
 	});
 };
 
 export const getStravaUserInformation = async (account: Account) => {
 	const strava = await getStravaClient(account);
+
+	if (!strava) {
+		throw new Error("strava not initialised.");
+	}
 
 	const athlete = await strava.athlete.get({});
 
@@ -293,6 +318,10 @@ export const getAllStravaActivitiesWithStreaming = async (
 ) => {
 	const strava = await getStravaClient(account);
 
+	if (!strava) {
+		throw new Error("strava not initialised.");
+	}
+
 	const allStravaActivities = [];
 	let page = 1;
 	const per_page = 100;
@@ -304,7 +333,7 @@ export const getAllStravaActivitiesWithStreaming = async (
 			const getActivities = async () => {
 				while (continueFetching && page <= maxPages) {
 					const newActivities = await throttle(async () => {
-						const activities = await strava?.athlete.listActivities({
+						const activities = await strava.athlete.listActivities({
 							page,
 							per_page,
 						});

@@ -6,6 +6,7 @@ import Link from "next/link";
 import { useState } from "react";
 import { Button } from "@/components/button";
 import { useZero } from "@/components/zero";
+import { mutators } from "@/zero/mutators";
 import { queries } from "@/zero/queries";
 import { SingleActivityTable } from "./single-activity-table";
 
@@ -41,9 +42,10 @@ export const SingleActivity = ({ id }: { id: string }) => {
 
 	const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
 		event.preventDefault();
+
 		console.log("form submit", activity?.description);
 
-		await fetch(`/api/activities/update-strava/one?id=${id}`, {
+		const result = await fetch(`/api/activities/update-strava/one?id=${id}`, {
 			method: "POST",
 			headers: {
 				"Content-Type": "application/json",
@@ -53,15 +55,19 @@ export const SingleActivity = ({ id }: { id: string }) => {
 				name: activity?.name,
 			}),
 		});
+
+		console.log({ result });
 	};
 
 	const handleNameInput = (event: React.ChangeEvent<HTMLInputElement>) => {
 		const { value } = event.target;
 		if (activity?.id) {
-			z.mutate.activities.update({
-				id: activity.id,
-				name: value,
-			});
+			z.mutate(
+				mutators.activity.update({
+					id: activity.id,
+					name: value,
+				}),
+			);
 		}
 	};
 
@@ -70,10 +76,12 @@ export const SingleActivity = ({ id }: { id: string }) => {
 	) => {
 		const { value } = event.target;
 		if (activity?.id) {
-			z.mutate.activities.update({
-				id: activity.id,
-				description: value,
-			});
+			z.mutate(
+				mutators.activity.update({
+					id: activity.id,
+					description: value,
+				}),
+			);
 		}
 	};
 

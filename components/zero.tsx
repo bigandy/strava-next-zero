@@ -7,6 +7,7 @@ import {
 } from "@rocicorp/zero/react";
 import type { ReactNode } from "react";
 import { useMemo } from "react";
+import { mutators } from "@/zero/mutators";
 import { type Schema, schema } from "../schema";
 
 export function ZeroProvider({
@@ -20,6 +21,7 @@ export function ZeroProvider({
 		// const jwtStorageKey = `jwt-${userID}`;
 
 		return new Zero({
+			mutators,
 			// userID, // AHTODO: is it possible to use the provided userID??
 			userID: null,
 			// auth: async (error) => {

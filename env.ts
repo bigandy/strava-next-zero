@@ -18,7 +18,8 @@ const envSchema = z.object({
 	BETTER_AUTH_SECRET: z.string(),
 	BETTER_AUTH_URL: z.url(),
 
-	ZERO_QUERY_URL: z.url()
+	ZERO_QUERY_URL: z.url(),
+	ZERO_MUTATE_URL: z.url()
 
 	// ENV: z.union([
 	// 	z.literal("development"),

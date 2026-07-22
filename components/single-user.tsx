@@ -6,6 +6,7 @@ import { useState } from "react";
 import { Button } from "@/components/button";
 import { useZero } from "@/components/zero";
 import { useSession } from "@/lib/auth-client";
+import { mutators } from "@/zero/mutators";
 import { queries } from "@/zero/queries";
 import { CustomMarker } from "./ActivitiesMap/CustomMarker";
 import type { Coord } from "./ActivitiesMap/types";
@@ -41,10 +42,11 @@ export const User = ({ id }: { id: string }) => {
 			console.error("no user defined");
 			return;
 		}
-		z.mutate.user.update({
-			id: user?.id,
+		z.mutate(mutators.user.update({
+			id: user.id,
 			name: value,
-		});
+		}));
+
 	};
 
 	const syncLatestActivities = async () => {
