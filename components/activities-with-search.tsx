@@ -1,7 +1,7 @@
 "use client";
 
 import { escapeLike } from "@rocicorp/zero";
-import { useQuery, useZero } from "@rocicorp/zero/react";
+import { useQuery } from "@rocicorp/zero/react";
 import {
 	flexRender,
 	getCoreRowModel,
@@ -19,7 +19,6 @@ import { columns } from "./utils";
 
 export const ActivitiesWithSearch = () => {
 	const router = useRouter();
-	const z = useZero();
 	const [pagination, setPagination] = useState<PaginationState>({
 		pageIndex: 0,
 		pageSize: 20,
@@ -28,10 +27,7 @@ export const ActivitiesWithSearch = () => {
 	const [search, setValue] = useDebounceValue("", 100);
 
 	const [activities] = useQuery(
-		queries.activities.all(),
-		// AHTODO: fix the search!
-		// .orderBy("start", "desc")
-		// .where(({ cmp }) => cmp("name", "ILIKE", `%${escapeLike(search)}%`)),
+		queries.activities.getBySearch({ search: escapeLike(search) }),
 	);
 
 	const table = useReactTable({

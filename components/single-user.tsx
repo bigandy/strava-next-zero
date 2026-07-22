@@ -32,10 +32,7 @@ export const User = ({ id }: { id: string }) => {
 
 	const [user] = useQuery(queries.user.getById({ id }));
 
-	console.log({ user });
-
 	const [activities] = useQuery(queries.activities.withStartCoords());
-	console.log({ user, activities });
 
 	const handleInput = (event: React.ChangeEvent<HTMLInputElement>) => {
 		const { value } = event.target;

@@ -24,5 +24,16 @@ export const activitiesQueries = {
                 .where("start", "<=", end)
                 .orderBy("start", "desc");
         }
+    ),
+    getBySearch: defineQuery(
+        z.object({
+            search: z.string(),
+        }),
+        ({ args: { search } }) => {
+            return zql.activities
+                .orderBy("start", "desc")
+                .where(({ cmp }) => cmp("name", "ILIKE", `%${search}%`))
+        }
     )
+
 };

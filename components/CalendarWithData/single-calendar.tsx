@@ -24,7 +24,7 @@ export const SingleCalendar = ({ month, year }: CalendarWithDataProps) => {
 	const currentCalendar =
 		+today.month() + 1 === +month && +today.year() === +year;
 
-	const z = useZero();
+
 
 	const startOfMonth = calendarDate;
 	const endOfMonth = calendarDate.endOf("month");

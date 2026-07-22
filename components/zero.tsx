@@ -11,15 +11,13 @@ import { type Schema, schema } from "../schema";
 
 export function ZeroProvider({
 	children,
-	userID,
+	// userID,
 }: {
 	children: ReactNode;
-	userID: string;
+	// userID: string;
 }) {
 	const z = useMemo(() => {
-		const jwtStorageKey = `jwt-${userID}`;
-
-		console.log({ userID })
+		// const jwtStorageKey = `jwt-${userID}`;
 
 		return new Zero({
 			// userID, // AHTODO: is it possible to use the provided userID??
@@ -43,7 +41,7 @@ export function ZeroProvider({
 			schema,
 			kvStore: "mem",
 		});
-	}, [userID]);
+	}, []);
 
 	return <ZeroProviderBase zero={z}>{children}</ZeroProviderBase>;
 }
