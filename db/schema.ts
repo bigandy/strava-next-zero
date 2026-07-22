@@ -6,19 +6,19 @@ import {
 	numeric,
 	pgTable,
 	text,
-	timestamp
+	timestamp,
 } from "drizzle-orm/pg-core";
 
 const sharedColumns = {
-	createdAt: timestamp('created_at', {
-		mode: 'string',
+	createdAt: timestamp("created_at", {
+		mode: "string",
 		precision: 3,
 		withTimezone: true,
 	})
 		.defaultNow()
 		.notNull(),
-	updatedAt: timestamp('updated_at', {
-		mode: 'string',
+	updatedAt: timestamp("updated_at", {
+		mode: "string",
 		precision: 3,
 		withTimezone: true,
 	})
@@ -30,8 +30,8 @@ const sharedColumns = {
 const sharedUserId = {
 	userId: text("user_id")
 		.notNull()
-		.references(() => user.id, { onDelete: "cascade" })
-};
+		.references(() => user.id, { onDelete: "cascade" }),
+} as const;
 
 export const user = pgTable("user", {
 	id: text("id")
@@ -41,7 +41,7 @@ export const user = pgTable("user", {
 	email: text("email").notNull().unique(),
 	emailVerified: boolean("email_verified").default(false).notNull(),
 	image: text("image"),
-	...sharedColumns
+	...sharedColumns,
 });
 
 export const userRelations = relations(user, ({ one }) => ({
@@ -51,6 +51,21 @@ export const userRelations = relations(user, ({ one }) => ({
 	}),
 }));
 
+export const account = pgTable("account", {
+	id: text("id").primaryKey(),
+	providerAccountId: text("provider_account_id").notNull(),
+	providerId: text("provider_id").notNull(),
+	access_token: text("access_token").notNull(),
+	refresh_token: text("refresh_token").notNull(),
+	id_token: text("id_token"),
+	access_token_expires: timestamp("access_token_expires").notNull(),
+	refreshTokenExpiresAt: timestamp("refresh_token_expires_at"),
+	scope: text("scope"),
+	password: text("password"),
+	...sharedUserId,
+	...sharedColumns,
+});
+
 export const session = pgTable("session", {
 	id: text("id").primaryKey(),
 	expiresAt: timestamp("expires_at").notNull(),
@@ -59,7 +74,7 @@ export const session = pgTable("session", {
 	ipAddress: text("ip_address"),
 	userAgent: text("user_agent"),
 	...sharedUserId,
-	...sharedColumns
+	...sharedColumns,
 });
 
 export const verification = pgTable("verification", {
@@ -67,7 +82,7 @@ export const verification = pgTable("verification", {
 	identifier: text("identifier").notNull(),
 	value: text("value").notNull(),
 	expiresAt: timestamp("expires_at").notNull(),
-	...sharedColumns
+	...sharedColumns,
 });
 
 export const activities = pgTable("activity", {
@@ -85,23 +100,7 @@ export const activities = pgTable("activity", {
 	summaryPolyline: text("summaryPolyline").notNull(),
 	startCoords: text(),
 	endCoords: text(),
-	...sharedColumns
-});
-
-export const account = pgTable("account", {
-	id: text("id").primaryKey(),
-	providerAccountId: text("provider_account_id").notNull(),
-	providerId: text("provider_id").notNull(),
-
-	access_token: text("access_token").notNull(),
-	refresh_token: text("refresh_token").notNull(),
-	id_token: text("id_token"),
-	access_token_expires: timestamp("access_token_expires").notNull(),
-	refreshTokenExpiresAt: timestamp("refresh_token_expires_at"),
-	scope: text("scope"),
-	password: text("password"),
-	...sharedUserId,
-	...sharedColumns
+	...sharedColumns,
 });
 
 export const jwks = pgTable("jwks", {
